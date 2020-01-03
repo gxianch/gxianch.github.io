@@ -1,13 +1,12 @@
 ---
-
 title: Elasticsearch介绍(二)
-
 date: 2020-01-03 08:46:01
-
-categories: elasticseach
-
+categories: [elasticseach,dsl]
+toc: true
+mathjax: true
 tags:
   - elasticseach
+  - dsl
 ---
 
 上一节讲述了为什么选择elasticsearch, elasticsearch的基本概念和Lucene的基本原理，
@@ -66,6 +65,3 @@ bool 
 
 示例：
 curl -XGET 'localhost:9200/bank/_search?pretty' -H 'Content-Type: application/json' -d'{"query": {"bool": {"must": { "match_all": {} },"filter": {"range": {"balance": {"gte": 20000,"lte": 30000}}}}}}'
-
-
-
