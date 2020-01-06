@@ -46,21 +46,26 @@
   };
 </script>
 
-  <meta name="description" content="有关大数据组件博文">
-<meta property="og:type" content="website">
-<meta property="og:title" content="sitemap">
-<meta property="og:url" content="http://yoursite.com/sitemap/index.html">
+  <meta name="description" content="上一节讲述了elasticsearch的查询方式，索引的增删改查，dsl语句查询，dsl分为两种，一种是Query，一种是filter。 本节主要介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch介绍(三)">
+<meta property="og:url" content="http://yoursite.com/2020/01/03/Elasticsearch%E4%BB%8B%E7%BB%8D(%E4%B8%89)/index.html">
 <meta property="og:site_name" content="g.xian 的博客">
-<meta property="og:description" content="有关大数据组件博文">
+<meta property="og:description" content="上一节讲述了elasticsearch的查询方式，索引的增删改查，dsl语句查询，dsl分为两种，一种是Query，一种是filter。 本节主要介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-01-03T01:55:15.000Z">
-<meta property="article:modified_time" content="2020-01-03T01:57:25.920Z">
+<meta property="og:image" content="http://yoursite.com/images/elasticsearch5.png">
+<meta property="og:image" content="http://yoursite.com/images/elasticsearch6.png">
+<meta property="og:image" content="http://yoursite.com/images/elasticsearch7.png">
+<meta property="og:image" content="http://yoursite.com/images/elasticsearch8.png">
+<meta property="article:published_time" content="2020-01-03T00:46:01.000Z">
+<meta property="article:modified_time" content="2020-01-03T09:18:31.062Z">
 <meta property="article:author" content="g.xian">
-<meta property="article:tag" content="大数据">
-<meta property="article:tag" content="编程">
+<meta property="article:tag" content="elasticseach">
+<meta property="article:tag" content="插件">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/elasticsearch5.png">
 
-<link rel="canonical" href="http://yoursite.com/sitemap/">
+<link rel="canonical" href="http://yoursite.com/2020/01/03/Elasticsearch%E4%BB%8B%E7%BB%8D(%E4%B8%89)/">
 
 
 <script id="page-configurations">
@@ -68,12 +73,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>sitemap | g.xian 的博客
-  </title>
+  <title>Elasticsearch介绍(三) | g.xian 的博客</title>
   
 
 
@@ -173,44 +177,116 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
           <div class="content">
             
 
   <div class="posts-expand">
-    
-    
-    
-    <div class="post-block" lang="zh-CN">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/03/Elasticsearch%E4%BB%8B%E7%BB%8D(%E4%B8%89)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="有关大数据组件博文">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Elasticsearch介绍(三)
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">sitemap
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-<div class="post-meta">
+              <time title="创建时间：2020-01-03 08:46:01 / 修改时间：17:18:31" itemprop="dateCreated datePublished" datetime="2020-01-03T08:46:01+08:00">2020-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/elasticseach/" itemprop="url" rel="index">
+                    <span itemprop="name">elasticseach</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一节讲述了elasticsearch的查询方式，索引的增删改查，dsl语句查询，dsl分为两种，一种是Query，一种是filter。</p>
+<p>本节主要介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard</p>
+<a id="more"></a>
+<h3 id="Ik中文分词"><a href="#Ik中文分词" class="headerlink" title="Ik中文分词"></a>Ik中文分词</h3><blockquote>
+<p>ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。<br>ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；</p>
+</blockquote>
+<p><img src="/images/elasticsearch5.png" alt="elasticsearch5"></p>
+<p>链接:<a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="noopener">https://github.com/medcl/elasticsearch-analysis-ik</a></p>
+<h3 id="head"><a href="#head" class="headerlink" title="head"></a>head</h3><p><img src="/images/elasticsearch6.png" alt="elasticsearch6"></p>
+<h3 id="kibnan"><a href="#kibnan" class="headerlink" title="kibnan"></a>kibnan</h3><p><img src="/images/elasticsearch7.png" alt="elasticsearch7"></p>
+<h3 id="searchgurad"><a href="#searchgurad" class="headerlink" title="searchgurad"></a>searchgurad</h3><p>基于用户，角色，权限的配置，实现对集群，索引细粒度的访问控制。通过控制索引名称，实现了多租户功能。</p>
+<blockquote>
+<p>安装searchgurad<br>bin/elasticsearch-plugin install -b file:///path/to/search-guard-6-6.7.0-24.3.zip<br>bin/elasticsearch-plugin install -b com.floragunn:search-guard-6:6.7.0-24.3<br>手动刷新<br>./sgadmin.sh -ts ../sgconfig/truststore.jks -tspass ba6f8fb3081380fc3ba3 -ks ../sgconfig/kirk-keystore.jks -kspass 079f95446ba0ea022598 -cd ../sgconfig/ -cn yaxines0 -nhnv -p 9300 –accept-red-cluster<br><img src="/images/elasticsearch8.png" alt="elasticsearch8"><br>链接:<br><a href="https://docs.search-guard.com/latest/authentication-authorization" target="_blank" rel="noopener">https://docs.search-guard.com/latest/authentication-authorization</a><br><a href="https://search-guard.com/searchguard-elasicsearch-transport-clients/" target="_blank" rel="noopener">https://search-guard.com/searchguard-elasicsearch-transport-clients/</a><br><a href="https://search-guard.com/elasticsearch-security-first-steps/" target="_blank" rel="noopener">https://search-guard.com/elasticsearch-security-first-steps/</a><br><a href="https://search-guard.com/transport-client-authentication-authorization/" target="_blank" rel="noopener">https://search-guard.com/transport-client-authentication-authorization/</a><br><a href="https://search-guard.com/search-guard-ssl-tls/" target="_blank" rel="noopener">https://search-guard.com/search-guard-ssl-tls/</a><br><a href="https://search-guard.com/elasticsearch-custom-auth-modules/" target="_blank" rel="noopener">https://search-guard.com/elasticsearch-custom-auth-modules/</a><br><a href="https://search-guard.com/jwt-secure-elasticsearch/" target="_blank" rel="noopener">https://search-guard.com/jwt-secure-elasticsearch/</a></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/elasticseach/" rel="tag"># elasticseach</a>
+              <a href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag"># 插件</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/03/Elasticsearch%E4%BB%8B%E7%BB%8D(%E4%B8%80)/" rel="prev" title="Elasticsearch介绍(一)">
+      <i class="fa fa-chevron-left"></i> Elasticsearch介绍(一)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
   </div>
 
 
@@ -262,6 +338,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ik中文分词"><span class="nav-number">1.</span> <span class="nav-text">Ik中文分词</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head"><span class="nav-number">2.</span> <span class="nav-text">head</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kibnan"><span class="nav-number">3.</span> <span class="nav-text">kibnan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#searchgurad"><span class="nav-number">4.</span> <span class="nav-text">searchgurad</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
