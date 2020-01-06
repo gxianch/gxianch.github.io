@@ -1,7 +1,7 @@
 ---
 title: Elasticsearch介绍(二)
 date: 2020-01-03 08:46:01
-categories: [elasticseach,dsl]
+categories: [elasticseach]
 toc: true
 mathjax: true
 tags:

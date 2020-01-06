@@ -1,13 +1,13 @@
 ---
 title: Elasticsearch介绍(四)
 date: 2020-01-03 08:46:01
-categories: [elasticseach,命令,安装]
+categories: [elasticseach]
 toc: true
 mathjax: true
 tags:
-  - elasticseach
+  - 配置
   - 命令
-  - 安装
+  - elasticseach
 ---
 
 上一节介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard。
@@ -44,10 +44,13 @@ sysctl -p
 ```
 * soft nproc 65536
 ```
-
+查看打开文件数（当发现打开文件数不足时，可以用命令查看
+```
+lsof -u hnivory |wc -l
+```
 ### elasticsearch.yml配置
 ```
-cluster.name: shsnces
+cluster.name: es-cluster
 node.name: node1
 http.cors.enabled: true 
 http.cors.allow-origin: "*"
@@ -119,47 +122,88 @@ discovery.zen.minimum_master_nodes: 2
 ### 集群参数设置和优化
 停止和开启分片分配
 ```
-curl -u admin:admin -X PUT 192.168.199.101:9200/_cluster/settings {"persistent":{"cluster.routing.allocation.enable":"none"}}
-curl -u admin:admin -X PUT 192.168.199.101:9200/_cluster/settings {"persistent":{"cluster.routing.allocation.enable":"all"}}
+curl -u admin:admin -X PUT localhost:9200/_cluster/settings {"persistent":{"cluster.routing.allocation.enable":"none"}}
+curl -u admin:admin -X PUT localhost:9200/_cluster/settings {"persistent":{"cluster.routing.allocation.enable":"all"}}
 ```
 同步副本分片，刷新到磁盘
 ```
 curl -XPOST http://127.0.0.1:9200/_flush/synced
 ```
-索引段强制合并为1个(*通配符表示全部，也可以具体的索引和其它通配符索引)，该操作会占用大量资源，慎重操作
+索引段强制合并为1个(*通配符表示全部，也可以具体的索引和其它通配符索引)，**该操作会占用大量资源**，慎重操作
 ```
- curl -u admin:admin -XPOST http://192.168.199.101:9200/*/_forcemerge?max_num_segments=1
+curl -u admin:admin -XPOST http://localhost:9200/*/_forcemerge?max_num_segments=1
+```
+统计节点个数
+```
+curl -u admin:admin -XGET localhost:9200/_cat/nodes  |wc-l
+```
+获取节点状态
+```
+curl -u admin:admin -XGET localhost:9200/_nodes/stats?pretty
+```
+查看索引分片
+```
+curl -u admin:admin -XGET http://localhost:9200/_cat/shards/indexname
+```
+设置节点离开重新分配时间
+```
+  _all/_settings PUT
+  {
+  "settings": {
+    "index.unassigned.node_left.delayed_timeout": "5m"
+  }
+}
+```
+查看集群待处理任务
+```
+curl -u admin:admin -XGET localhost:9200/_cluster/pending_tasks
+```
+最大文件描述符
+```
+curl -u admin:admin -XGET localhost:9200/_nodes/stats/process?filter_path=**.max_file_descriptors
+```
+关闭/开启监控
+```
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings   -H 'Content-Type: application/json' -d'{"persistent": {"xpack.monitoring.collection.enabled": false}}'
+```
+模糊设置副本
+```
+curl -u admin:admin -XPUT localhost:9200/*-20191127/_settings -H 'Content-Type:application/json'  -d'{"index":{"number_of_replicas":0}}'
+```
+排除节点(根据ip,节点名称)
+```
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings  -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._ip":"10.159.102.43"}}'
+```
+停止排除节点
+```
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings  -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._ip":""}}'
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings  -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.exclude._name":""}}'
+```
+查看磁盘分片分配
+```
+curl -u admin:admin localhost:9200/_cluster/allocation/explain?pretty
+```
+查看该节点任务
+```
+curl -u admin:admin -XGET localhost:9200/_cat/tasks
+```
+查看节点任务
+```
+curl -u admin:admin -XGET localhost:9200/_tasks?nodes=esnode_10.159.102.45_9200
+  {"nodes":{"YKhjmEw6TP2d-VDCyxCvNA":{"name":"esnode_10.159.102.45_9202","transport_address":"10.159.102.45:9302","host":"10.159.102.45","ip":"10.159.102.45:9302","roles":["master","data","ingest"],"attributes":{"xpack.installed":"true"},"tasks":{"YKhjmEw6TP2d-VDCyxCvNA:90113856":{"node":"YKhjmEw6TP2d-VDCyxCvNA","id":90113856,"type":"netty","action":"cluster:monitor/tasks/lists[n]","start_time_in_millis":1574855877228,"running_time_in_nanos":541054,"cancellable":false,"parent_task_id":"3WMnBj-pTNegdkT19ao5nQ:11035209","headers":{}}}}}}[hnivory@data01 ~]
+```
+取消任务
+```
+curl -u admin:admin localhost:9200/_tasks/YKhjmEw6TP2d-VDCyxCvNA:90113856/_cancel
+```
+取消节点任务和某类型的任务
+```
+_tasks/_cancel?nodes=esnode_10.159.102.43_9202,esnode_10.159.102.43_9203,esnode_10.159.102.43_9204,esnode_10.159.102.43_9205,&actions=cluster:*
+_tasks/_cancel?nodes=esnode_10.159.102.45_9202&actions=cluster:*   POST
+_tasks/_cancel?nodes=esnode_10.159.102.45_9202&actions=*reindex    POST
+```
+ 查看节点任务和某类型的任务
+```
+_tasks?nodes=esnode_10.159.102.45_9202&actions=cluster:*  GET
 ```
 
-```
-curl -u admin:admin -XPUT 127.0.0.1:9201/twitter/_settings   -H 'Content-Type: application/json' -d '{"index":{"refresh_interval":"30s"}‘
-```
- ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。
-ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；
-
-![elasticsearch5](/images/elasticsearch5.png)
-
-链接:https://github.com/medcl/elasticsearch-analysis-ik
-
-### head
-![elasticsearch6](/images/elasticsearch6.png)
-
-### kibnan
-![elasticsearch7](/images/elasticsearch7.png)
-
-### searchgurad
-基于用户，角色，权限的配置，实现对集群，索引细粒度的访问控制。通过控制索引名称，实现了多租户功能。
-> 安装searchgurad
-bin/elasticsearch-plugin install -b file:///path/to/search-guard-6-6.7.0-24.3.zip
-bin/elasticsearch-plugin install -b com.floragunn:search-guard-6:6.7.0-24.3
-> 手动刷新
-./sgadmin.sh -ts ../sgconfig/truststore.jks -tspass ba6f8fb3081380fc3ba3 -ks ../sgconfig/kirk-keystore.jks -kspass 079f95446ba0ea022598 -cd ../sgconfig/ -cn yaxines0 -nhnv -p 9300 --accept-red-cluster
-![elasticsearch8](/images/elasticsearch8.png)
-链接:
-https://docs.search-guard.com/latest/authentication-authorization
-https://search-guard.com/searchguard-elasicsearch-transport-clients/
-https://search-guard.com/elasticsearch-security-first-steps/
-https://search-guard.com/transport-client-authentication-authorization/
-https://search-guard.com/search-guard-ssl-tls/
-https://search-guard.com/elasticsearch-custom-auth-modules/
-https://search-guard.com/jwt-secure-elasticsearch/
