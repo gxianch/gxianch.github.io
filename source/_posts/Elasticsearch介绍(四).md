@@ -4,6 +4,7 @@ date: 2020-01-03 08:46:01
 categories: [elasticseach]
 toc: true
 mathjax: true
+top: 98
 tags:
   - 配置
   - 命令
