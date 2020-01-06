@@ -122,10 +122,10 @@ scheme: Pisces
 # External url should start with http:// or https://
 menu:
   home: / || home  //首页
-  archives: /archives/ || archive   //归档
   #about: /about/ || user //关于
   tags: /tags/ || tags   //标签
   categories: /categories/ || th  //分类
+  archives: /archives/ || archive   //归档
   #schedule: /schedule/ || calendar   //日程表
   #sitemap: /sitemap.xml || sitemap   //站点地图
   #commonweal: /404/ || heartbeat
