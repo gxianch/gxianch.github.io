@@ -8,7 +8,6 @@ tags:
   - head
   - kibnan
   - searchguard
-  - elasticseach
   - 插件
 ---
 

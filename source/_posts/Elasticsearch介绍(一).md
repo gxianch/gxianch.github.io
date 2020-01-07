@@ -5,7 +5,6 @@ categories: [elasticseach]
 toc: true
 mathjax: true
 tags:
-  - elasticseach
   - 介绍
 ---
 

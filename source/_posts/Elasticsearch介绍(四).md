@@ -8,7 +8,6 @@ top: 98
 tags:
   - 配置
   - 命令
-  - elasticseach
 ---
 
 上一节介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard。
