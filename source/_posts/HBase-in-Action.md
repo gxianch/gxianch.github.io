@@ -13,7 +13,7 @@ tags:
 
 > the idea of writing HBase in Action for Manning came up. We initially scoffed at the thought of writing a book on HBase, and I remember saying to Nick,<font  face="Arial" size=4>**"It’s gets, puts, and scans—there’s not a lot more to HBase from the client side. Do you want to write a book about three API calls?”**</font> 
 
-
+<!-- more-->
 
 #### 30  rowkey, columnkey, and timestamp三个维度
 
