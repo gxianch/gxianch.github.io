@@ -94,6 +94,7 @@ a1.sinks.k1.channel = c1
 ```
 bin/flume-ng  agent -name a1 –conf conf -f conf/flume-conf.properties  -Dflume.root.logger=INFO,console
 ```
+#### 显示结果
 ```
 20/01/07 16:47:23 INFO sink.LoggerSink: Event: { headers:{id=83} body: 48 65 6C 6C 6F 20 57 6F 72 6C 64 20 3A 38       Hello World :8 }
 20/01/07 16:47:23 INFO sink.LoggerSink: Event: { headers:{id=26} body: 48 65 6C 6C 6F 20 57 6F 72 6C 64 20 3A 32 30    Hello World :20 }
