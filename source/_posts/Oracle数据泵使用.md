@@ -14,7 +14,7 @@ tags:
 
 <!-- more -->
 
-##### 官方文档
+#### 官方文档
 
 https://docs.oracle.com/cd/E11882_01/server.112/e22490/dp_overview.htm#SUTIL802
 
@@ -217,7 +217,7 @@ select tname from (select table_name tname,rownum myrow from dba_tables  where r
 ```
 select * from dba_directories 
 ```
-##### ？？查找失败任务
+##### 查找失败任务 ？
 ```
 SELECT o.status,
        o.object_id,
@@ -232,7 +232,7 @@ status object_id object_type OWNER.OBJECT
 VALID	85358	TABLE	SYSTEM.JOBd3d222dda2894120
 VALID	85388	TABLE	SYSTEM.JOBd3d222dda2894121
 ```
-##### ？？也和失败任务有关
+##### 和失败任务有关？
 ```
 SELECT * FROM DBA_DATAPUMP_SESSIONS;
 
@@ -241,7 +241,7 @@ SYSTEM	JOBd3d222dda2894120	1	000000014743C3E0	MASTER
 SYSTEM	JOBd3d222dda2894121	1	000000014A47A7F0	DBMS_DATAPUMP
 SYSTEM	JOBd3d222dda2894121	1	000000014749AF00	MASTER
 ```
-##### ？？数据库文件？
+##### 数据库文件？
 ```
 SELECT * FROM DBA_DATA_FILES;
 /data/oracle/oradata/orcl/system01.dbf	1	SYSTEM	744488960	90880	AVAILABLE	1	YES	34359721984	4194302	1280	743440384	90752	SYSTEM
@@ -251,9 +251,9 @@ SELECT * FROM DBA_DATA_FILES;
 select t.tablespace_name from dba_tablespaces t where t.contents<>'UNDO' and t.contents<>'TEMPORARY' group by t.tablespace_name order by t.tablespace_name asc 
 ```
 
-##### 湖北原impdp命令
+##### 原impdp命令
 ```
-nohup impdp dbauser/dba_2014 tables=USERINFO.ENTITY_SYNC_QUEUE_HIS_929:PART_713_201709 directory=HIS_EXP dumpfile=ENTITY_SYNC_QUEUE_HIS_929_%U.dmp logfile=IMP_ENTITY_SYNC_QUEUE_HIS_929.log cluster=no parallel=8 table_exists_action=append remap_table=ENTITY_SYNC_QUEUE_HIS_929:ENTITY_SYNC_QUEUE_HIS_929_ZWA &
+nohup impdp dbauser/dba_xx tables=USERINFO.ENTITY_SYNC_QUEUE_HIS_929:PART_713_201709 directory=HIS_EXP dumpfile=ENTITY_SYNC_QUEUE_HIS_929_%U.dmp logfile=IMP_ENTITY_SYNC_QUEUE_HIS_929.log cluster=no parallel=8 table_exists_action=append remap_table=ENTITY_SYNC_QUEUE_HIS_929:ENTITY_SYNC_QUEUE_HIS_929_ZWA &
 ```
 
 ##### 环境检查，目标库磁盘信息，百分比已用：已用
@@ -271,13 +271,13 @@ select a.TABLESPACE_NAME, a.TOTAL_SIZEM, round(a.total_sizem-b.free_sizem) USED_
 ```
 select index_name from dba_indexes where table_owner='SYSTEM' and table_name like '%T%'
 ```
-##### (???sql什么用)
+##### 此sql暂不理解
 [INFO][2020-01-19 17:16:05,192][com.snc.system.utils.BaseSqlHelper][http-bio-8080-exec-19]执行 SQL：
 ```
 select partition_name, sum(BYTES) BYTES from (SELECT a.PARTITION_NAME,SUM(a.BYTES) as BYTES FROM DBA_segments a where a.SEGMENT_TYPE like 'TABLE%' AND a.OWNER = 'SYSTEM' AND a.SEGMENT_NAME = 'T'group by a.partition_name union all select s.partition_name, sum(s.bytes) as BYTES from dba_segments s, dba_indexes i where s.segment_type like 'INDEX%' and i.table_owner = 'SYSTEM' and i.table_name = 'T' and s.owner = i.owner and s.segment_name = i.index_name group by s.partition_name union all select b. partition_name, sum(b.bytes) as BYTES from dba_lobs a, dba_segments b where a.segment_name = b.segment_name and a.owner = 'SYSTEM' and a.table_name = 'T'group by b.partition_name) group by partition_name
 
 ```
-##### 广州周期项目根据字段值获取分区名称
+##### 根据字段值获取分区名称
  2020/02/11 16:00:36 -  - 备份表的where条件，计算是否过滤....  
  2020/02/11 16:00:36 -  - 过滤表达式： where RETAIL_DATE <  to_date(''2019-01-01'',''yyyy-mm-dd'')   
  2020/02/11 16:00:36 -  - 当前策略类型为： 2 (按时间分区) ，验证是否符合high_value获取的条件 。   
