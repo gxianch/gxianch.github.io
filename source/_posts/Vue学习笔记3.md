@@ -1,13 +1,16 @@
+---
 title: Vue学习笔记3
-date: 2020-12-06 14:27:57
-categories: [前端,笔记]
+date: 2020-12-07 16:50:46
+categories: [vue]
 toc: true
 mathjax: true
 top: 100
 tags:
-  - vue
+  - 笔记
 
-
+---
+Vue学习笔记3
+<!-- more -->
 
 ##  1.基本绑定：
     new Vue(

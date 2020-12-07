@@ -1,10 +1,10 @@
 ---
 title: Flume构建高可用可扩展的海量日志采集系统
 date: 2020-01-06 14:40:03
-categories: [flume,书摘]
+categories: [flume]
 toc: true
 tags:
-  - flume
+  - 书摘
 
 ---
 **hdfs数据格式有两种：可拆分的和不可拆分的

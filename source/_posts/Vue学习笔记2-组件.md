@@ -1,14 +1,17 @@
+---
 title: Vue学习笔记2-组件
-date: 2020-12-06 14:27:57
-categories: [前端,笔记]
+date: 2020-12-07 16:50:46
+categories: [vue]
 toc: true
 mathjax: true
 top: 100
 tags:
+  - 笔记
 
-  - vue
+---
 
-
+Vue学习笔记2-组件
+<!-- more -->
 
 
 ## 组件：基础的基础

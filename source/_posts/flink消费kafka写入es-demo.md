@@ -1,11 +1,11 @@
 ---
 title: flink消费kafka写入es_demo
 date: 2020-01-08 16:54:38
-categories: [kafka,flink]
+categories: [flink]
 toc: true
 tags:
-  - kafka
-  - flink
+  - 笔记
+
 ---
 
 #### 建立kafka数据源

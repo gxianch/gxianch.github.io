@@ -9,6 +9,10 @@ tags:
   - ES6
 ---
 
+JavaScript的ES6写法
+
+<!-- more -->
+
 ### 66 设置默认参数
 
 ![](/images/從ES6開始的JavaScript學習生活/1.jpg)

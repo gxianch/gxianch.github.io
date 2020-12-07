@@ -1,5 +1,5 @@
 ---
-4444title: Simplifying JavaScript Writing Modern JavaScrip
+title: Simplifying JavaScript Writing Modern JavaScrip
 date: 2020-12-07 16:50:46
 categories: [JavaScript]
 toc: true
@@ -7,8 +7,11 @@ mathjax: true
 top: 100
 tags:
   - 书摘
-
 ---
+
+最新的JavaScript代码实现写法
+
+<!-- more -->
 
 ### 25 let
 

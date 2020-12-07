@@ -1,11 +1,11 @@
 ---
 title: HBase in Action
 date: 2020-01-07 09:23:32
-categories: [HBase,书摘]
+categories: [HBase]
 toc: true
 tags:
   - Action
-  - HBase
+  - 书摘
 ---
 
 #### 18/362  hbase客户端只有get,put,scan，难道你想写一本只有三个api调用的书？

@@ -1,12 +1,15 @@
+---
 title: flume自定义开发入门
-date: 2020-01-03 08:46:01
-categories: [大数据，flume]
+date: 2020-01-07 09:23:32
+categories: [flume]
 toc: true
 mathjax: true
 top: 99
 tags:
+  - 笔记
 
-  - flume
+---
+
 
 
 flume开发属于插件型开发，需要在已有架构上，利用继承抽象类或接口进行自定义开发
