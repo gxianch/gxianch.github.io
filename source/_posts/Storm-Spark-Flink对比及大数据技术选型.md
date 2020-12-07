@@ -325,8 +325,8 @@ public class Split extends BaseFunction {
 
 Spark体系结构基于RDD或弹性分布式数据集的概念 ，分布式的不可变数据，它们被拆分并发送给Worker，由执行者执行。它与MapReduce概念非常相似，即 对多个节点进行控制处理和委托处理，每个节点都进行自己的处理，然后将结果组合起来，形成完整的最终结果。对于Apache Spark，RDD是不可变的（**非常适合函数式编程**），因此没有工作节点可以修改它; 只处理它并输出一些结果，**非常适合基于功能和集合理论的编程模型（如SQL）。**
 
-![img](Storm探讨及大数据技术选型/3.png)
-![img](/images/Storm探讨及大数据技术选型/3.png)
+![](Storm探讨及大数据技术选型/3.png)
+![](/images/Storm探讨及大数据技术选型/3.png)
 
  
 
@@ -376,8 +376,8 @@ val wordCounts = pairs.reduceByKey(_ + _)
 
  Flink使用Streams和Transformations的概念，通过其系统构成数据流。数据通过“源”进入系统并通过“接收器”退出
 
-![img](Storm探讨及大数据技术选型/4.png)
-![img](/images/Storm探讨及大数据技术选型/4.png)
+![](Storm探讨及大数据技术选型/4.png)
+![](/images/Storm探讨及大数据技术选型/4.png)
 
 
 
@@ -769,8 +769,8 @@ Storm/Jstorm只能进行流处理，**由于一个完整的应用程序，不仅
 
 图片来源于 storm@twitter 论文
 
-![img](Storm探讨及大数据技术选型/5.png)
-![img](/images/Storm探讨及大数据技术选型/5.png)
+![](Storm探讨及大数据技术选型/5.png)
+![](/images/Storm探讨及大数据技术选型/5.png)
 
 
 
@@ -844,8 +844,8 @@ if(list.size() > list2 .size()） return true
 
 但是用Spark开发任何复杂的应用都将会很流畅，Spark作为一个通用分布式计算框架，形成了完整的生态，集成了流处理，交互式处理, 批处理，迭代处理等，所有的功能都可以集中在一个Spark程序中。你可以在这个程序中写命令式代码，写函数式代码，写Spark sql, 写Spark Streaming , 写Spark Graph ，写Spark MLib， 因为Spark所有的组件都统一建立在抽象的RDD模型之上， 所以这些组件在一个程序中能够无缝兼容，互相原生支持。就像下图所展示的架构
 
-![img](Storm探讨及大数据技术选型/6.png)
-![img](/images/Storm探讨及大数据技术选型/6.png)
+![](Storm探讨及大数据技术选型/6.png)
+![](/images/Storm探讨及大数据技术选型/6.png)
 
 
 
