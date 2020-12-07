@@ -1,12 +1,11 @@
 ---
 title: HBase in Action
 date: 2020-01-07 09:23:32
-categories: [HBase,笔记]
+categories: [HBase,书摘]
 toc: true
 tags:
   - Action
-  - 笔记
-  - 读书
+  - HBase
 ---
 
 #### 18/362  hbase客户端只有get,put,scan，难道你想写一本只有三个api调用的书？
@@ -46,7 +45,9 @@ tags:
 >
 > There are a number of valid descriptions for the logical data model used in HBase. Figure 2.6 illustrated that model as a key-value store. The next model we’ll consider is a sorted map of maps. Presumably you’re familiar with a map or dictionary structure from your favorite programming language. Think of HBase as an unlimited, persisted, nested version of that structure. We’ll start with this map of maps idea. You’ve seen the coordinate system HBase uses to identify data in a cell: [rowkey, column family, column qualifier, version]. For an example, take Mark’s record from the users table (figure 2.7).
 
-![](1.png)
+![](images/HBase-in-Action/1.png)
+
+![](HBase-in-Action/1.png)
 
 > While thinking of this map of maps, consider those coordinates from the inside out. You can think of a cell as a map keyed on version with the stored data as the value. One layer up, a column family is a map keyed on column qualifier with the cell as the value. At the top, a table is a map keyed on rowkey to the column family. Described in Java, you’d have this monstrosity:  <font face="Arial" size=4>**Map<RowKey, Map<ColumnFamily, Map<ColumnQualifier,Map<Version, Data>>>>**</font>. It’s not pretty, but it’s simple. 
 >
@@ -54,7 +55,11 @@ tags:
 
 #### 69 每个列族对应不同的HFile
 
-![](2.bmp)
+![](images/HBase-in-Action/2.bmp)
+
+![](HBase-in-Action/2.bmp)
+
+
 
 
 
@@ -66,7 +71,9 @@ tags:
 
 #### 129 反转时间戳
 
-![](3.bmp)
+![](images/HBase-in-Action/3.bmp)
+
+![](HBase-in-Action/3.bmp)
 
 #### 136 hbase和数据库属性对比，数据库主键对应HBase rowkey,HBase没有组合键，通常多个属性组成rowkey
 

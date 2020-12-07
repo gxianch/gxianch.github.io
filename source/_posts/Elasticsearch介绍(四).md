@@ -6,8 +6,7 @@ toc: true
 mathjax: true
 top: 98
 tags:
-  - 配置
-  - 命令
+
 ---
 
 上一节介绍elasticsearch的插件，包括head, kibnan, ik分词,searchguard。
@@ -280,4 +279,8 @@ https://discuss.elastic.co/t/how-to-resolve-dangling-indices-error-on-each-index
 1.找到索引对应的uuid，
 2.在报错的es节点上删除对应的本地存储nodes/0/indices/{uuid}文件
 
-![](/images/elasticsearch9.bmp)
+
+
+![](/images/Elasticsearch介绍/elasticsearch9.bmp)
+
+![](Elasticsearch介绍/elasticsearch9.bmp)

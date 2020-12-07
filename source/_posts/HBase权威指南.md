@@ -1,12 +1,11 @@
 ---
 title: HBase权威指南
 date: 2020-01-07 10:51:20
-categories: [HBase]
+categories: [HBase,书摘]
 toc: true
 tags:
+  - HBase
   - 指南
-  - 笔记
-  - 读书
 ---
 
 #### 29/504
@@ -17,17 +16,23 @@ tags:
 
 <!-- more-->
 
-![](1.bmp)
+![img](/images/HBase权威指南/1.bmp)
+![img](HBase权威指南/1.bmp)
 
-![](2.bmp)
+![img](/images/HBase权威指南/2.bmp)
+![img](HBase权威指南/2.bmp)
 
-![](3.bmp)
+![img](/images/HBase权威指南/3.bmp)
+![img](HBase权威指南/3.bmp)
 
-![](4.bmp)
+![img](/images/HBase权威指南/4.bmp)
+![img](HBase权威指南/4.bmp)
 
-![](5.bmp)
+![img](/images/HBase权威指南/5.bmp)
+![img](HBase权威指南/5.bmp)
 
-![](6.bmp)
+![img](/images/HBase权威指南/6.bmp)
+![img](HBase权威指南/6.bmp)
 
-![](7.bmp)
-
+![img](/images/HBase权威指南/7.bmp)
+![img](HBase权威指南/7.bmp)

@@ -8,7 +8,7 @@ tags:
   - head
   - kibnan
   - searchguard
-  - 插件
+
 ---
 
 上一节讲述了elasticsearch的查询方式，索引的增删改查，dsl语句查询，dsl分为两种，一种是Query，一种是filter。
@@ -21,7 +21,9 @@ tags:
  ik_smart: 会做最粗粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,国歌”，适合 Phrase 查询。
 ik_max_word: 会将文本做最细粒度的拆分，比如会将“中华人民共和国国歌”拆分为“中华人民共和国,中华人民,中华,华人,人民共和国,人民,人,民,共和国,共和,和,国国,国歌”，会穷尽各种可能的组合，适合 Term Query；
 
-![elasticsearch5](/images/elasticsearch5.png)
+![img](/images/Elasticsearch介绍/elasticsearch5.png)
+
+![img](Elasticsearch介绍/elasticsearch5.png)
 
 链接:https://github.com/medcl/elasticsearch-analysis-ik
 
@@ -61,7 +63,9 @@ nohup grunt server &
 http://localhost:9100/?base_uri=http://localhost:9200&auth_user=admin&auth_password=admin
 ```
 
-![elasticsearch6](/images/elasticsearch6.png)
+![img](/images/Elasticsearch介绍/elasticsearch6.png)
+
+![img](Elasticsearch介绍/elasticsearch6.png)
 
 
 ### kibnan插件
@@ -95,7 +99,9 @@ kill -9 1576
 nohup  bin/kibana &
 ```
 
-![elasticsearch7](/images/elasticsearch7.png)
+![img](/images/Elasticsearch介绍/elasticsearch7.png)
+
+![img](Elasticsearch介绍/elasticsearch7.png)
 
 ### searchgurad插件
 
@@ -187,8 +193,9 @@ asiainfo:
 ./sgadmin.sh -ts ../sgconfig/truststore.jks -tspass ba6f8xxxxxxxxx -ks ../sgconfig/kirk-keystore.jks -kspass 079f9544xxxxxxxxx -cd ../sgconfig/ -cn es-cluster -nhnv -p 9300 --accept-red-cluster
 ```
 
-![elasticsearch8](/images/elasticsearch8.png)
-链接:
+![img](/images/Elasticsearch介绍/elasticsearch8.png)
+
+![img](Elasticsearch介绍/elasticsearch8.png)链接:
 https://docs.search-guard.com/latest/authentication-authorization
 https://search-guard.com/searchguard-elasicsearch-transport-clients/
 https://search-guard.com/elasticsearch-security-first-steps/
