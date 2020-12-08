@@ -12,6 +12,9 @@ tags:
 
 lucene的原理
 
+{% asset_img label cover.jpg %}
+![](lucene-in-action/cover.jpg)
+
 <!-- more -->
 
 ### 192 安全过滤器

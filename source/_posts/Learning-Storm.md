@@ -9,7 +9,10 @@ tags:
 
 ---
 
-Storm基础知识
+Storm基础知识，由浅入深，学习storm不错的书
+
+{% asset_img label cover.jpg %}
+![](Learning-Storm/cover.jpg)
 
 <!-- more -->
 

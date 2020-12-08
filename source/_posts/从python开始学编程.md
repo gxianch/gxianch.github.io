@@ -12,7 +12,12 @@ tags:
 
 
 python入门基础
+
+{% asset_img label cover.jpg %}
+![](从python开始学编程/cover.jpg)
+
 <!-- more -->
+
 ### 34% 参数*all_arguments和**all_arguments，一个是元祖，一个是词典
 
 ![](/images/从python开始学编程/1.jpg)

@@ -8,7 +8,12 @@ tags:
   - 书摘
 ---
 
-#### 18/362  hbase客户端只有get,put,scan，难道你想写一本只有三个api调用的书？
+HBase由浅入深，作者文笔流畅，思路清晰，一步一步带你进入HBase的世界
+
+{% asset_img label cover.jpg %}
+![](HBase-in-Action/cover.jpg)
+
+#### 18/362  hbase客户端只有get,put,scan，难道你想写一本只有三个api调用的书？哈哈哈
 
 > the idea of writing HBase in Action for Manning came up. We initially scoffed at the thought of writing a book on HBase, and I remember saying to Nick,<font  face="Arial" size=4>**"It’s gets, puts, and scans—there’s not a lot more to HBase from the client side. Do you want to write a book about three API calls?”**</font> 
 

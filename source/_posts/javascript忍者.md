@@ -1,5 +1,5 @@
 ---
-title: javascript忍者
+title: javascript忍者(第二版)
 date: 2020-12-08 14:28:12
 categories: [JavaScript]
 toc: true
@@ -8,8 +8,11 @@ top: 98
 tags:
 ---
 
-
 JavaScript知识讲的很深入的一本书
+
+{% asset_img label cover.jpg %}
+
+![](javascript忍者/cover.jpg)
 
 <!-- more -->
 

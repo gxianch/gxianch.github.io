@@ -9,7 +9,10 @@ tags:
   - ES6
 ---
 
-JavaScript的ES6写法
+JavaScript的ES6写法,知识比较新，从中可以学到JavaScript的新写法
+
+{% asset_img label cover.jpg %}
+![](從ES6開始的JavaScript學習生活/cover.jpg)
 
 <!-- more -->
 

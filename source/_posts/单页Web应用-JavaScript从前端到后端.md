@@ -8,9 +8,9 @@ top: 98
 tags:
 ---
 
-
-
-其实讲述的是JavaScript知识
+基本讲述的还是JavaScript知识，和单页关系不大
+{% asset_img label cover.jpg %}
+![](单页Web应用-JavaScript从前端到后端/cover.jpg)
 
 <!-- more -->
 

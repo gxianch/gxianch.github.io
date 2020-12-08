@@ -7,6 +7,9 @@ tags:
   - 书摘
 
 ---
+{% asset_img label cover.jpg %}
+![](Flume构建高可用可扩展的海量日志采集系统/cover.jpg)
+
 **hdfs数据格式有两种：可拆分的和不可拆分的
 Avro是可拆分的**
 <!-- more-->

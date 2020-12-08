@@ -11,6 +11,9 @@ tags:
 
 最新的JavaScript代码实现写法
 
+{% asset_img label cover.jpg %}
+![](Simplifying-JavaScript-Writing-Modern-JavaScrip/cover.jpg)
+
 <!-- more -->
 
 ### 25 let

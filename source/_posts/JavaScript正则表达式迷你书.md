@@ -9,5 +9,8 @@ tags:
 
 ---
 
+{% asset_img label cover.jpg %}
+![](JavaScript正则表达式迷你书/cover.jpg)
+
 ![](/images/JavaScript正则表达式迷你书/1.bmp)
 ![](JavaScript正则表达式迷你书/1.bmp)

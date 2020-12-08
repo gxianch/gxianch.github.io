@@ -13,6 +13,9 @@ tags:
 
 31 自定义Option,None,Some
 
+{% asset_img label cover.jpg %}
+![](Functional-Programming-for-Java-Developers/cover.jpg)
+
 <!-- more -->
 
 ![](/images/Functional-Programming-for-Java-Developers/1.jpg)
