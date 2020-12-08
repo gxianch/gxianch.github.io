@@ -14,3 +14,7 @@ tags:
 
 {% asset_img label 1.jpg %}
 
+
+{% asset_path 2.pdf %}
+
+
