@@ -10,7 +10,29 @@ tags:
 
 
 
-50 三种数据存储模型 关系型数据库，文档模型，图模型
+其实讲述的是JavaScript知识
+
 <!-- more -->
+
+### 基于原型创建对象方法，Object.create(proto)
+
+![](/images/单页Web应用-JavaScript从前端到后端/4.jpg)
+![](单页Web应用-JavaScript从前端到后端/4.jpg)
+
+![](/images/单页Web应用-JavaScript从前端到后端/5.jpg)
+![](单页Web应用-JavaScript从前端到后端/5.jpg)
+
+### 36 基于类和基于原型创建的不同
+
 ![](/images/单页Web应用-JavaScript从前端到后端/1.jpg)
 ![](单页Web应用-JavaScript从前端到后端/1.jpg)
+
+### 66 自执行函数等同于创建一个函数然后立即调用它，是显示调用的简写
+
+![](/images/单页Web应用-JavaScript从前端到后端/2.jpg)
+![](单页Web应用-JavaScript从前端到后端/2.jpg)
+
+### 369 创建对象，数组使用{}或者[]代替new Objecet()或者new Array()
+
+![](/images/单页Web应用-JavaScript从前端到后端/3.jpg)
+![](单页Web应用-JavaScript从前端到后端/3.jpg)
