@@ -14,6 +14,8 @@ Java 8函数式及流的新特性编程
 
 ![](java8实战/cover.jpg)
 
+github:https://github.com/java8/Java8InAction
+
 <!-- more -->
 
 ### 51 Collection主要是为了存储和访问数据，而Stream则主要用于描述对数据的计算。

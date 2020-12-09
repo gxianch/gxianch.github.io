@@ -14,6 +14,8 @@ JavaScript知识讲的很深入的一本书
 
 ![](javascript忍者/cover.jpg)
 
+源码地址:https://www.manning.com/books/secrets-of-the-javascript-ninja-second-edition
+
 <!-- more -->
 
 ### 3% 作用域
