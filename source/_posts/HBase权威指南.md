@@ -4,9 +4,12 @@ date: 2020-01-07 10:51:20
 categories: [HBase]
 toc: true
 tags:
-  - 书摘
-  - 指南
+  - ✰✰✰✰✰
+  - OReilly
 ---
+
+{% asset_img label cover.jpg %}
+![](HBase权威指南/cover.jpg)
 
 #### 29/504
 

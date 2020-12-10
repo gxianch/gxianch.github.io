@@ -6,7 +6,7 @@ toc: true
 mathjax: true
 top: 100
 tags:
-  - 书摘
+  - ✰✰✰✰
 ---
 
 最新的JavaScript代码实现写法

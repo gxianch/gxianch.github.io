@@ -1,7 +1,7 @@
 ---
 title: Storm-Spark-Flink对比及大数据技术选型
 date: 2020-01-06 14:27:57
-categories: [大数据]
+categories: [Spark]
 toc: true
 mathjax: true
 top: 100

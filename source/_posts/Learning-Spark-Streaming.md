@@ -8,7 +8,7 @@ top: 98
 tags:
   - Streaming
   - OReilly
-
+  - ✰✰✰✰✰
 ---
 OReilly出口，Spark流式计算解读
 {% asset_img label cover.jpg %}

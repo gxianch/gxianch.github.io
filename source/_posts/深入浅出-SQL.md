@@ -8,6 +8,7 @@ top: 98
 tags:
   - SQL
   - Head First
+  - ✰✰✰✰
 
 ---
 Head First通俗系列入门书籍之SQL，配图文，入门值得看

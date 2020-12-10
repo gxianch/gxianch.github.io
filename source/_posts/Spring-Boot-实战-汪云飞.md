@@ -6,7 +6,7 @@ toc: true
 mathjax: true
 top: 100
 tags:
-  - 注解
+  - ✰✰✰
 ---
 
 
@@ -14,6 +14,8 @@ tags:
 
 {% asset_img label cover.jpg %}
 ![](Spring-Boot-实战-汪云飞/cover.jpg)
+
+<!-- more -->
 
 ### 2.2 Spring EL 支持获取文件资源Resource，@Value("classpath:test.txt")
 

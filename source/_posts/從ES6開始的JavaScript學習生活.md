@@ -7,6 +7,7 @@ mathjax: true
 top: 99
 tags:
   - ES6
+  - ✰✰✰✰✰
 ---
 
 JavaScript的ES6写法,知识比较新，从中可以学到JavaScript的新写法

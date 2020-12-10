@@ -7,6 +7,7 @@ mathjax: true
 top: 98
 tags:
   - Packt
+  - ✰✰✰
 ---
 
 {% asset_img label cover.jpg %}

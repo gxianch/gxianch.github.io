@@ -6,6 +6,8 @@ toc: true
 mathjax: true
 top: 98
 tags:
+  - ✰✰✰✰✰
+  - Manning
 ---
 
 Java 8函数式及流的新特性编程

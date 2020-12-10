@@ -4,8 +4,10 @@ date: 2020-01-07 09:23:32
 categories: [HBase]
 toc: true
 tags:
-  - Action
-  - 书摘
+  - Manning
+  - ✰✰✰✰✰
+
+
 ---
 
 HBase由浅入深，作者文笔流畅，思路清晰，一步一步带你进入HBase的世界

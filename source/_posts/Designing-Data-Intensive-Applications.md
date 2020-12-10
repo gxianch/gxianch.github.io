@@ -7,6 +7,8 @@ mathjax: true
 top: 98
 tags:
   - ddia
+  - OReilly
+  - ✰✰✰✰✰
 ---
 
 大名鼎鼎的的ddia, 数据密集型应用系统设计，绝对不容错过的好书
