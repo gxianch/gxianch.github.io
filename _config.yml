@@ -4,7 +4,7 @@
 
 # Site
 title: g.xian 的博客
-subtitle: '大数据搬砖人员,不定期更新'
+subtitle: '阅读书籍笔记,不定期更新'
 description: 'hexo cl&&hexo g&& hexo d本地hexo s'
 keywords: 大数据,编程
 author: g.xian
@@ -54,11 +54,11 @@ highlight:
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
-# per_page: Posts displayed per page. (0 = disable pagination)
+# per_page: Posts displayed per page. (0 = disable pagination)  归档分页
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 0
   order_by: -date
 
 # Category & Tag
@@ -80,7 +80,7 @@ time_format: HH:mm:ss
 use_date_for_updated: false
 
 # Pagination
-## Set per_page to 0 to disable pagination
+## Set per_page to 0 to disable pagination  首页分页
 per_page: 10
 pagination_dir: page
 

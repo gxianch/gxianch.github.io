@@ -208,10 +208,12 @@ links_settings:
 
 links:
   #Title: http://yoursite.com
-   coolshell: https://coolshell.cn/
+   ZLibrary: https://book4you.org/
    banshujiang: http://www.banshujiang.cn/
    packtpub: https://www.packtpub.com/tech
    manning: https://www.manning.com/
+   coolshell: https://coolshell.cn/
+
 # Table of Contents in the Sidebar
 # Front-matter variable (unsupport wrap expand_all).
 toc:
