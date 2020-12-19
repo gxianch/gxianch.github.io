@@ -1,6 +1,6 @@
 ---
-title: Masterminds of Programming
-date: 2020-12-17 16:47:01
+title: 利用Python进行数据分析第二版
+date: 2020-12-19 16:47:01
 categories: [Python]
 toc: true
 mathjax: true
