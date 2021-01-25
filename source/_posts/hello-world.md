@@ -1,5 +1,6 @@
 ---
 title: Hello World
+date: 2019-12-29 14:43:18
 categories: [hexo]
 toc: true
 mathjax: true
@@ -9,7 +10,9 @@ tags:
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
-
+  - ※※※※  表示难度
+  - ✰✰✰✰✰  表示编程书籍星级
+  - ♡♡♡♡   表示非编程书籍喜爱程度 ❤
 
 远程 hexo cl&&hexo g&& hexo d
 

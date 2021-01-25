@@ -1,9 +1,10 @@
 ---
-title: Flink广播机制
+title: Flink广播维表数据
 categories: [Flink]
 tags:
   - 广播
   - broadcast
+  - 笔记
 ---
 
 ### 一.为什么要使用广播
@@ -38,17 +39,17 @@ https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/dev/stream/state
 
 如果不使用broadcast，则在每个节点中的每个任务中都需要拷贝一份dataset数据集，比较浪费内存(也就是一个节点中可能会存在多份dataset数据)。广播变量，可以借助下图辅助理解。
 
-![1](Flink广播机制\1.jpg)
+![1](Flink广播维表数据\1.jpg)
 
 
 
 ### 三.广播的使用
 
-本人根据广播使用场景将广播的类型根据数据类型分为广播变量和广播流(其实广播原理是一样的)，广播变量是将广播的数据作为一个整体或一个对象进行广播，接收方一次性接受全部数据，广播流是广播流数据，数据一条一条的广播下去，接收方也是一条一条的接收。
+根据广播使用场景将广播的类型分为广播变量和广播流(其实广播原理是一样的)。
 
 #### 1.广播变量
 
-将广播的数据作为一个整体或对象广播，比如从MySQL中一次获取全部数据，然后广播出去，因为数据在MySql中，如果MySql中某条记录发生变动，Flink的souce是没法知道，也不会广播。所以只能在souce中定时从MySql中获取全部数据。
+将广播的数据作为一个整体或对象广播，比如从MySQL中一次获取全部数据，然后广播出去，因为数据在MySql中，如果MySql中某条记录发生变动，Flink的souce是没法知道，也不会广播。所以只能在souce中定时从MySql中获取全部数据，然后广播更新。
 
 示例数据格式
 
@@ -62,7 +63,7 @@ itemid  ip              port
 7876	192.168.199.106	1526
 ```
 
-从Mysql定时获取全部数据
+自定义MySql source, 定时 从Mysql获取全部数据
 
 ```
 @Override
@@ -90,51 +91,56 @@ public void run(SourceContext<HashMap<String, Tuple2<String, Integer>>> ctx) {
  广播代码实现
 
 ```
- // 数据流和广播流连接处理并将结果打印，原json串增加ip和port字段
-   //规则数据集做为变量
-    private Map<String, Tuple2<String, Integer>> itemrules = null;
-
-	@Override
-	public void processElement(Map<String, Object> value, ReadOnlyContext ctx, Collector<Map<String, Object>> out)
-			throws Exception {
-		// 事件流中的itemid
-		String itemid = value.getOrDefault("itemid", "defalut").toString();
-		// 规则数据集为空跳过
-		if (itemrules == null) {
-			return;
-		}
-		Tuple2<String, Integer> itemruld = itemrules.get(itemid);
-		if (itemruld != null) {
-			// 匹配成功增加ip,port字段
-			value.put("ip", itemruld.f0);
-			value.put("port", itemruld.f1);
-			out.collect(value);
-		}
+public void processElement(Map<String,Object> value, ReadOnlyContext ctx, Collector<Map<String,Object>> out) throws Exception {
+   //从广播中获取全量数据
+  ReadOnlyBroadcastState<Void, Map<String, Tuple2<String, Integer>>> broadcastState = ctx
+				.getBroadcastState(ruleStateDescriptor);
+				//获取全部规则数据进行匹配
+    Map<String, Tuple2<String, Integer>>  itemrules=  broadcastState.get(null);
+  //规则数据集为空跳过
+    if(itemrules==null) {
+  	  return;
+    }
+    //事件流中的itemid
+    Object itemidObj = value.get("itemid"); // value kafka流中数据获取itemid
+	if (itemidObj == null) {
+		return;
 	}
-	@Override
-	public void processBroadcastElement(HashMap<String, Tuple2<String, Integer>> value, Context ctx,
-			Collector<Map<String, Object>> out) throws Exception {
-		// Mysql中数据全部更新
-		itemrules = value;
-		System.out.println("规则更新成功，更新item规则：" + value);
-	}
+    Tuple2<String, Integer> itemruld = itemrules.get(itemidObj.toString());
+    if(itemruld!=null){
+  	  //匹配成功增加ip,port字段
+   	 value.put("ip", itemruld.f0);
+   	 value.put("port", itemruld.f1);
+        out.collect(value);
+    }
+}
+@Override
+public void processBroadcastElement(HashMap<String, Tuple2<String, Integer>> value, Context ctx, Collector<Map<String,Object>> out) throws Exception {
+   //数据全部更新
+	BroadcastState<Void, Map<String, Tuple2<String, Integer>>> broadcastState = ctx
+			.getBroadcastState(ruleStateDescriptor);
+	//每次更新全部规则数据
+	broadcastState.put(null, value);
+    System.out.println("规则全部更新成功，更新item规则：" + value);
+}
 ```
 
-**执行结果，手动将mysql中的ip=192.168.199.104改为ip=192.168.199.105，在source 休眠结束后将会更新数据**
+执行结果
 
 ```
 //itemid=7875关联ip=192.168.199.104
 {host=orcl, itemid=7875, value=1, ip=192.168.199.104, port=1521}
+//手动将mysql中的ip=192.168.199.104改为ip=192.168.199.105，在source 休眠结束后将会更新数据
 规则更新成功，更新item规则：{7875=(192.168.199.105,1521), 7876=(192.168.199.106,1526)}
 //itemid=7875关联ip=192.168.199.105
 {host=orcl, itemid=7875, value=1, ip=192.168.199.105, port=1521}
 ```
 
-**这种方式和预加载有点像，都是通过定时任务加载全部数据，无法做到数据修改后实时更新。**
+**这种方式和预加载很像，都是通过定时任务加载全部数据，只不过是方法的位置不同，一个是在自定义source中设置休眠时间，另外一个是在算子的open方法中设置定时任务，广播变量的方式同样无法做到数据修改后实时更新。**
 
 #### 2.广播流
 
-当数据来源于kafka时，Flink消费kafka获取流，将流数据存储在广播状态中，称之为广播流，广播流如何实现外部数据的新增和更新？
+当数据来源于kafka时，Flink消费kafka获取流，将流数据存储在广播状态中，称之为广播流，不同于广播变量一次获取全部数据，广播流是kafka新增一条记录就将这条记录存储到广播中，广播流如何实现外部数据的新增和更新？
 
 ```
 kafka源流数据，只有itemid，没有ip和port
@@ -176,7 +182,7 @@ kafka源流数据，只有itemid，没有ip和port
 示例代码
 
 ```
-//Flink消费外部kafka数据作为流
+//Flink消费外部kafka规则数据作为流
 FlinkKafkaConsumer<ItemRuleEntiy> ruleKafkaConsumer = new FlinkKafkaConsumer<ItemRuleEntiy>("topic",new ItemRuleEntiyPojoSchema(),properties);
 DataStream<ItemRuleEntiy> ruleStream = env.addSource(ruleKafkaConsumer);
 ```
@@ -184,32 +190,33 @@ DataStream<ItemRuleEntiy> ruleStream = env.addSource(ruleKafkaConsumer);
 ```
 //广播方法
 @Override
-	public void processBroadcastElement(ItemRuleEntiy value,
-			BroadcastProcessFunction<Map<String, Object>, ItemRuleEntiy, Map<String, Object>>.Context ctx,
-			Collector<Map<String, Object>> out) throws Exception {
-		BroadcastState<String, ItemRuleEntiy> broadcastState = ctx.getBroadcastState(ruleStateDescriptor);
-		if (StringUtils.isNoneBlank(value.getItemid())) {
-			System.out.println("获取到新的广播规则:" + value);
-			broadcastState.put(value.getItemid(), value); // 存放数据到广播
-		}
+public void processBroadcastElement(ItemRuleEntiy value,
+		BroadcastProcessFunction<Map<String, Object>, ItemRuleEntiy, Map<String, Object>>.Context ctx,
+		Collector<Map<String, Object>> out) throws Exception {
+	BroadcastState<String, ItemRuleEntiy> broadcastState = ctx.getBroadcastState(ruleStateDescriptor);
+	if (StringUtils.isNoneBlank(value.getItemid())) {
+		System.out.println("获取到新的广播规则:" + value);
+		//相比广播变量，这里每次只存一条规则，相同key则覆盖修改
+		broadcastState.put(value.getItemid(), value); // 存放数据到广播
 	}
-	@Override
-	public void processElement(Map<String, Object> value,
-			BroadcastProcessFunction<Map<String, Object>, ItemRuleEntiy, Map<String, Object>>.ReadOnlyContext ctx,
-			Collector<Map<String, Object>> out) throws Exception {
-		ReadOnlyBroadcastState<String, ItemRuleEntiy> broadcastState = ctx.getBroadcastState(ruleStateDescriptor);
-		Object itemidObj = value.get("itemid"); // kafka流中数据获取itemid
-		if (itemidObj == null) {
-			return;
-		}
-		// 根据item从广播数据中查找规则,能查到,则增加ip,port字段
-		ItemRuleEntiy itemRule = broadcastState.get(itemidObj.toString());
-		if (itemRule != null) { // 没有从广播中捞取到数据时
-			value.put("ip", itemRule.getIp());
-			value.put("port", itemRule.getPort());
-			out.collect(value);
-		}
+}
+@Override
+public void processElement(Map<String, Object> value,
+		BroadcastProcessFunction<Map<String, Object>, ItemRuleEntiy, Map<String, Object>>.ReadOnlyContext ctx,
+		Collector<Map<String, Object>> out) throws Exception {
+	ReadOnlyBroadcastState<String, ItemRuleEntiy> broadcastState = ctx.getBroadcastState(ruleStateDescriptor);
+	Object itemidObj = value.get("itemid"); // 源kafka流中数据获取itemid
+	if (itemidObj == null) {
+		return;
 	}
+	// 根据item从广播数据中查找规则,能查到,则增加ip,port字段
+	ItemRuleEntiy itemRule = broadcastState.get(itemidObj.toString());
+	if (itemRule != null) { // 从广播中捞取到数据时
+		value.put("ip", itemRule.getIp());
+		value.put("port", itemRule.getPort());
+		out.collect(value);
+	}
+}
 ```
 
 执行结果
@@ -231,7 +238,13 @@ DataStream<ItemRuleEntiy> ruleStream = env.addSource(ruleKafkaConsumer);
 
 ### 四.总结
 
-通过kafka广播流的方式最终实现了Flink与外部数据交互的实时更新，不仅是kafka，还有MQ，甚至文件格式都可以作为广播流，广播流要求数据不能内部更改（无法作为流消息被接收),只能通过新增的方式进行修改和删除(新增记录中key相同的表示修改，带key和删除标记的表示删除)。
+**通过kafka广播流的方式最终实现了Flink与外部数据交互的实时更新，不仅是kafka，还有MQ，甚至文件格式都可以作为广播流，广播流要求数据不能从内部更改（无法作为流消息被实时消费),只能通过新增的方式进行修改和删除(新增记录中key相同的表示覆盖修改，带key和删除标记的表示删除)**
+
+**相比表(mysql,oracle)只是结果的呈现，日志(kafka或其它队列)是一种带有时间维度（先后顺序）信息的存储，可以说表是二维的，日志是三维的，通过日志可以复原每个时间点的表，但是表不能还原日志。**
+
+**广播作为一种流（流明显带有时间特性)，所以当不带时间维度的表作为流时，是没法形成真正意义上的流，只能通过定时获取表的全部数据作为伪流，流中每个时间点的数据也只能是全量表数据，同时定时也就没法做到实时获取。只有带时间维度的日志作为流时，才能做到实时获取，而且每次只获取最新的一条记录即可，不用每次获取全部数据。**
+
+
 
 
 
