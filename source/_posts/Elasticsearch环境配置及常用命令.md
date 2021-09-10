@@ -1,11 +1,16 @@
 
 ### 系统环境配置
 1. /etc/sysctl.conf
-#增加以下参数
+  #增加以下参数
+
+  https://www.elastic.co/guide/cn/elasticsearch/guide/current/_file_descriptors_and_mmap.html
 ```
-vm.max_map_count=6553600
+vm.max_map_count=262144    //6553600
 ```
 #永久关闭内存交换或设置为1
+
+https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html
+
 ```
 vm.swappiness = 1	
 ```
@@ -13,19 +18,27 @@ vm.swappiness = 1
 sysctl -p
 
 2. /etc/security/limits.conf
-#增加以下参数
+  #增加以下参数
+
+  https://www.elastic.co/guide/en/elasticsearch/reference/current/max-number-threads-check.html#max-number-threads-check
 ```
 * soft nofile 6553600
 * hard nofile 6553600
-* soft nproc unlimited
-* hard nproc unlimited
-* soft memlock unlimited
-* hard memlock unlimited
+* soft nproc unlimited     #创建线程数
+* hard nproc unlimited     #创建线程数
+* soft memlock unlimited   #锁定内存不限制
+* hard memlock unlimited   #锁定内存不限制
 ```
-3. /etc/security/limits.d/20-nproc.conf
-#增加以下参数
+3. 线程数设置不生效，再更改以下文件
+
+   /etc/security/limits.d/20-nproc.conf 
+
+​       /etc/security/limits.d/90-nproc.conf
+
+  #增加以下参数
 ```
 * soft nproc 6553600
+* hard nproc 6553600
 ```
 查看打开文件数（当发现打开文件数不足时，可以用命令查看
 ```
@@ -109,7 +122,7 @@ curl -u admin:admin -XGET http://localhost:9200/_cat/shards/indexname
   _all/_settings PUT
   {
   "settings": {
-    "index.unassigned.node_left.delayed_timeout": "5m"
+    "index.unassigned.node_left.delayed_timeout": "15m"
   }
 }
 ```

@@ -10,10 +10,19 @@ tags:
   - OReilly
 
 ---
-和Javascript忍者秘籍并列的Javascript神书，五星必看
+和Javascript忍者秘籍并列的Javascript神书，五星必看，英文名You-Dont-Know-JS
 
 {% asset_img label cover.jpg %}
 ![](你不知道的JavaScript(上卷)/cover.jpg)
+
+
+
+源码：https://github.com/getify/You-Dont-Know-JS
+
+fork地址：https://github.com/gxianch/You-Dont-Know-JS
+
+*注意：有一版，二版及中文版的分支*
+
 <!-- more -->
 
 ## 你不知道的JavaScript（上卷）

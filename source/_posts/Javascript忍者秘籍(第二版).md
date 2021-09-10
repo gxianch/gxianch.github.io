@@ -17,7 +17,9 @@ JavaScript知识讲的很深入的一本书，Javascript有此一本足以
 
 ![](Javascript忍者秘籍(第二版)/cover.jpg)
 
-源码地址:https://www.manning.com/books/secrets-of-the-javascript-ninja-second-edition
+官方上传到github源码:https://github.com/gxianch/secrets-of-js-ninja-2
+
+*原官方地址：https://www.manning.com/books/secrets-of-the-javascript-ninja-second-edition*
 
 <!-- more -->
 

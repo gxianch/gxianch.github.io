@@ -339,13 +339,13 @@ Elasticsearch 通过将请求分成几个阶段，并交给不同的线程池执
 
 hnivory soft nproc 655360
 
-hnivory hardnproc 655360
+hnivory hard nproc 655360
 
 # Step1. 修改 /etc/security/limits.conf，添加：
 
 hnivory soft nproc 655360
 
-hnivory hardnproc 655360
+hnivory hard nproc 655360
 ```
 
  

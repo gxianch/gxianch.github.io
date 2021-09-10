@@ -14,6 +14,8 @@ tags:
 {% asset_img label cover.jpg %}
 ![](Simplifying-JavaScript-Writing-Modern-JavaScrip/cover.jpg)
 
+源码地址：https://github.com/gxianch/simplifying-js
+
 <!-- more -->
 
 ### 25 let
@@ -45,6 +47,7 @@ tags:
 ![](Simplifying-JavaScript-Writing-Modern-JavaScrip/9.jpg)
 ![](/images/Simplifying-JavaScript-Writing-Modern-JavaScrip/10.jpg)
 ![](Simplifying-JavaScript-Writing-Modern-JavaScrip/10.jpg)
+
 ### 48 arrays ...替换slice复制数组
 ![](/images/Simplifying-JavaScript-Writing-Modern-JavaScrip/11.jpg)
 ![](Simplifying-JavaScript-Writing-Modern-JavaScrip/11.jpg)
