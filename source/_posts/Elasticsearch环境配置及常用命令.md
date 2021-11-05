@@ -1,11 +1,11 @@
 
 ### 系统环境配置
 1. /etc/sysctl.conf
-  #增加以下参数
+    #增加以下参数
 
   https://www.elastic.co/guide/cn/elasticsearch/guide/current/_file_descriptors_and_mmap.html
 ```
-vm.max_map_count=262144    //6553600
+vm.max_map_count=655360   
 ```
 #永久关闭内存交换或设置为1
 
@@ -18,16 +18,18 @@ vm.swappiness = 1
 sysctl -p
 
 2. /etc/security/limits.conf
-  #增加以下参数
+    #增加以下参数
 
   https://www.elastic.co/guide/en/elasticsearch/reference/current/max-number-threads-check.html#max-number-threads-check
 ```
-* soft nofile 6553600
-* hard nofile 6553600
+* soft nofile 655360
+* hard nofile 655360
 * soft nproc unlimited     #创建线程数
 * hard nproc unlimited     #创建线程数
 * soft memlock unlimited   #锁定内存不限制
 * hard memlock unlimited   #锁定内存不限制
+
+
 ```
 3. 线程数设置不生效，再更改以下文件
 

@@ -55,6 +55,7 @@ to not produce such terms.  The prefix of the first immense term is: '[102, 114,
 解决办法：
 1.更换字段类型为text,
 2.添加ignore_above设置
+
 ```
 "raw_message": {
 "ignore_above": 10000,
@@ -98,6 +99,9 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-total
 ##### 模糊查询导致堆栈溢出
 ```sql
 select * from asiainfo-ceshizhibiao-* where cpu like '%在迪士尼乐园，点亮心中奇梦。它是一个充满创造力、冒险精神与无穷精彩的快地。您可在此游览全球最大的迪士%' 
+DSL
+{"from":0,"size":1000,"query":{"bool":{"filter":[{"bool":{"must":[{"wildcard":{"cpu":{"wildcard":"*在迪士尼乐园，点亮心中奇梦。它是一个充满创造力、冒险精神与无穷精彩的快地。您可在此游览全球最大的迪士*","boost":1.0}}}],"adjust_pure_negative":true,"boost":1.0}}],"adjust_pure_negative":true,"boost":1.0}}}
+
 ```
 like中字段太长，导致堆栈溢出，目前like限制在30个字节
 ```

@@ -8,7 +8,7 @@ curl -u admin: admin -XPOST http:// localhost:9200/_flush/synced
 ```
 2. 临时禁止分片分配，执行命令如下：
 ```
-curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.enable" : "none"}}'
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d'{"transient":{"cluster.routing.allocation.enable" : "none"}}'
 ```
 3. 关闭单个节点。
 4. 执行维护/升级。
@@ -19,7 +19,7 @@ _cat/health; _cat/nodes
 
 6. 用如下命令重启分片分配：
 ```
-curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"transient":{"cluster.routing.allocation.enable" : "all"}}'
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d'{"transient":{"cluster.routing.allocation.enable" : "all"}}'
 ```
 分片再平衡会花一些时间。一直等到集群变成 green 绿色 状态后再继续。
 
@@ -33,10 +33,11 @@ curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: app
 1.永久禁止分片移动
 
 ```
-curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d '{" persistent":{"cluster.routing.allocation.enable" : "none"}}'
+curl -u admin:admin -XPUT localhost:9200/_cluster/settings -H 'Content-Type: application/json' -d'{"persistent":{"cluster.routing.allocation.enable" : "none"}}'
 ```
 
 2.内存数据写到磁盘
+
 ```
 curl -u admin: admin -XPOST http:// localhost:9200/_flush/synced
 ```
@@ -65,7 +66,7 @@ _cat/health; _cat/nodes
 
 7. 所有节点加入到集群并恢复yellow状态后开启分片移动
 ```
-curl -u admin:admin -XPUT 192.168.199.101:9200/_cluster/settings -H 'Content-Type: application/json' -d '{"persistent":{"cluster.routing.allocation.enable":"all"}}'
+curl -u admin:admin -XPUT 192.168.199.101:9200/_cluster/settings -H 'Content-Type: application/json' -d'{"persistent":{"cluster.routing.allocation.enable":"all"}}'
 ```
 
 8.继续观察集群状态和节点
