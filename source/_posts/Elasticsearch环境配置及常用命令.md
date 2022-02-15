@@ -1,18 +1,15 @@
 
 ### 系统环境配置
 1. /etc/sysctl.conf
-    #增加以下参数
 
   https://www.elastic.co/guide/cn/elasticsearch/guide/current/_file_descriptors_and_mmap.html
 ```
-vm.max_map_count=655360   
+vm.max_map_count=655360   #增加虚拟内存
 ```
-#永久关闭内存交换或设置为1
-
 https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html
 
 ```
-vm.swappiness = 1	
+vm.swappiness = 1	    	#永久关闭内存交换或设置为1
 ```
 执行以下命令，确保生效配置生效：
 sysctl -p
@@ -22,16 +19,20 @@ sysctl -p
 
   https://www.elastic.co/guide/en/elasticsearch/reference/current/max-number-threads-check.html#max-number-threads-check
 ```
-* soft nofile 655360
-* hard nofile 655360
-* soft nproc unlimited     #创建线程数
-* hard nproc unlimited     #创建线程数
+* soft nofile 655360    	 #增加打开文件数
+* hard nofile 655360 		   #增加打开文件数
+* soft nproc unlimited     #增加创建线程数
+* hard nproc unlimited     #增加创建线程数
 * soft memlock unlimited   #锁定内存不限制
 * hard memlock unlimited   #锁定内存不限制
 
-
 ```
-3. 线程数设置不生效，再更改以下文件
+3. 查看某用户下最多可以运行多少线程，命令:ulimit -u
+```
+   [gpadmin@bigdata-03 ~]$ ulimit -u
+   4096
+```
+4. 线程数设置不生效，再更改以下文件
 
    /etc/security/limits.d/20-nproc.conf 
 
