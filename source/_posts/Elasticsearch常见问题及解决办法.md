@@ -12,7 +12,7 @@
  1.查看unassigned分片(没有生成副本导致unassigned状态不在此列），获取unassigned的索引和分片
 
 ```
-curl -u admin:admin http://localhost:9200/_cat/shards |grep UNASSIGNED
+curl -u admin:admin http://192.168.199.101:9200/_cat/shards |grep UNASSIGNED
 shsnc-snc_redis_rule_data 0 p UNASSIGNED                             
 shsnc-snc_redis_rule_data 0 r UNASSIGNED 
 
@@ -22,23 +22,23 @@ shsnc-snc_redis_rule_data 0 r UNASSIGNED
 2.查询得到master节点的唯一标识符
 
 ```
-curl -u admin:admin  http://localhost:9200/_cat/master?v
+curl -u admin:admin  http://192.168.199.101:9200/_cat/master?v
 id                     host            ip              node
 WACuWE4UTcSWWxAEKHbwUg 192.168.199.101 192.168.199.101 es192.168.199.101_1
 ```
 
-3重新路由reroute
+3重新路由reroute 
 
 3.1根据索引index和分片shard 先尝试恢复数据
 
 ```
-curl –u admin:admin -H 'Content-Type:application/json' -XPOST  'http://localhost:9200/_cluster/reroute?pretty' -d '{"commands":[{"allocate_stale_primary":{"index":"shsnc-snc_redis_rule_data","shard":0,"node":"WACuWE4UTcSWWxAEKHbwUg","accept_data_loss":true}}]}'
+curl -u admin:admin  -H "Content-Type: application/json" -XPOST 'http://192.168.199.101:9200/_cluster/reroute?pretty' -d '{"commands":[{"allocate_stale_primary":{"index":"shsnc-snc_redis_rule_data","shard":0,"node":"KOSdc1s0T661o9xgsEHHBQ","accept_data_loss":true}}]}'
 ```
 
-3.2如果不能恢复，则创建空主分片，使索引恢复GREEN状态
+3.2如果不能恢复，则创建空主分片，使索引恢复GREEN状态 （节点id要求是数据节点）
 
 ```
-curl –u admin:admin -H 'Content-Type:application/json' -XPOST  'http://localhost:9200/_cluster/reroute?pretty' -d '{"commands":[{"allocate_empty_primary":{"index":"shsnc-snc_redis_rule_data","shard":0,"node":"WACuWE4UTcSWWxAEKHbwUg","accept_data_loss":true}}]}'
+curl -u admin:admin -H 'Content-Type:application/json' -XPOST  'http://192.168.199.101:9200/_cluster/reroute?pretty' -d '{"commands":[{"allocate_empty_primary":{"index":"shsnc-snc_redis_rule_data","shard":0,"node":"WACuWE4UTcSWWxAEKHbwUg","accept_data_loss":true}}]}'
 ```
 
 
@@ -123,3 +123,17 @@ https://discuss.elastic.co/t/how-to-resolve-dangling-indices-error-on-each-index
 ![](/images/Elasticsearch介绍/elasticsearch9.bmp)
 
 ![](Elasticsearch介绍/elasticsearch9.bmp)
+
+
+##### 出现Insufficient buffer remaining for AEAD cipher fragment (2). Needs to be more than tag size (16) 异常
+
+![](/images/Elasticsearch介绍/elasticsearch10.bmp)
+![](Elasticsearch介绍/elasticsearch10.bmp)
+
+https://github.com/tkohegyi/mitmJavaProxy/issues/12
+https://bugs.openjdk.org/browse/JDK-8221218
+今天es故障出现的原因是OpenJDK触发的bug，现在有两种处理方式，
+一是继续观察，看后续还会不会触发，不触发就不用改，
+二是更改jdk，更改jdk需要集群全量重启，更改jdk后会不会导致其它问题，也无法预测，目前集群gc已经很频繁，更改jdk也可能导致集群gc不过来出现内存溢出，目前更改jdk的风险比较高。
+所以建议还是继续保持现状，做到再次遇到这种情况快速恢复，同时采集一些降低集群压力的措施（包括减少数据，延长刷新时间，查询方面等）,因为也有集群是采用的OpenJDK并没有出现这个bug。
+

@@ -251,7 +251,35 @@ curl –u admin:admin -H 'Content-Type:application/json' -XPOST  'http://localho
 curl –u admin:admin -H 'Content-Type:application/json' -XPOST  'http://localhost:9200/_cluster/reroute?pretty' -d '{"commands":[{"allocate_empty_primary":{"index":"shsnc-snc_redis_rule_data","shard":0,"node":"WACuWE4UTcSWWxAEKHbwUg","accept_data_loss":true}}]}'
 ```
 
+方式二: https://discuss.elastic.co/t/corrupted-elastic-index/135932
 
+1.查找索引对应的uuid
+curl -u  elastic:elastic 192.168.199.101:9207/_cat/indices?v
+health status index                  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  red   goods                  In3QTeHhQ0awvyhVEOI4Kg   1   1          1            0     12.1kb            6kb
+
+#2.停止集群
+3.CheckIndex tool
+https://lucene.apache.org/core/6_4_0/core/org/apache/lucene/index/CheckIndex.html#main-java.lang.String:A-
+-exorcise: actually write a new segments_N file, removing any problematic segments. *LOSES DATA*
+-segment X: only check the specified segment(s). This can be specified multiple times, to check more than one segment, eg -segment _2 -segment _a. You can't use this with the -exorcise option.
+WARNING: -exorcise should only be used on an emergency basis as it will cause documents (perhaps many) to be permanently removed from the index. Always make a backup copy of your index before running this! Do not run this tool on an index that is actively being written to. You have been warned!
+Run without -exorcise, this tool will open the index, report version information and report any exceptions it hits and what action it would take if -exorcise were specified. With -exorcise, this tool will remove any segments that have issues and write a new segments_N file. This means all documents contained in the affected segments will be removed.
+
+```
+cd /home/ivory/elasticsearch-7.2.0-9207/lib
+#不带 -exorcise 检查段
+java -cp lucene-core*.jar -ea:org.apache.lucene… org.apache.lucene.index.CheckIndex /home/ivory/elasticsearch-7.2.0-9207/data/nodes/0/indices/In3QTeHhQ0awvyhVEOI4Kg/0/index -verbose
+#带 -exorcise 会重建段，需要先备份索引
+java -cp lucene-core*.jar -ea:org.apache.lucene… org.apache.lucene.index.CheckIndex /home/ivory/elasticsearch-7.2.0-9207/data/nodes/0/indices/In3QTeHhQ0awvyhVEOI4Kg/0/index -verbose -exorcise
+```
+4.删除corrupted_*文件
+5.重启集群
+
+java -cp /home/ivory/elasticsearch-6.7.0-9200/lib/lucene-core*.jar -ea:org.apache.lucene… org.apache.lucene.index.CheckIndex /home/ivory/elasticsearch-6.7.0-9200/data/nodes/0/indices/Qpa0XlKdSXSoiYKLkvyRfA/0/index -verbose
+
+
+java -cp /home/ivory/elasticsearch-6.7.0-9200/lib/lucene-core*.jar -ea:org.apache.lucene… org.apache.lucene.index.CheckIndex elasticsearch-6.7.0-9200/data/nodes/0/indices/STgHbPksRDyi0fBdk6Z70g/1/index -verbose
 
 ##### 超过单个字段最大长度32766
 ```
