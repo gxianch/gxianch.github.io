@@ -1,0 +1,38 @@
+---
+title: 幻像
+date: 2023-09-06 08:51:57
+categories:
+  - 文化
+toc: true
+mathjax: true
+top: 98
+tags:
+  - 新京报
+  - 旅行
+  - ibook
+  - ✰✰✰✰✰
+---
+
+相比
+
+ ![jpg](https://mmbiz.qpic.cn/mmbiz_jpg/CKYhgyUnM1D08X1Sz6ibMp2uAyiam0vwrFdpuYt1ZMib8M4mKKMuMnpLxFSE0kbsWKMwywOVsQDb4c1Wzicv3VrArQ/640?wx_fmt=jpeg&wxfrom=5&wx_lazy=1&wx_co=1)
+
+ https://book.douban.com/subject/35519560/
+
+ <!-- more -->
+
+
+
+
+[新京报书评周刊 “特种兵旅游”兴起迷思：现代旅行正在沦为同义反复？](https://mp.weixin.qq.com/s/zjMWup8ZNdaU72vmT0LgXA/)
+```
+以国家而言，我们可能是这个年代最频繁旅行的人民，甚至在整个历史上都是如此。但深思过后，这种现象中最值得注意的并不是出国旅行如今变得多么频繁，而是这么频繁的旅行竟没有为我们的思想和情感带来什么改变。
+
+看来，旅行并没有明显让我们变得更胸怀四海或更体贴他人。
+
+****逝去的旅行****
+几乎直到20世纪，出国旅行都是艰难且昂贵的辛苦事。美国的中产阶级并不是为了“乐子”而出行的。异国首都提供精致的享受：与聪明人对话，欣赏画作、雕塑和建筑，在已逝文明的残垣中陷入浪漫的沉思，到诗人的出生地、到政治家和演说家的扬名之地朝圣。人们在看到“世界奇景”时会生出一种通常在意料之中的惊奇之情。这是多年来欧洲人在欧洲旅行的模式。
+
+
+
+```
