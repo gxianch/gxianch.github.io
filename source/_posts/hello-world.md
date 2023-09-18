@@ -14,6 +14,42 @@ Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [docume
   - ✰✰✰✰✰  表示编程书籍星级
   - ♡♡♡♡   表示非编程书籍喜爱程度 ❤
 
+官方文档 https://hexo.io/zh-cn/docs/index.html
+
+## hexo安装
+
+
+```
+1.node安装 
+sudo npm cache clean -f //清除nodejs的cache：
+sudo npm install -g n //使用npm安装n模块
+sudo npm view node versions // node所有版本
+sudo n latest // 升级到node最新版本
+sudo n stable // 升级到node稳定版本
+sudo n xx.xx // 升级到node具体版本号  
+sudo n 10.0.0
+
+2.安装hexo
+npm i hexo@6.3.0
+npm i hexo@4.1.0
+npm install hexo@4.1.0
+所有必备的应用程序安装完成后，即可使用 npm 安装 Hexo。
+$ npm install -g hexo-cli
+### 进阶安装和使用
+对于熟悉 npm 的进阶用户，可以仅局部安装 `hexo` 包。
+npm install hexo
+安装以后，可以使用以下方式执行 Hexo：
+npx hexo <command>
+```
+
+|Hexo 版本|最低版本 (Node.js 版本)|最高版本 (Node.js 版本)|
+|---|---|---|
+|6.2+|12.13.0|latest|
+|6.0+|12.13.0|18.5.0|
+|5.0+|10.13.0|12.0.0|
+|4.1 - 4.2|8.10|10.0.0|
+|4.0|8.6|8.10.0|
+
 远程 hexo cl&&hexo g&& hexo d
 
 本地hexo s
