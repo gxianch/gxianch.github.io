@@ -101,6 +101,7 @@ theme: next
 deploy:
   type: git
   #repo: https://github.com/gxianch/gxianch.github.io
-  repo:   https://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@github.com/gxianch/gxianch.github.io.git
+  repo: git@github.com:gxianch/gxianch.github.io.git
+  #repo:   https://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@github.com/gxianch/gxianch.github.io.git
   # example, https://github.com/gxianch/blog.github.io
   branch: master

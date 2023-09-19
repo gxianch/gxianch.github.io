@@ -28,8 +28,7 @@ sudo n latest // 升级到node最新版本
 sudo n stable // 升级到node稳定版本
 sudo n xx.xx // 升级到node具体版本号  
 sudo n 10.0.0  //mac安装版本
-
-
+sudo n 12.13.0
 所有必备的应用程序安装完成后，即可使用 npm 安装 Hexo。
 $ npm install -g hexo-cli
 ### 进阶安装和使用
