@@ -1,3 +1,28 @@
+---
+title: 布隆过滤器算法解决sql稽查中的比对问题
+date: 2023-08-22 08:51:57
+categories:
+  - 算法
+toc: true
+mathjax: true
+top: 98
+tags:
+  - BloomFilter
+  - ibook
+  - ✰✰
+---
+
+
+
+副本
+
+ ![jpg](https://img1.doubanio.com/view/subject/l/public/s34026678.jpg){% asset_img label cover.jpg %}
+
+https://book.douban.com/subject/35245517/
+ <!-- more -->
+
+
+
 布隆过滤器(BloomFilter)算法解决sql稽查中的比对问题
 
 最近在做sql稽查项目时，需要拿一条sql去和标准库中通过审核的sql去比对，如果一样，说明这条sql符合条件。

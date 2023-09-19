@@ -1,3 +1,13 @@
+---
+title: Elasticsearch环境配置及常用命令
+date: 2020-01-03 08:46:01
+categories: [elasticsearch]
+toc: true
+mathjax: true
+top: 98
+tags:
+
+---
 
 ### 系统环境配置
 1. /etc/sysctl.conf

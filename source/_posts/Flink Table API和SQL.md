@@ -1,5 +1,6 @@
 ---
 title: Flink  Table API & SQL实现的三种方式demo
+date: 2023-08-22 08:51:57
 categories: [Flink]
 tags:
   - 笔记

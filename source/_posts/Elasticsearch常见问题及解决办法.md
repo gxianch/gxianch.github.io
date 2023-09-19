@@ -1,3 +1,14 @@
+---
+title: Elasticsearch常见问题及解决办法
+date: 2020-01-03 08:46:01
+categories: [elasticsearch]
+toc: true
+mathjax: true
+top: 98
+tags:
+
+---
+
 
 ## 常见问题及解决办法
 

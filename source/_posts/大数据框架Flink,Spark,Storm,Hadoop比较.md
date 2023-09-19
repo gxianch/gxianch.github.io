@@ -1,7 +1,13 @@
 ---
 title: 大数据框架Flink,Spark,Storm,Hadoop比较
-date: 2020-12-18 15:34:12
+date: 2020-01-03 08:46:01
+categories: [大数据存储]
+toc: true
+mathjax: true
+top: 99
 tags:
+  - 大数据
+
 ---
 
 ## Flink,Spark,Storm,Hadoop大数据框架比较
