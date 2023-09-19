@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Flink基础知识讲解的很深入， Flink基础知识讲解的很深入，时间，水印，窗口等概念讲解的很透彻，没有源码(概念基础也不需要源码)，目前只看了中文版，没看英文版  )">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction-to-Apache-Flink">
+<meta property="og:url" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="Flink基础知识讲解的很深入， Flink基础知识讲解的很深入，时间，水印，窗口等概念讲解的很透彻，没有源码(概念基础也不需要源码)，目前只看了中文版，没看英文版  )">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/cover_en.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/Introduction-to-Apache-Flink/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/Introduction-to-Apache-Flink/cover_en.jpg">
+<meta property="article:published_time" content="2020-12-28T03:29:22.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:41.045Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰✰✰">
+<meta property="article:tag" content="OReilly">
+<meta property="article:tag" content="※※">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Introduction-to-Apache-Flink | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/28/Introduction-to-Apache-Flink/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Introduction-to-Apache-Flink
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-28 11:29:22" itemprop="dateCreated datePublished" datetime="2020-12-28T11:29:22+08:00">2020-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:41" itemprop="dateModified" datetime="2023-09-19T17:08:41+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flink/" itemprop="url" rel="index">
+                    <span itemprop="name">Flink</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Flink基础知识讲解的很深入，</p>
+<p>Flink基础知识讲解的很深入，时间，水印，窗口等概念讲解的很透彻，没有源码(概念基础也不需要源码)，目前只看了中文版，没看英文版</p>
+<img src="/2020/12/28/Introduction-to-Apache-Flink/cover.jpg" class="label"><img src="/2020/12/28/Introduction-to-Apache-Flink/cover_en.jpg" class="label">
+<p><img src="Introduction-to-Apache-Flink/cover.jpg" alt="">)<img src="Introduction-to-Apache-Flink/cover_en.jpg" alt=""></p>
+<a id="more"></a>
+
+<h2 id="Flink基础教程"><a href="#Flink基础教程" class="headerlink" title="Flink基础教程"></a>Flink基础教程</h2><ul>
+<li><blockquote>
+<p>第 1 章为何选择Flink</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>1.3 流处理技术的演变</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Apache Storm 项目（以下简称 Storm）是流处理先锋</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Storm 提供了低延迟的流处理，但是它为实时性付出了一些代价：很难实现高吞吐，并且其正确性没能达到通常所需的水平。换句话说，它并不能保证 exactly-once；即便是它能够保证的正确性级别，其开销也相当大。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>对低成本规模化的需求促使人们开始使用分布式文件系统，例如 HDFS和基于批量数据的计算系统（MapReduce 作业）。但是这种系统很难做到低延迟。用 Storm 开发的实时流处理技术可以帮助解决延迟性的问题，但并不完美。其中的一个原因是，Storm 不支持 exactly-once 语义，因此不能保证状态数据的正确性，另外它也不支持基于事件时间的处理。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在低延迟和高吞吐的流处理系统中维持良好的容错性是非常困难的，但是为了得到有保障的准确状态，人们想出了一种替代方法：将连续事件中的流数据分割成一系列微小的批量作业。如果分割得足够小（即所谓的微批处理作业），计算就几乎可以实现真正的流处理。因为存在延迟，所以不可能做到完全实时，但是每个简单的应用程序都可以实现仅有几秒甚至几亚秒的延迟。这就是在 Spark 批处理引擎上运行的 Apache Spark Streaming<br>8 ｜ 第 1 章（以下简称 Spark Streaming）所使用的方法。更重要的是，使用微批处理方法，可以实现 exactly-once 语义，从而保障状态的一致性。如果一个微批处理作业失败了，它可以重新运行。这比连续的流处理方法更容易。Storm Trident 是对 Storm 的延伸，它的底层流处理引擎就是基于微批处理方法来进行计算的，从而实现了 exactly-once 语义，但是在延迟性方面付出了很大的代价。</p>
+</blockquote>
+<blockquote>
+<p>8 ｜ 第 1 章（以下简称 Spark Streaming）所使用的方法。更重要的是，使用微批处理方法，可以实现 exactly-once 语义，从而保障状态的一致性。如果一个微批处理作业失败了，它可以重新运行。这比连续的流处理方法更容易。Storm Trident 是对 Storm 的延伸，它的底层流处理引擎就是基于微批处理方法来进行计算的，从而实现了 exactly-once 语义，但是在延迟性方面付出了很大的代价。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>这种技术的潜在问题是，时间由系统中生成小批量作业的那一部分全权控制。Spark Streaming 等一些流处理框架在一定程度上弱化了这一弊端，但还是不能完全避免。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 2 章流处理架构</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>具有持久性的好处之一是消息可以重播。这个功能使得像 Flink 这样的处理器能对事件流中的某一部分进行重播和再计算（第 5 章会详细介绍）。正是由于消息传输层和流处理层相互作用，才使得像 Flink 这样的系统有了准确处理和“时空穿梭”（指重新处理数据的能力）的保障，认识到这一点至关重要。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>流处理架构不需要集中式数据库。取而代之的是消息队列，它作为共享数据源，服务于各种不同的消费者。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 3 章Flink的用途</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>处理时间事件时间图 3-3：从处理时间切换到事件时间，让许多计算工作完成得更好。用处理时间来计算会导致错误，用事件时间则能得到正确的结果（图片来源：Jamie Grier 于2016 年 5 月在 OSCON 大会上所做的演示）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 4 章对时间的处理</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>用流处理器编程和用批处理器编程最关键的区别在于对时间的处理。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>通常还有第 3 个时间概念，即摄取时间，也叫作进入时间。它指的是事件进入流处理框架的时间。缺乏真实事件时间的数据会被流处理器附上时间戳，即流处理器第一次看到它的时间（这个操作由 source 函数完成，它是程序的第一个处理节点）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在 Flink 中，一分钟滚动窗口的定义如下。stream.timeWindow(Time.minutes(1))<br>对时间的处理 ｜ 43每半分钟（即 30 秒）滑动一次的一分钟滑动窗口如下所示。stream.timeWindow(Time.minutes(1), Time.seconds(30))</p>
+</blockquote>
+<blockquote>
+<p>对时间的处理 ｜ 43每半分钟（即 30 秒）滑动一次的一分钟滑动窗口如下所示。stream.timeWindow(Time.minutes(1), Time.seconds(30))</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Flink 是目前唯一 2 支持会话窗口的开源流处理器</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在 Flink 中，会话窗口由超时时间设定，即希望等待多久才认为会话已经结注 2： 作者在此处描述的是 2016 年的情况。目前，Apache Beam 和 Apache Spark 也支持会话窗口。——译者注<br>44 ｜ 第 4 章束。举例来说，以下代码表示，如果用户处于非活动状态长达 5 分钟，则认为会话结束。stream.window(SessionWindows.withGap(Time.minutes(5))</p>
+</blockquote>
+<blockquote>
+<p>44 ｜ 第 4 章束。举例来说，以下代码表示，如果用户处于非活动状态长达 5 分钟，则认为会话结束。stream.window(SessionWindows.withGap(Time.minutes(5))</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Flink 还提供触发机制。触发器控制生成结果的时间，即何时聚合窗口内容并将结果返回给用户。每一个默认窗口都有一个触发器。例如，采用事件时间的时间窗口将在收到水印时被触发。对于用户来说，除了收到水印时生成完整、准确的结果之外，也可以实现自定义的触发器（例如每秒提供一次近似结果）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 4-7：流处理架构拥有时空穿梭（即重新处理数据）的能力。流处理器支持事件时间，这意味着将数据流“倒带”，用同一组数据重新运行同样的程序，会得到相同的结果若要按时间回溯并正确地重新处理数据，流处理器必须支持事件时间。如果窗口的设定是根据系统时间而不是时间戳，那么每次运行同样的程序，都会得到不同的结果。事件时间使数据处理结果具有确定性，因为用同一组数据运行同样的程序，会得到相同的结果。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Flink 通过水印来推进事件时间。水印是嵌在流中的常规记录，计算程序通过水印获知某个时间点已到。对于上述一分钟滚动窗口，假设水印标记时间为 10:01:00（或者其他时间，如 10:03:43），那么收到水印的窗口就知道不会再有早于该时间的记录出现，因为所有时间戳小于或等于该时间的事件都已经到达。这时，窗口可以安全地计算并给出结果（总和）。水印使事件时间与处理时间完全无关。迟到的水印（“迟到”是从处理时间的角度而言）并不会影响结果的正确性，而只会影响收到结果的速度。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>设定水印通常需要用到领域知识。举例来说，如果知道事件的迟到时间不会超过 5 秒，就可以将水印标记时间设为收到的最大时间戳减去 5 秒。另一种做法是，采用一个 Flink 作业监控事件流，学习事件的迟到规律，并以此构建水印生成模型。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 5 章有状态的计算</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>最先保证 exactly-once 的系统（Storm Trident 和 Spark Streaming）在性能和表现力这两个方面付出了很大的代价。为了保证 exactly-once，这些系统无法单独地对每条记录运用应用逻辑，而是同时处理多条（一批）记录，保证对每一批的处理要么全部成功，要么全部失败。这就导致在得到结果前，必须等待一批记录处理结束。因此，用户经常不得不使用两个流处理框架（一个用来保证 exactly-once，另一个用来对每个元素做低延迟处理），结果使基础设施更加复杂。曾经，用户不得不在保证 exactly-once 与获得低延迟和效率之间权衡利弊。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>检查点屏障和普通记录类似。它们由算子处理，但并不参与计算，而是会触发与检查点相关的行为。当读取输入流的数据源（在本例中与 keyBy 算子内联）遇到检查点屏障时，它将其在输入流中的位置保存到稳定存储中。如果输入流来自消息传输系统（Kafka 或 MapR Streams），这个位置就是偏移量</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 5-4：当 Flink 数据源（在本例中与 keyBy 算子内联）遇到检查点屏障时，它会将其在输入流中的位置保存到稳定存储中</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 5-5：位于检查点之前的所有记录（[“b”,2]、[“b”,3] 和 [“c”,1]）被 map 算子处理之后的情况。此时，稳定存储已经备份了检查点屏障在输入流中的位置（备份操作发生在检查点屏障被输入算子处理的时候）。map 算子接着开始处理检查点屏障，并触发将状态异步备份到稳定存储中这个动作</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>状态备份和检查点屏障的位置备份被确认之后，该检查点操作就可以被标记为完成，如图 5-6 所示。我们在无须停止或者阻断计算的条件下，在一个逻辑时间点（对应检查点屏障在输入流中的位置）为计算状态拍了快照。通过确保备份的状态和位置指向同一个逻辑时间点</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 5-6：检查点操作完成，状态和位置均已备份到稳定存储中。输入流中的所有记录都已处理完成。值得注意的是，备份的状态值与实际的状态值是不同的。备份反映的是检查点的状态</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如果检查点操作失败，Flink 会丢弃该检查点并继续正常执行，因为之后的某一个检查点可能会成功。虽然恢复时间可能更长，但是对于状态的保证依旧很有力。只有在一系列连续的检查点操作失败之后，Flink 才会抛出错误，因为这通常预示着发生了严重且持久的错误</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Flink 检查点算法的正式名称是异步屏障快照（asynchronous barrier snapshotting）。该算法大致基于 Chandy-Lamport 分布式快照算法。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>现在回过头看看图 5-11 中的应用程序架构。之所以本例需要有输出存储系统，是因为外部无法访问 Flink 的内部状态，所以输出存储系统成了查询目标。但是，如果可以直接查询状态，则在某些情况下根本就不需要输出存储系统，因为状态本身就已经包含了查询所需的信息。这种情况在许多应用程序中真实存在，直接查询状态可以大大地简化架构，同时大幅提升性能</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Spark Streaming 遇到了吞吐量和延迟性难两全的问题。随着批处理作业规模的增加，延迟升高。如果为了降低延迟而缩减规模，吞吐量就会减少。Storm 和 Flink 则可以在吞吐量增加时维持低延迟</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Storm 能够承受每秒 40 万事件，但受限于 CPU；Flink 则可以达到每秒 300万事件（7.5 倍），但受限于 Kafka 集群和 Flink 集群之间的网络。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 6 章批处理：一种特殊的流处理</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>附 录其他资源</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>The Essential Guide to Streaming-first Processing with Apache Flink</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰</a>
+              <a href="/tags/OReilly/" rel="tag"># OReilly</a>
+              <a href="/tags/%E2%80%BB%E2%80%BB/" rel="tag"># ※※</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/22/%E6%B2%88%E5%BF%97%E5%8D%8E-%E6%AF%9B%E6%B3%BD%E4%B8%9C-%E6%96%AF%E5%A4%A7%E6%9E%97%E4%B8%8E%E6%9C%9D%E9%B2%9C%E6%88%98%E4%BA%89/" rel="prev" title="沈志华-毛泽东,斯大林与朝鲜战争">
+      <i class="fa fa-chevron-left"></i> 沈志华-毛泽东,斯大林与朝鲜战争
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/28/%E6%B5%81%E5%BC%8F%E6%9E%B6%E6%9E%84%EF%BC%9AKafka%E4%B8%8EMapR-Streams%E6%95%B0%E6%8D%AE%E6%B5%81%E5%A4%84%E7%90%86/" rel="next" title="流式架构：Kafka与MapR Streams数据流处理">
+      流式架构：Kafka与MapR Streams数据流处理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flink基础教程"><span class="nav-number">1.</span> <span class="nav-text">Flink基础教程</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

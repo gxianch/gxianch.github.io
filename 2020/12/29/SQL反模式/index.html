@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="读到第三部分放弃了，主要为数据库人员准备的   SQL反模式  第一部分 逻辑型数据库设计反模式    第2章 乱穿马路    需求可能会变为支持“每个产品有多个联系人”。此时，将数据库中原来存储单一用户标识的字段改成使用逗号分隔的用户标识列表，似乎是一个很简单且合理的解决方案    程序员通常使用逗号分隔的列表来避免在多对多的关系中创建交叉表，我将这种设计方式定义为一种反模式，称为乱穿马路（Ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL反模式">
+<meta property="og:url" content="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="读到第三部分放弃了，主要为数据库人员准备的   SQL反模式  第一部分 逻辑型数据库设计反模式    第2章 乱穿马路    需求可能会变为支持“每个产品有多个联系人”。此时，将数据库中原来存储单一用户标识的字段改成使用逗号分隔的用户标识列表，似乎是一个很简单且合理的解决方案    程序员通常使用逗号分隔的列表来避免在多对多的关系中创建交叉表，我将这种设计方式定义为一种反模式，称为乱穿马路（Ja">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/cover.jpg">
+<meta property="article:published_time" content="2020-12-29T06:43:18.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:41.976Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰">
+<meta property="article:tag" content="※※※※">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>SQL反模式 | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQL反模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-29 14:43:18" itemprop="dateCreated datePublished" datetime="2020-12-29T14:43:18+08:00">2020-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:41" itemprop="dateModified" datetime="2023-09-19T17:08:41+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SQL/" itemprop="url" rel="index">
+                    <span itemprop="name">SQL</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>读到第三部分放弃了，主要为数据库人员准备的</p>
+<img src="/2020/12/29/SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/cover.jpg" class="label">
+<p><img src="SQL%E5%8F%8D%E6%A8%A1%E5%BC%8F/cover.jpg" alt=""></p>
+<h2 id="SQL反模式"><a href="#SQL反模式" class="headerlink" title="SQL反模式"></a>SQL反模式</h2><ul>
+<li><blockquote>
+<p>第一部分 逻辑型数据库设计反模式</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第2章 乱穿马路</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>需求可能会变为支持“每个产品有多个联系人”。此时，将数据库中原来存储单一用户标识的字段改成使用逗号分隔的用户标识列表，似乎是一个很简单且合理的解决方案</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>程序员通常使用逗号分隔的列表来避免在多对多的关系中创建交叉表，我将这种设计方式定义为一种反模式，称为乱穿马路（Jaywalking），因为乱穿马路也是避免过十字路口的一种方式。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>2.5 解决方案：创建一张交叉表将account_id存储在一张单独的表中，而不是存储在Products表中，从而每个独立的account值都可以占据一行。这张新表称为Contacts，实现了Products和Accounts的多对多关系。Jaywalking/soln/create.sqlCREATE TABLE Contacts ( product_id BIGINT UNSIGNED NOT NULL, account_id BIGINT UNSIGNED NOT NULL, PRIMARY KEY (product_id, account_id), FOREIGN KEY (product_id) REFERENCES Products(product_id), FOREIGN KEY (account_id) REFERENCES Accounts(account_id));INSERT INTO Contacts (product_id, accont_id)VALUES (123, 12), (123, 34), (345, 23), (567, 12), (567, 34);当一张表有指向另外两张表的外键时，我们称这种表为一张交叉表1，它实现了两张表之间的多对多关系。这意味着每个产品都可以通过交叉表和多个账号关联；</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第3章 单纯的树</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>当你使用邻接表的时候，这样的查询会变得很不优雅，因为每增加一层的查询都会需要额外扩展一个联结，而SQL查询中联结的次数是有上限的。如下的查询能够获得四层数据，但无法更多了</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>这些都是使用邻接表时需要多步操作才能完成的查询范例，你不得不写很多额外的代码，而其实数据库设计本身就能做得很简单和高效。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>3.5 解决方案：使用其他树模型有几种方案可以代替邻接表模型，包括路径枚举、 嵌套集以及闭包表。接下来我将分三段来展示这三种设计方案是如何解决3.2节中所描述的存储和查询树型评论的问题的。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>3.5.4 你该使用哪种设计每种设计都各有优劣，如何选择设计依赖于应用程序中的哪种操作最需要性能上的优化。在图3-5中，操作依据每种树的设计被标记为简单或者困难。你也可以参考以下列出的每种设计的优缺点。图3-5 层级数据设计比较● 邻接表是最方便的设计，并且很多软件开发者都了解它。● 如果你使用的数据库支持WITH或者CONNECT BY PRIOR的递归查询，那能使得邻接表的查询更为高效。● 枚举路径能够很直观地展示出祖先到后代之间的路径，但同时由于它不能确保引用完整性，使得这个设计非常地脆弱。枚举路径也使得数据的存储变得比较冗余。<br>● 嵌套集是一个聪明的解决方案——但可能过于聪明了，它不能确保引用完整性。最好在一个查询性能要求很高而对其他需求要求一般的场合来使用它。● 闭包表是最通用的设计，并且本章所描述的设计中只有它能允许一个节点属于多棵树。它要求一张额外的表来存储关系，使用空间换时间的方案减少操作过程中由冗余的计算所造成的消耗。</p>
+</blockquote>
+<blockquote>
+<p>● 嵌套集是一个聪明的解决方案——但可能过于聪明了，它不能确保引用完整性。最好在一个查询性能要求很高而对其他需求要求一般的场合来使用它。● 闭包表是最通用的设计，并且本章所描述的设计中只有它能允许一个节点属于多棵树。它要求一张额外的表来存储关系，使用空间换时间的方案减少操作过程中由冗余的计算所造成的消耗。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第4章 需要ID</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>4.5.1 直截了当地描述设计为主键选择更有意义的名称：一个能够反应这个主键所代表的实体的类型的名字。比如， Bugs这张表的主键应该叫做bug_id。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第5章 不用钥匙的入口</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>如果你需要精确地表示十进制数，使用NUMERIC类型。FLOAT类型无法表示很多十进制的有理数，因此它们应该当成非精确值来处理。尽可能不要使用浮点数。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>开发人员激烈地争论着这个问题。两种方案都有很好的立足点，但是对于程序员来说通常只有一种选择，就是我们应该将文件存在数据库之外。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>但真正的重点问题是选择什么样的数据类型来存储图片？原始图片文件可以以二进制格式存储在BLOB类型中，就像之前我们存储超长字段那样。然而，很多人选择将图片存储在文件系统中，然后在数据库里用VARCHAR类型来记录对应的路径。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>BLOB类型的最大值依据不同的数据库产品而不同，但对于存储大部分的图片文件来说都是足够的。所有的数据库都支持BLOB或者类似的类型。比如，MySQL提供了一个叫做MEDIUMBLOB的类型，支持最大16MB的数据，对于绝大部分图片来说都足够了。Oracle提供了一个LONG RAW或者BLOB的类型，最大支持2GB或者4GB的长度。类似的类型在其他数据库产品中也能找到。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第三部分 查询反模式</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰</a>
+              <a href="/tags/%E2%80%BB%E2%80%BB%E2%80%BB%E2%80%BB/" rel="tag"># ※※※※</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/29/Stream-Processing-with-Apache-Flink/" rel="prev" title="Stream-Processing-with-Apache-Flink">
+      <i class="fa fa-chevron-left"></i> Stream-Processing-with-Apache-Flink
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/29/%E8%A3%B4%E5%A3%AB%E9%94%8B-%E5%A4%A9%E5%9B%BD%E4%B9%8B%E7%A7%8B/" rel="next" title="裴士锋-天国之秋">
+      裴士锋-天国之秋 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL反模式"><span class="nav-number">1.</span> <span class="nav-text">SQL反模式</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

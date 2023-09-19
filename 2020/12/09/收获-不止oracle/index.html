@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="国内写数据库写的最好的一本书，不像其它写数据库的书非常枯燥的教你写各种查询命令，而是从日常生活中引出数据库，通过示例一步一步带你走进数据库的世界，逻辑严谨，原理讲的非常透彻，同时文章生动幽默。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="收获-不止oracle(第一版)">
+<meta property="og:url" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="国内写数据库写的最好的一本书，不像其它写数据库的书非常枯燥的教你写各种查询命令，而是从日常生活中引出数据库，通过示例一步一步带你走进数据库的世界，逻辑严谨，原理讲的非常透彻，同时文章生动幽默。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/10.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/10.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/11.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/11.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/12.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/12.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/13.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/13.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/14.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/14.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/15.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/15.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/16.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/16.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/17.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/17.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/18.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/18.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/19.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/19.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/20.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/20.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/21.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/21.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/22.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/22.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/23.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/23.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/24.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/24.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/25.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/25.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/26.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/26.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/27.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/27.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/28.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/28.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/29.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/29.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/30.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/30.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/31.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/31.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/32.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/32.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/33.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/33.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/34.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/34.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/35.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/35.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/36.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/36.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/37.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/37.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/38.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/38.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/39.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/39.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/40.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/40.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/41.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/41.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/42.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/42.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/43.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/43.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/44.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/44.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/45.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/45.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/46.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/46.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/47.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/47.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/48.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/48.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/49.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/49.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/50.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/50.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/51.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/51.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/52.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/52.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/53.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/53.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/54.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/54.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/55.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/55.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/56.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/56.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/57.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/57.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/58.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/58.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/59.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/59.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/60.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/60.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/61.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/61.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/62.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/62.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/63.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/63.jpg">
+<meta property="article:published_time" content="2020-12-09T11:32:43.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:44.560Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰✰✰">
+<meta property="article:tag" content="Oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>收获-不止oracle(第一版) | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          收获-不止oracle(第一版)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-09 19:32:43" itemprop="dateCreated datePublished" datetime="2020-12-09T19:32:43+08:00">2020-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:44" itemprop="dateModified" datetime="2023-09-19T17:08:44+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>国内写数据库写的最好的一本书，不像其它写数据库的书非常枯燥的教你写各种查询命令，而是从日常生活中引出数据库，通过示例一步一步带你走进数据库的世界，逻辑严谨，原理讲的非常透彻，同时文章生动幽默。</p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/cover.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/cover.jpg" alt=""></p>
+<a id="more"></a>
+
+<h3 id="oracle体系结构图"><a href="#oracle体系结构图" class="headerlink" title="oracle体系结构图"></a>oracle体系结构图</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/1.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/1.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/2.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/2.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/3.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/3.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/4.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/4.jpg" alt=""></p>
+<h3 id="2-1-物理体系"><a href="#2-1-物理体系" class="headerlink" title="2.1 物理体系"></a>2.1 物理体系</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/5.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/5.jpg" alt=""></p>
+<h4 id="2-2"><a href="#2-2" class="headerlink" title="2.2"></a>2.2</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/6.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/6.jpg" alt=""></p>
+<h4 id="2-3-SQL指令描述"><a href="#2-3-SQL指令描述" class="headerlink" title="2.3 SQL指令描述"></a>2.3 SQL指令描述</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/7.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/7.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/8.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/8.jpg" alt=""></p>
+<h4 id="2-4-日志缓存区"><a href="#2-4-日志缓存区" class="headerlink" title="2.4 日志缓存区"></a>2.4 日志缓存区</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/9.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/9.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/10.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/10.jpg" alt=""></p>
+<h4 id="2-5-commit逻辑"><a href="#2-5-commit逻辑" class="headerlink" title="2.5 commit逻辑"></a>2.5 commit逻辑</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/11.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/11.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/12.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/12.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/13.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/13.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/14.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/14.jpg" alt=""></p>
+<h4 id="2-6-一致读"><a href="#2-6-一致读" class="headerlink" title="2.6 一致读"></a>2.6 一致读</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/15.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/15.jpg" alt=""></p>
+<h4 id="2-7-LWGR日志写入时机"><a href="#2-7-LWGR日志写入时机" class="headerlink" title="2.7 LWGR日志写入时机"></a>2.7 LWGR日志写入时机</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/16.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/16.jpg" alt=""></p>
+<h3 id="3-0-逻辑体系"><a href="#3-0-逻辑体系" class="headerlink" title="3.0 逻辑体系"></a>3.0 逻辑体系</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/17.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/17.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/18.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/18.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/19.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/19.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/20.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/20.jpg" alt=""></p>
+<h4 id="回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个"><a href="#回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个" class="headerlink" title="回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个"></a>回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/21.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/21.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/22.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/22.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/23.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/23.jpg" alt=""></p>
+<h4 id="oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争"><a href="#oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争" class="headerlink" title="oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争"></a>oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/24.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/24.jpg" alt=""></p>
+<h3 id="4-0-表设计之五朵金花"><a href="#4-0-表设计之五朵金花" class="headerlink" title="4.0 表设计之五朵金花"></a>4.0 表设计之五朵金花</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/25.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/25.jpg" alt=""></p>
+<h4 id="普通堆表不足之处"><a href="#普通堆表不足之处" class="headerlink" title="普通堆表不足之处"></a>普通堆表不足之处</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/26.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/26.jpg" alt=""></p>
+<h4 id="truncate与delete对比"><a href="#truncate与delete对比" class="headerlink" title="truncate与delete对比"></a>truncate与delete对比</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/27.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/27.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/28.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/28.jpg" alt=""></p>
+<h4 id="分区表优势"><a href="#分区表优势" class="headerlink" title="分区表优势"></a>分区表优势</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/29.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/29.jpg" alt=""></p>
+<h4 id="全局临时表"><a href="#全局临时表" class="headerlink" title="全局临时表"></a>全局临时表</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/30.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/30.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/31.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/31.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/32.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/32.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/33.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/33.jpg" alt=""></p>
+<h4 id="分区表"><a href="#分区表" class="headerlink" title="分区表"></a>分区表</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/34.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/34.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/35.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/35.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/36.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/36.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/37.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/37.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/38.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/38.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/39.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/39.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/40.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/40.jpg" alt=""></p>
+<h4 id="索引组织表"><a href="#索引组织表" class="headerlink" title="索引组织表"></a>索引组织表</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/41.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/41.jpg" alt=""></p>
+<h4 id="簇表"><a href="#簇表" class="headerlink" title="簇表"></a>簇表</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/42.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/42.jpg" alt=""></p>
+<h4 id="分区表的类型有范围分区，列表分区，hash分区及组合分区4种"><a href="#分区表的类型有范围分区，列表分区，hash分区及组合分区4种" class="headerlink" title="分区表的类型有范围分区，列表分区，hash分区及组合分区4种"></a>分区表的类型有范围分区，列表分区，hash分区及组合分区4种</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/43.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/43.jpg" alt=""></p>
+<h4 id="分区表的索引分为全局索引和局部索引"><a href="#分区表的索引分为全局索引和局部索引" class="headerlink" title="分区表的索引分为全局索引和局部索引"></a>分区表的索引分为全局索引和局部索引</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/44.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/44.jpg" alt=""></p>
+<h3 id="5-索引"><a href="#5-索引" class="headerlink" title="5.索引"></a>5.索引</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/45.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/45.jpg" alt=""></p>
+<h4 id="5-1索引结构图"><a href="#5-1索引结构图" class="headerlink" title="5.1索引结构图"></a>5.1索引结构图</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/46.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/46.jpg" alt=""></p>
+<h4 id="如果查询返回绝大多数数据不如全表扫描"><a href="#如果查询返回绝大多数数据不如全表扫描" class="headerlink" title="如果查询返回绝大多数数据不如全表扫描"></a>如果查询返回绝大多数数据不如全表扫描</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/47.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/47.jpg" alt=""></p>
+<h4 id="是否创建分区索引，看查询是否用到分区条件"><a href="#是否创建分区索引，看查询是否用到分区条件" class="headerlink" title="是否创建分区索引，看查询是否用到分区条件"></a>是否创建分区索引，看查询是否用到分区条件</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/48.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/48.jpg" alt=""></p>
+<h4 id="索引三种查询方式"><a href="#索引三种查询方式" class="headerlink" title="索引三种查询方式"></a>索引三种查询方式</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/49.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/49.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/50.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/50.jpg" alt=""></p>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/51.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/51.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/52.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/52.jpg" alt=""></p>
+<h4 id="聚合因子"><a href="#聚合因子" class="headerlink" title="聚合因子"></a>聚合因子</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/53.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/53.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/54.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/54.jpg" alt=""></p>
+<h4 id="index-fast-full-scan-和index-full-scan"><a href="#index-fast-full-scan-和index-full-scan" class="headerlink" title="index fast full scan 和index full scan"></a>index fast full scan 和index full scan</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/55.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/55.jpg" alt=""></p>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/56.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/56.jpg" alt=""></p>
+<h4 id="索引对三种语句的影响"><a href="#索引对三种语句的影响" class="headerlink" title="索引对三种语句的影响"></a>索引对三种语句的影响</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/57.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/57.jpg" alt=""></p>
+<h4 id="索引三大特点"><a href="#索引三大特点" class="headerlink" title="索引三大特点"></a>索引三大特点</h4><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/58.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/58.jpg" alt=""></p>
+<h3 id="6"><a href="#6" class="headerlink" title="6"></a>6</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/59.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/59.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/60.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/60.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/61.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/61.jpg" alt=""></p>
+<h3 id="7"><a href="#7" class="headerlink" title="7"></a>7</h3><img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/62.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/62.jpg" alt=""></p>
+<img src="/2020/12/09/%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/63.jpg" class="label">
+<p><img src="%E6%94%B6%E8%8E%B7-%E4%B8%8D%E6%AD%A2oracle/63.jpg" alt=""></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰</a>
+              <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/09/MongoDB%E5%BA%94%E7%94%A8%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="prev" title="MongoDB应用设计模式">
+      <i class="fa fa-chevron-left"></i> MongoDB应用设计模式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/09/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA-SQL/" rel="next" title="Head First SQL">
+      Head First SQL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#oracle体系结构图"><span class="nav-number">1.</span> <span class="nav-text">oracle体系结构图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-物理体系"><span class="nav-number">2.</span> <span class="nav-text">2.1 物理体系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2"><span class="nav-number">2.1.</span> <span class="nav-text">2.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-SQL指令描述"><span class="nav-number">2.2.</span> <span class="nav-text">2.3 SQL指令描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-日志缓存区"><span class="nav-number">2.3.</span> <span class="nav-text">2.4 日志缓存区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-commit逻辑"><span class="nav-number">2.4.</span> <span class="nav-text">2.5 commit逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-一致读"><span class="nav-number">2.5.</span> <span class="nav-text">2.6 一致读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-LWGR日志写入时机"><span class="nav-number">2.6.</span> <span class="nav-text">2.7 LWGR日志写入时机</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-0-逻辑体系"><span class="nav-number">3.</span> <span class="nav-text">3.0 逻辑体系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个"><span class="nav-number">3.1.</span> <span class="nav-text">回滚表空间可以建多个，并且自由切换，但是当前使用的只能有一个</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争"><span class="nav-number">3.2.</span> <span class="nav-text">oltp下，块太大，容易导致大量并发查询及更新操作都指向同一个数据库，从而产生热点块竞争</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-0-表设计之五朵金花"><span class="nav-number">4.</span> <span class="nav-text">4.0 表设计之五朵金花</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#普通堆表不足之处"><span class="nav-number">4.1.</span> <span class="nav-text">普通堆表不足之处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#truncate与delete对比"><span class="nav-number">4.2.</span> <span class="nav-text">truncate与delete对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区表优势"><span class="nav-number">4.3.</span> <span class="nav-text">分区表优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局临时表"><span class="nav-number">4.4.</span> <span class="nav-text">全局临时表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区表"><span class="nav-number">4.5.</span> <span class="nav-text">分区表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引组织表"><span class="nav-number">4.6.</span> <span class="nav-text">索引组织表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#簇表"><span class="nav-number">4.7.</span> <span class="nav-text">簇表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区表的类型有范围分区，列表分区，hash分区及组合分区4种"><span class="nav-number">4.8.</span> <span class="nav-text">分区表的类型有范围分区，列表分区，hash分区及组合分区4种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区表的索引分为全局索引和局部索引"><span class="nav-number">4.9.</span> <span class="nav-text">分区表的索引分为全局索引和局部索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-索引"><span class="nav-number">5.</span> <span class="nav-text">5.索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1索引结构图"><span class="nav-number">5.1.</span> <span class="nav-text">5.1索引结构图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如果查询返回绝大多数数据不如全表扫描"><span class="nav-number">5.2.</span> <span class="nav-text">如果查询返回绝大多数数据不如全表扫描</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#是否创建分区索引，看查询是否用到分区条件"><span class="nav-number">5.3.</span> <span class="nav-text">是否创建分区索引，看查询是否用到分区条件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引三种查询方式"><span class="nav-number">5.4.</span> <span class="nav-text">索引三种查询方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#联合索引"><span class="nav-number">5.5.</span> <span class="nav-text">联合索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚合因子"><span class="nav-number">5.6.</span> <span class="nav-text">聚合因子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#index-fast-full-scan-和index-full-scan"><span class="nav-number">5.7.</span> <span class="nav-text">index fast full scan 和index full scan</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#null"><span class="nav-number">5.8.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引对三种语句的影响"><span class="nav-number">5.9.</span> <span class="nav-text">索引对三种语句的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引三大特点"><span class="nav-number">5.10.</span> <span class="nav-text">索引三大特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6"><span class="nav-number">6.</span> <span class="nav-text">6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7"><span class="nav-number">7.</span> <span class="nav-text">7</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

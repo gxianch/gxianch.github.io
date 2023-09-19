@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="这篇文章一开始通过单词计数的例子向大家展示大数据框架开发的不同，让大家对各个框架的架构和编写应用程序有初步的印象，在单词计数例子的对比中发现各个架构中一些初步的不同。 随后描述的是Storm&#x2F;Jstorm在开发复杂应用时将会遇到的一些问题，有些容易解决，有些将会难以解决，这个时候怎么办，首先关注的是在Storm&#x2F;Jstorm中如何处理这些问题，然后探讨为什么会存在这些问题，Spark&#x2F;flink会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Storm-Spark-Flink对比及大数据技术选型">
+<meta property="og:url" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="这篇文章一开始通过单词计数的例子向大家展示大数据框架开发的不同，让大家对各个框架的架构和编写应用程序有初步的印象，在单词计数例子的对比中发现各个架构中一些初步的不同。 随后描述的是Storm&#x2F;Jstorm在开发复杂应用时将会遇到的一些问题，有些容易解决，有些将会难以解决，这个时候怎么办，首先关注的是在Storm&#x2F;Jstorm中如何处理这些问题，然后探讨为什么会存在这些问题，Spark&#x2F;flink会">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/1.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/storm1.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/2.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/3.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/4.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/5.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/6.png">
+<meta property="og:image" content="http://yoursite.com/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/6.png">
+<meta property="article:published_time" content="2020-01-06T06:27:57.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:42.316Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="Storm">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="Flink">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/1.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Storm-Spark-Flink对比及大数据技术选型 | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/06/Storm-Spark-Flink%E5%AF%B9%E6%AF%94%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Storm-Spark-Flink对比及大数据技术选型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-06 14:27:57" itemprop="dateCreated datePublished" datetime="2020-01-06T14:27:57+08:00">2020-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:42" itemprop="dateModified" datetime="2023-09-19T17:08:42+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index">
+                    <span itemprop="name">Spark</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章一开始通过单词计数的例子向大家展示大数据框架开发的不同，让大家对各个框架的架构和编写应用程序有初步的印象，在单词计数例子的对比中发现各个架构中一些初步的不同。</p>
+<p>随后描述的是Storm/Jstorm在开发复杂应用时将会遇到的一些问题，有些容易解决，有些将会难以解决，这个时候怎么办，首先关注的是在Storm/Jstorm中如何处理这些问题，然后探讨为什么会存在这些问题，Spark/flink会不会存在同样的问题，经过比较，发现这些问题只在Storm/Jstorm中存在，这时候需要回归到框架模型，架构上进行分析。</p>
+<p>然后我们会发现Storm/Jstorm在实现复杂功能（比如窗口机制）为什么比Spark更困难，Storm/Jstorm的支持SQL开发为什么还是处于实验状态，其实这些都已经由Storm/Jstorm的底层模型决定了。</p>
+<p>同时文章还给出Storm/Jstorm与Spark开发成本上的对比，最后将给出Storm/Jstorm的适应场景。</p>
+<a id="more"></a>
+
+<p>目录</p>
+<p><a href="#_Toc1737">摘要…………………………………………………………………………………………….. 3</a></p>
+<p><a href="#_Toc20574">介绍…………………………………………………………………………………………….. 3</a></p>
+<p><a href="#_Toc1028">1．从单词计数例子开始……………………………………………………………………… 4</a></p>
+<p><a href="#_Toc4372">1.Storm/Jstorm的架构和示例………………………………………………………… 4</a></p>
+<p><a href="#_Toc9804">2. Storm/Jstorm Trident的架构和示例…………………………………………….. 9</a></p>
+<p><a href="#_Toc21529">3.Spark架构和示例……………………………………………………………………. 12</a></p>
+<p><a href="#_Toc23106">3.Flink架构和示例…………………………………………………………………….. 14</a></p>
+<p><a href="#_Toc20807">4.单词计数简单总结……………………………………………………………………. 16</a></p>
+<p><a href="#_Toc26411">1.代码量对比………………………………………………………………………. 16</a></p>
+<p><a href="#_Toc11863">2.DAG（有向无环图）构建……………………………………………………… 16</a></p>
+<p><a href="#_Toc4411">2.状态管理对比……………………………………………………………………. 16</a></p>
+<p><a href="#_Toc1671">2．时间窗口的探讨…………………………………………………………………………. 17</a></p>
+<p><a href="#_Toc14124">1.介绍时间窗口…………………………………………………………………………. 17</a></p>
+<p><a href="#_Toc29780">1.滚动窗口（Tumbling  Window）……………………………………………. 17</a></p>
+<p><a href="#_Toc3464">2.滑动窗口（Sliding Window）……………………………………………….. 18</a></p>
+<p><a href="#_Toc22039">2.时间窗口的单词计数例子……………………………………………………………. 18</a></p>
+<p><a href="#_Toc27988">3.Storm/Jstorm的窗口机制需要解决的问题………………………………………. 24</a></p>
+<p><a href="#_Toc3214">1.Bolt不带消息时间……………………………………………………………… 24</a></p>
+<p><a href="#_Toc6396">2.乱序消息的处理问题……………………………………………………………. 24</a></p>
+<p><a href="#_Toc10895">3.窗口内存不足问题………………………………………………………………. 25</a></p>
+<p><a href="#_Toc12717">4.窗口状态管理……………………………………………………………………. 26</a></p>
+<p><a href="#_Toc1916">5. 与Spark Streaming 对比…………………………………………………… 26</a></p>
+<p><a href="#_Toc10375">3.SQL引擎的支持…………………………………………………………………………… 26</a></p>
+<p><a href="#_Toc29232">1. SQL引擎优点……………………………………………………………………….. 27</a></p>
+<p><a href="#_Toc4679">2.利用原SQL语句对项目进行改造…………………………………………………… 27</a></p>
+<p><a href="#_Toc28797">4.开发成本比较……………………………………………………………………………… 28</a></p>
+<p><a href="#_Toc14682">1.语言抽象程度…………………………………………………………………………. 28</a></p>
+<p><a href="#_Toc6005">2.框架通用性比较………………………………………………………………………. 29</a></p>
+<p><a href="#_Toc27005">2.开发人员熟悉程度……………………………………………………………………. 29</a></p>
+<p><a href="#_Toc11023">3.后期扩展和维护………………………………………………………………………. 30</a></p>
+<p><a href="#_Toc2380">4.代码重用………………………………………………………………………………. 30</a></p>
+<p><a href="#_Toc26602">5.结论……………………………………………………………………………………. 30</a></p>
+<p><a href="#_Toc31097">5.从架构说起………………………………………………………………………………… 31</a></p>
+<p><a href="#_Toc12353">1.通过消息队列实现……………………………………………………………………. 31</a></p>
+<p><a href="#_Toc11901">2.回顾窗口机制…………………………………………………………………………. 32</a></p>
+<p><a href="#_Toc23873">3.回顾Storm/Jstorm的 Trident………………………………………………………. 32</a></p>
+<p><a href="#_Toc24827">4.回顾Storm/Jstorm的SQL引擎开发……………………………………………….. 33</a></p>
+<p><a href="#_Toc16491">5.与Spark架构对比……………………………………………………………………. 34</a></p>
+<p><a href="#_Toc21049">6.Storm/Jstorm程序开发中的难点………………………………………………………. 35</a></p>
+<p><a href="#_Toc31907">7.结论………………………………………………………………………………………… 37</a></p>
+<p><a href="#_Toc19797">8.引用和参考文档…………………………………………………………………………… 37</a></p>
+<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>这篇文章一开始通过单词计数的例子向大家展示大数据框架开发的不同，让大家对各个框架的架构和编写应用程序有初步的印象，在单词计数例子的对比中发现各个架构中一些初步的不同。</p>
+<p>随后描述的是Storm/Jstorm在开发复杂应用时将会遇到的一些问题，有些容易解决，有些将会难以解决，这个时候怎么办，首先关注的是在Storm/Jstorm中如何处理这些问题，然后探讨为什么会存在这些问题，Spark/flink会不会存在同样的问题，经过比较，发现这些问题只在Storm/Jstorm中存在，这时候需要回归到框架模型，架构上进行分析。</p>
+<p>然后我们会发现Storm/Jstorm在实现复杂功能（比如窗口机制）为什么比Spark更困难，Storm/Jstorm的支持SQL开发为什么还是处于实验状态，其实这些都已经由Storm/Jstorm的底层模型决定了。</p>
+<p>同时文章还给出Storm/Jstorm与Spark开发成本上的对比，最后将给出Storm/Jstorm的适应场景。</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>经过在公司这段时间对于Storm/Jstorm的摸索，熟悉了Storm/Jstorm的处理模型和Spout/Bolt/Topology组织结构，也深入了解了Storm/Jstorm的高级抽象工具Trident, Storm/Jstorm 分布式调用DRPC, 阅读了有关Storm/Jstorm 窗口机制的处理官方文档，以及处于实验状态的Storm/Storm SQL。</p>
+<p>随着对Storm/Jstorm越来越深入的了解，逐渐发现了一些Storm/Jstorm本身的局限性，尤其是在处理一些任务量大，任务复杂的情况时，Storm/Jstorm对此有些力不从心，开发人员可能面临束手无策的局面。</p>
+<p>本文结合自身Spark的使用经验，没有对比就没法发现其中的巨大区别，相比Spark， Storm/Jstorm有它自己的优势，比如速度快（毫秒级别，Spark是秒级别），但是更多的是发现Storm/Jstorm有许多不足，各种支持情况缺乏，更多问题需要去面对，导致开发效率必将远不如Spark , 开发成本确远远超过Spark进行开发，担忧用Storm/Jstorm进行开发是否能按时完成开发任务，这也是我开始写这篇文章的初衷。 </p>
+<p>本来想等更深入的了解Storm/Jstorm后再写，但是因为项目即将启动，所以不得不抓紧时间完成，由于本人对Storm/Jstorm只是接触到皮毛，依然缺乏足够深入的了解，再加上时间仓促，文章难免有观点错误，欢迎指正。</p>
+<h1 id="1．从单词计数例子开始"><a href="#1．从单词计数例子开始" class="headerlink" title="1．从单词计数例子开始"></a>1．从单词计数例子开始</h1><p>为避免枯燥繁琐的介绍，首先以一个单词计数的例子作为文章的开头，让大家先有个直观的印象，通过例子介绍其中的原理架构，后续再做详细的探讨，同时文章各个地方会用到单词计数的例子作为解说，所以希望你能尽量理解单词计数例子的架构和代码，对阅读理解本文很有必要。</p>
+<h2 id="1-Storm-Jstorm的架构和示例"><a href="#1-Storm-Jstorm的架构和示例" class="headerlink" title="1.Storm/Jstorm的架构和示例"></a>1.Storm/Jstorm的架构和示例</h2><p>我们需要创建一个简单的Spout，它生成要传输到Bolt的句子，将句子分解为单词，然后生成另一个Bolt，它会在单词流过时对其进行计数。</p>
+<p>每个阶段的输出如下图所示。</p>
+<p> <img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/1.png" alt="storm"></p>
+<p><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/storm1.png" alt="storm"></p>
+<p>代码示例,我们需要创建三个类，一个main方法</p>
+<p>第一步，创建发送消息的spout</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class RandomSentenceSpout extends BaseRichSpout &#123;</span><br><span class="line">  SpoutOutputCollector _collector;</span><br><span class="line">  Random _rand;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">  @Override</span><br><span class="line">  public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) &#123;</span><br><span class="line">    _collector &#x3D; collector;</span><br><span class="line">    _rand &#x3D; new Random();</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  @Override</span><br><span class="line">  public void nextTuple() &#123;</span><br><span class="line">    Utils.sleep(100);</span><br><span class="line">    String[] sentences &#x3D; new String[]&#123; &quot;the cow jumped over the moon&quot;, &quot;an apple a day keeps the doctor away&quot;,</span><br><span class="line">        &quot;four score and seven years ago&quot;, &quot;snow white and the seven dwarfs&quot;, &quot;i am at two with nature&quot; &#125;;</span><br><span class="line">    String sentence &#x3D; sentences[_rand.nextInt(sentences.length)];</span><br><span class="line">    _collector.emit(new Values(sentence));</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  @Override</span><br><span class="line">  public void ack(Object id) &#123;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  @Override</span><br><span class="line">  public void fail(Object id) &#123;</span><br><span class="line">  &#125;</span><br><span class="line"> </span><br><span class="line">  @Override</span><br><span class="line">  public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</span><br><span class="line">    declarer.declare(new Fields(&quot;word&quot;));</span><br><span class="line">  &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二步，创建分割单词的Bolt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static class SplitSentence extends BaseBasicBolt &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</span><br><span class="line">      declarer.declare(new Fields(&quot;word&quot;));</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public Map&lt;String, Object&gt; getComponentConfiguration() &#123;</span><br><span class="line">      return null;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public void execute(Tuple tuple, BasicOutputCollector basicOutputCollector) &#123;</span><br><span class="line">      String sentence &#x3D; tuple.getStringByField(&quot;sentence&quot;);</span><br><span class="line">      String words[] &#x3D; sentence.split(&quot;\\s+&quot;);</span><br><span class="line">      for (String w : words) &#123;</span><br><span class="line">        basicOutputCollector.emit(new Values(w));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三步，创建计数的Bolt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static class WordCount extends BaseBasicBolt &#123;</span><br><span class="line">    Map&lt;String, Integer&gt; counts &#x3D; new HashMap&lt;String, Integer&gt;();</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void execute(Tuple tuple, BasicOutputCollector collector) &#123;</span><br><span class="line">      String word &#x3D; tuple.getString(0);</span><br><span class="line">      Integer count &#x3D; counts.get(word);</span><br><span class="line">      if (count &#x3D;&#x3D; null)</span><br><span class="line">        count &#x3D; 0;</span><br><span class="line">      count++;</span><br><span class="line">      counts.put(word, count);</span><br><span class="line">      collector.emit(new Values(word, count));</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    @Override</span><br><span class="line">    public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</span><br><span class="line">      declarer.declare(new Fields(&quot;word&quot;, &quot;count&quot;));</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后构建topology,定义DAG(有向无环图）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    TopologyBuilder builder &#x3D; new TopologyBuilder();</span><br><span class="line">    builder.setSpout(&quot;spout&quot;, new RandomSentenceSpout(), 5);</span><br><span class="line">    builder.setBolt(&quot;split&quot;, new SplitSentence(), 8).shuffleGrouping(&quot;spout&quot;);</span><br><span class="line">    builder.setBolt(&quot;count&quot;, new WordCount(), 12).fieldsGrouping(&quot;split&quot;, new Fields(&quot;word&quot;));</span><br><span class="line"> </span><br><span class="line">    Config conf &#x3D; new Config();</span><br><span class="line">    conf.setDebug(true);</span><br><span class="line"> </span><br><span class="line">    if (args !&#x3D; null &amp;&amp; args.length &gt; 0) &#123;</span><br><span class="line">      conf.setNumWorkers(3);</span><br><span class="line"> </span><br><span class="line">      StormSubmitter.submitTopologyWithProgressBar(args[0], conf, builder.createTopology());</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      conf.setMaxTaskParallelism(3);</span><br><span class="line">      LocalCluster cluster &#x3D; new LocalCluster();</span><br><span class="line">      cluster.submitTopology(&quot;word-count&quot;, conf, builder.createTopology());</span><br><span class="line">      Thread.sleep(10000);</span><br><span class="line">      cluster.shutdown();</span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个由spout/bolt构成的组合引擎，从这个例子中可以看出，仅仅是创建一个简单的统计单词个数的topology,代码量非常多。</p>
+<h2 id="2-Storm-Jstorm-Trident的架构和示例"><a href="#2-Storm-Jstorm-Trident的架构和示例" class="headerlink" title="2. Storm/Jstorm Trident的架构和示例"></a>2. Storm/Jstorm Trident的架构和示例</h2><p>Trident是Storm/Jstorm的高级抽象组件，用于在Storm/Jstorm之上进行实时计算，所以架构依然是Storm/Jstorm本身的架构，相比Storm/Jstorm，Trident实现了状态管理和抽象编程。并且提供了有且只有一次（exactly-once）的处理语义。</p>
+<p>一个Trident 被编译成Storm/Jstorm spouts / bolt执行的图（不是单词计数的图）</p>
+<p>图片来源于 <a href="http://storm.apache.org/releases/current/Trident-tutorial.html" target="_blank" rel="noopener">http://storm.apache.org/releases/current/Trident-tutorial.html</a></p>
+<p><img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/2.png" alt="storm"><br><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/2.png" alt="storm"></p>
+<p>让我们看一下Trident的单词计数的例子。例子来源于 <a href="http://storm.apache.org/releases/current/Trident-tutorial.html" target="_blank" rel="noopener">http://storm.apache.org/releases/current/Trident-tutorial.html</a> 。</p>
+<p>这个例子将做两件事：</p>
+<p>1.从输入的句子流计算流式字数</p>
+<p>2.实现查询以获取单词列表的计数总和</p>
+<p>出于说明的目的，此示例将从以下来源读取无限的句子流：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FixedBatchSpout spout &#x3D; new FixedBatchSpout(new Fields(&quot;sentence&quot;), 3,</span><br><span class="line">               new Values(&quot;the cow jumped over the moon&quot;),</span><br><span class="line">               new Values(&quot;the man went to the store and bought some candy&quot;),</span><br><span class="line">               new Values(&quot;four score and seven years ago&quot;),</span><br><span class="line">               new Values(&quot;how many apples can you eat&quot;));spout.setCycle(true);</span><br></pre></td></tr></table></figure>
+
+<p>这个Spout一遍又一遍地循环遍历这组句子以产生句子流。这是进行计算的流式字数统计的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">TridentTopology topology &#x3D; new TridentTopology();        TridentState wordCounts &#x3D;</span><br><span class="line">     topology.newStream(&quot;spout1&quot;, spout)</span><br><span class="line">       .each(new Fields(&quot;sentence&quot;), new Split(), new Fields(&quot;word&quot;))</span><br><span class="line">       .groupBy(new Fields(&quot;word&quot;))</span><br><span class="line">       .persistentAggregate(new MemoryMapState.Factory(), new Count(), new Fields(&quot;count&quot;) </span><br><span class="line">       .parallelismHint(6);</span><br></pre></td></tr></table></figure>
+
+<p>Trident又是如何做状态管理的，上述例子是通过MemoryMapState来保存单词个数状态的。状态即可以保留在topology的内部，比如说内存和HDFS，也可以放到外部存储当中，比如说Memcached或者Cassandra</p>
+<p>Split类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class Split extends BaseFunction &#123;</span><br><span class="line">   public void execute(TridentTuple tuple, TridentCollector collector) &#123;</span><br><span class="line">       String sentence &#x3D; tuple.getString(0);</span><br><span class="line">       for(String word: sentence.split(&quot; &quot;)) &#123;</span><br><span class="line">           collector.emit(new Values(word));                </span><br><span class="line">       &#125;</span><br><span class="line">   &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到相比原生的Storm/Jstorm，构建topology时采用了部分代码量（比如直接利用groupBy分组），但是其它功能的实现（split和count）依然需要像Storm/Jstorm一样继承类实现方法来编写代码。</p>
+<h2 id="3-Spark架构和示例"><a href="#3-Spark架构和示例" class="headerlink" title="3.Spark架构和示例"></a>3.Spark架构和示例</h2><p>Spark体系结构基于RDD或弹性分布式数据集的概念 ，分布式的不可变数据，它们被拆分并发送给Worker，由执行者执行。它与MapReduce概念非常相似，即 对多个节点进行控制处理和委托处理，每个节点都进行自己的处理，然后将结果组合起来，形成完整的最终结果。对于Apache Spark，RDD是不可变的（<strong>非常适合函数式编程</strong>），因此没有工作节点可以修改它; 只处理它并输出一些结果，<strong>非常适合基于功能和集合理论的编程模型（如SQL）。</strong></p>
+<p><img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/3.png" alt=""><br><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/3.png" alt=""></p>
+<p>Spark 单词计数的例子（来源于 <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/streaming-programming-guide.html</a> ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Create a local StreamingContext with two working thread and batch interval of 1 second.&#x2F;&#x2F; The master requires 2 cores to prevent a starvation scenario.</span><br><span class="line">val conf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;NetworkWordCount&quot;)</span><br><span class="line">val ssc &#x3D; new StreamingContext(conf, Seconds(1))</span><br><span class="line">&#x2F;&#x2F; Create a DStream that will connect to hostname:port, like localhost:9999</span><br><span class="line">val lines &#x3D; ssc.socketTextStream(&quot;localhost&quot;, 9999)</span><br><span class="line">&#x2F;&#x2F; Split each line into words</span><br><span class="line">val words &#x3D; lines.flatMap(_.split(&quot; &quot;))</span><br><span class="line">val pairs &#x3D; words.map(word &#x3D;&gt; (word, 1))</span><br><span class="line">val wordCounts &#x3D; pairs.reduceByKey(_ + _)</span><br><span class="line">&#x2F;&#x2F; Print the first ten elements of each RDD generated in this DStream to the console</span><br><span class="line">wordCounts.print()</span><br><span class="line">ssc.start()             &#x2F;&#x2F; Start the computation</span><br><span class="line">ssc.awaitTermination()  &#x2F;&#x2F; Wait for the computation to terminate</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这段代码基本上只是从文件中读取，用空格分割单词，创建一个元组，其中包含每个单词和一个数字（1开头），然后将它们全部放在一起并添加计数。很有必要理解上面的代码，初步见识函数式编程的魅力，后面会有更多函数式编程的论述，你也可以从网上阅读函数式编程的资料，个人认为，函数式编程是大数据分布式开发必备的技能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val words &#x3D; lines.flatMap(_.split(&quot; &quot;))</span><br></pre></td></tr></table></figure>
+
+<p><strong>split**</strong>方法替代了Storm/Jstorm和Trident中的Split类**</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val wordCounts &#x3D; pairs.reduceByKey(_ + _)</span><br></pre></td></tr></table></figure>
+
+<p><strong>reduceByKey**</strong>方法替代了Storm/Jstorm和Trident中的Count类**</p>
+<p><strong>在命令式编程中创建一个类才能解决的问题，在函数式编程只需要一个方法。</strong></p>
+<p><strong>而且这些代码都没有明确涉及DAG本身(**</strong>Storm/Jstorm<strong><strong>需要手动构建DAG本身，</strong></strong>Storm/Jstorm<strong><strong>例子中的</strong></strong>topology<strong><strong>就是在构建DAG</strong></strong>，构建<strong><strong>DAG</strong></strong>花费的时间随DAG的复杂情况呈几何上升<strong>**)，Spark框架自动实现被调用函数的DAG。</strong></p>
+<p><strong>因为Spark使用声明引擎**</strong>(<strong>**用函数式编程)，代码只定义了需要对数据执行的函数。仅几行代码就解决了单词计数，甚至可以将这些代码合并成一行。</strong></p>
+<h2 id="3-Flink架构和示例"><a href="#3-Flink架构和示例" class="headerlink" title="3.Flink架构和示例"></a>3.Flink架构和示例</h2><p> Flink使用Streams和Transformations的概念，通过其系统构成数据流。数据通过“源”进入系统并通过“接收器”退出</p>
+<p><img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/4.png" alt=""><br><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/4.png" alt=""></p>
+<p>flink单词计数的例子 （来源于 <a href="https://blog.scottlogic.com/2018/07/06/comparing-streaming-frameworks-pt1.html" target="_blank" rel="noopener">https://blog.scottlogic.com/2018/07/06/comparing-streaming-frameworks-pt1.html</a>  ）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) throws Exception &#123;</span><br><span class="line">    &#x2F;&#x2F; set up the streaming execution environment</span><br><span class="line">    final StreamExecutionEnvironment env &#x3D; StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">    String textPath &#x3D; &quot;&lt;text file name&gt;&quot;;</span><br><span class="line">    DataStreamSource&lt;String&gt; text &#x3D; env.readTextFile(textPath);</span><br><span class="line">    DataStream&lt;Tuple2&lt;String, Integer&gt;&gt; counts &#x3D;</span><br><span class="line">            &#x2F;&#x2F; split up the lines into pairs (2-tuples) containing: (word,1)</span><br><span class="line">            text.flatMap(new Tokenizer())</span><br><span class="line">                    &#x2F;&#x2F; group by the tuple field &quot;0&quot; and sum up tuple field &quot;1&quot;</span><br><span class="line">                    .keyBy(0).sum(1);</span><br><span class="line"> </span><br><span class="line">    counts.writeAsText(&quot;&lt;output directory&gt;&#x2F;wcflink.results&quot;);</span><br><span class="line">    env.execute(&quot;Streaming WordCount&quot;);&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建Tokenizer类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static final class Tokenizer implements FlatMapFunction&lt;String, Tuple2&lt;String, Integer&gt;&gt; &#123;</span><br><span class="line">   private static final long serialVersionUID &#x3D; 1L;</span><br><span class="line">   @Override</span><br><span class="line">   public void flatMap(String value, Collector&lt;Tuple2&lt;String, Integer&gt;&gt; out)</span><br><span class="line">           throws Exception &#123;</span><br><span class="line">       String[] tokens &#x3D; value.toLowerCase().split(&quot;\\s+&quot;);</span><br><span class="line">       for (String token : tokens) &#123;</span><br><span class="line">           if (token.length() &gt; 0) &#123;</span><br><span class="line">               out.collect(new Tuple2&lt;String, Integer&gt;(token, 1));</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Flink也使用声明引擎，DAG由转换的顺序暗示（flatmap - &gt; keyby - &gt; sum）。如果引擎检测到转换不依赖于先前转换的输出，则它可以重新排序转换。</p>
+<h2 id="4-单词计数简单总结"><a href="#4-单词计数简单总结" class="headerlink" title="4.单词计数简单总结"></a>4.单词计数简单总结</h2><h3 id="1-代码量对比"><a href="#1-代码量对比" class="headerlink" title="1.代码量对比"></a>1.代码量对比</h3><p>通过上述例子，我们可以简单的看出代码量Storm/Jstorm &gt;&gt; Storm/Jstorm Trident &gt; flink &gt; Spark Streaming ,这是因为Spark Streaming/flink 采用了更高级的抽象编程（声明式编程或函数式编程），所以代码简洁度更高、代码量更少。更为重要的是函数式编程在实现聚合、Join等复杂操作时非常容易实现（天然支持）。</p>
+<h3 id="2-DAG（有向无环图）构建"><a href="#2-DAG（有向无环图）构建" class="headerlink" title="2.DAG（有向无环图）构建"></a>2.DAG（有向无环图）构建</h3><p>流式处理流程是一个有向无环图，图中展示了了数据流的处理流程。<strong>Storm/Jstorm需要我们手动构建DAG, 包括spout/Bolt的个数、并发度设置都需要我们自定义，对于Spark框架，由Spark根据代码为我们自动构建。</strong></p>
+<h3 id="2-状态管理对比"><a href="#2-状态管理对比" class="headerlink" title="2.状态管理对比"></a>2.状态管理对比</h3><p>Storm/Jstorm没有内置的状态管理，框架能做的事很少，基本是接收消息然后发送到下一个bolt，需要自己在程序中定义局部状态，在创建计数的Bolt中，我们自己设置hashMap作为计数的存储状态</p>
+<p><code></code>Map<strong>&lt;</strong>String<strong>,</strong><code></code>Integer<strong>&gt;</strong><code></code>counts<code></code><strong>=</strong><code></code><strong>new</strong><code></code>HashMap<strong>&lt;</strong>String<strong>,</strong><code></code>Integer<strong>&gt;();</strong></p>
+<p>如果需要更为复杂的状态管理，我们不可能全部自己去实现状态管理，而聚合，Join等复杂操作是需要状态管理的，如果框架不能提供，依靠自己实现状态管理，程序复杂度将成指数级别上升甚至导致项目开发失败，所以，Storm/Jstorm 框架只适合处理任务量小，线性型的任务</p>
+<p>由于Storm/Jstorm Trident的出现改善了上述情况，Trident提供了状态管理，所以我们可以用Trident实现聚合，Join等操作，但是因为Storm/Jstorm 架构中的spout/bolt是单独分散的，所以<strong>用Trident实现状态管理，必然以牺牲很大性能为代价</strong>。</p>
+<p><strong>Spark</strong> <strong>采用函数式编程，函数式编程本身拥有聚合，join等复杂操作的api</strong>，这些api自动实现状态管理，在程序中我们只需要编写函数式编程然后在代码中定义如何执行，Spark 还拥有各种上下文（Sparkcontext, SparkStreamingcontext）作为全局的状态管理。</p>
+<h1 id="2．时间窗口的探讨"><a href="#2．时间窗口的探讨" class="headerlink" title="2．时间窗口的探讨"></a>2．时间窗口的探讨</h1><h2 id="1-介绍时间窗口"><a href="#1-介绍时间窗口" class="headerlink" title="1.介绍时间窗口"></a>1.介绍时间窗口</h2><p>首先我们需要理解时间窗口，时间窗口分为2种类型，</p>
+<h3 id="1-滚动窗口（Tumbling-Window）"><a href="#1-滚动窗口（Tumbling-Window）" class="headerlink" title="1.滚动窗口（Tumbling Window）"></a>1.滚动窗口（Tumbling Window）</h3><p>每个Tuple只能属于其中一个滚动窗口，一个Tuple不能同时是两个或者两个以上窗口的元素。比如下面我们以消息到达的时间来划分成一个个滚动窗口，窗口大小是5秒:</p>
+<p>第一个窗口w1包含的是0<del>5th到达的数据，第二窗口w2包含的是5</del>10th秒到达的数据，第三个窗口包含的是10~15th秒到达的数据。每个窗口每隔5秒被计算，窗口和窗口直接没有重叠。</p>
+<h3 id="2-滑动窗口（Sliding-Window）"><a href="#2-滑动窗口（Sliding-Window）" class="headerlink" title="2.滑动窗口（Sliding Window）"></a>2.滑动窗口（Sliding Window）</h3><p>tuples被划分到一个个滑动窗口，窗口滑动的间隔是sliding interval。每个窗口间会有重叠，重叠部分的tuple可以先后属于前后两个窗口。比如下面我们以事件处理时间划分滑动窗口，窗口大小是10秒，滑动间隔是5秒：</p>
+<p>第一个窗口w1包含的是0-10th到达的数据，第二窗口w2包含的是5-15th秒到达的数据。消息时间e3-e6都是窗口w1和w2的一部分。在15th秒时，窗口w2会被计算，这时候e1 e2的数据会会过期，会从队列中移除。</p>
+<h2 id="2-时间窗口的单词计数例子"><a href="#2-时间窗口的单词计数例子" class="headerlink" title="2.时间窗口的单词计数例子"></a>2.时间窗口的单词计数例子</h2><p>1.Storm/Jstorm的word count的例子，</p>
+<p>为了叙述方便，我们把无关代码都精简了，只关注如何定义window以及用户的window实现：</p>
+<p>代码来源于 <a href="http://jstorm.io/ProgrammingGuide_cn/NewWindow.html" target="_blank" rel="noopener">http://jstorm.io/ProgrammingGuide_cn/NewWindow.html</a></p>
+<p>这段代码你不需要阅读，建议直接跳过这段代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line">package com.alipay.dw.jstorm.example.newindow;</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F; import xxx</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line"> </span><br><span class="line">public class FastWordTimeWindowTopology &#123;</span><br><span class="line">    private static Logger LOG &#x3D; LoggerFactory.getLogger(FastWordTimeWindowTopology.class);</span><br><span class="line"> </span><br><span class="line">    public static class FastRandomSentenceSpout implements IRichSpout &#123;</span><br><span class="line">        SpoutOutputCollector _collector;</span><br><span class="line">        Random _rand;</span><br><span class="line">        long startTime;</span><br><span class="line">        long sentNum &#x3D; 0;</span><br><span class="line">        long maxSendNum;</span><br><span class="line">        int index &#x3D; 0;</span><br><span class="line"> </span><br><span class="line">        private static final String[] CHOICES &#x3D; &#123;</span><br><span class="line">                &quot;JStorm is a distributed and fault-tolerant realtime computation system.&quot;,</span><br><span class="line">                &quot;Whenever a worker process crashes, &quot;,</span><br><span class="line">                &quot;the scheduler embedded in the JStorm instance immediately spawns a new worker process to take the place of the failed one.&quot;,</span><br><span class="line">                &quot; The Acking framework provided by JStorm guarantees that every single piece of data will be processed at least once.&quot;&#125;;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) &#123;</span><br><span class="line">            _collector &#x3D; collector;</span><br><span class="line">            _rand &#x3D; new Random();</span><br><span class="line">            startTime &#x3D; System.currentTimeMillis();</span><br><span class="line">            maxSendNum &#x3D; JStormUtils.parseLong(conf.get(&quot;max.send.num&quot;), 1000L);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void nextTuple() &#123;</span><br><span class="line">            if (sentNum &gt;&#x3D; maxSendNum) &#123;</span><br><span class="line">                JStormUtils.sleepMs(1);</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line"> </span><br><span class="line">            sentNum++;</span><br><span class="line">            String sentence &#x3D; CHOICES[index++];</span><br><span class="line">            if (index &gt;&#x3D; CHOICES.length) &#123;</span><br><span class="line">                index &#x3D; 0;</span><br><span class="line">            &#125;</span><br><span class="line">            _collector.emit(new Values(sentence));</span><br><span class="line">            JStormUtils.sleepMs(10);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</span><br><span class="line">            declarer.declare(new Fields(&quot;sentence&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public static class SplitSentence implements IRichBolt &#123;</span><br><span class="line">        OutputCollector collector;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void execute(Tuple tuple) &#123;</span><br><span class="line">            String sentence &#x3D; tuple.getString(0);</span><br><span class="line">            for (String word : sentence.split(&quot;\\s+&quot;)) &#123;</span><br><span class="line">                collector.emit(new Values(word));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void declareOutputFields(OutputFieldsDeclarer declarer) &#123;</span><br><span class="line">            declarer.declare(new Fields(&quot;word&quot;));</span><br><span class="line">        &#125;</span><br><span class="line">   </span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    &#x2F;&#x2F; window的实现，注意它从BaseWindowedBolt派生，因为构造window时需要BaseWindowedBolt。</span><br><span class="line">    public static class WordCount extends BaseWindowedBolt&lt;Tuple&gt; &#123;</span><br><span class="line">        OutputCollector collector;</span><br><span class="line"> </span><br><span class="line">        @Override</span><br><span class="line">        public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) &#123;</span><br><span class="line">            this.collector &#x3D; collector;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; 初始化window状态，对于word count的例子，我们需要的是一个word -&gt; count的map</span><br><span class="line">        @Override</span><br><span class="line">        public Object initWindowState() &#123;</span><br><span class="line">            return new HashMap&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; 执行消息，更新word count</span><br><span class="line">        @Override</span><br><span class="line">        public void execute(Tuple tuple, Object state, TimeWindow window) &#123;</span><br><span class="line">            Map&lt;String, Integer&gt; counts &#x3D; (Map&lt;String, Integer&gt;) state;</span><br><span class="line">            String word &#x3D; tuple.getString(0);</span><br><span class="line">            Integer count &#x3D; counts.get(word);</span><br><span class="line">            if (count &#x3D;&#x3D; null)</span><br><span class="line">                count &#x3D; 0;</span><br><span class="line">            counts.put(word, ++count);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; purge窗口。这里我们就简单地打印出这个窗口所有消息的word count。</span><br><span class="line">        @Override</span><br><span class="line">        public void purgeWindow(Object state, TimeWindow window) &#123;</span><br><span class="line">            Map&lt;String, Integer&gt; counts &#x3D; (Map&lt;String, Integer&gt;) state;</span><br><span class="line">            System.out.println(&quot;purging window: &quot; + window);</span><br><span class="line">            System.out.println(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;);</span><br><span class="line">            for (Map.Entry&lt;String, Integer&gt; entry : counts.entrySet()) &#123;</span><br><span class="line">                System.out.println(&quot;word: &quot; + entry.getKey() + &quot;\tcount: &quot; + entry.getValue());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(&quot;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&quot;);</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    static Config conf &#x3D; JStormHelper.getConfig(null);</span><br><span class="line"> </span><br><span class="line">    public static void test() &#123;</span><br><span class="line">        TopologyBuilder builder &#x3D; new TopologyBuilder();</span><br><span class="line">        builder.setSpout(&quot;spout&quot;, new FastRandomSentenceSpout(), 1);</span><br><span class="line">        builder.setBolt(&quot;split&quot;, new SplitSentence(), 1).shuffleGrouping(&quot;spout&quot;);</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; 构造一个大小为1分钟，每隔500ms滑动一次的窗口</span><br><span class="line">        builder.setBolt(&quot;count&quot;, new WordCount()</span><br><span class="line">                        .timeWindow(Time.seconds(1L), Time.milliseconds(500L)),</span><br><span class="line">                1).fieldsGrouping(&quot;split&quot;, new Fields(&quot;word&quot;));</span><br><span class="line"> </span><br><span class="line">        String[] className &#x3D; Thread.currentThread().getStackTrace()[1].getClassName().split(&quot;\\.&quot;);</span><br><span class="line">        String topologyName &#x3D; className[className.length - 1];</span><br><span class="line">        JStormHelper.runTopology(builder.createTopology(), topologyName, conf, 60,</span><br><span class="line">                    new JStormHelper.CheckAckedFail(conf), true);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        conf &#x3D; JStormHelper.getConfig(args);</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上述代码你不需要你阅读，贴上上述代码的目的只是为了和Spark Streaming的代码进行对比</p>
+<p>在Spark中实现时间窗口非常简单，比如在wordcout的例子上实现时间窗口的功能我们只需要在Spark Streaming单词计数的例子上更改一行代码</p>
+<p>代码来源于</p>
+<p> <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html" target="_blank" rel="noopener">https://spark.apache.org/docs/latest/streaming-programming-guide.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val windowedWordCounts &#x3D; pairs.reduceByKeyAndWindow((a:Int,b:Int) &#x3D;&gt; (a + b), Seconds(30), Seconds(10))</span><br></pre></td></tr></table></figure>
+
+<p>每隔10秒获取最后30秒的数据。</p>
+<p><strong>就是这么简单，你甚至不需要重复开发，但是在Storm/Jstorm中流处理和批处理是不同的，需要编写不同的代码，而且代码量之多超乎想象，对于窗口的批处理代码量更是令人咂舌。</strong></p>
+<p>为什么Storm/Jstorm的窗口机制代码会这么多，因为它需要解决很多问题，导致代码量急剧上升，下面将探讨Storm/Jstorm窗口机制存在的一些必须要处理的问题。</p>
+<h2 id="3-Storm-Jstorm的窗口机制需要解决的问题"><a href="#3-Storm-Jstorm的窗口机制需要解决的问题" class="headerlink" title="3.Storm/Jstorm的窗口机制需要解决的问题"></a>3.Storm/Jstorm的窗口机制需要解决的问题</h2><h3 id="1-Bolt不带消息时间"><a href="#1-Bolt不带消息时间" class="headerlink" title="1.Bolt不带消息时间"></a>1.Bolt不带消息时间</h3><p>时间窗口是在bolt中进行处理，把tuple为单位的处理逻辑改成以一个窗口为单位的处理逻辑。在窗口执行过程中每个tuple对应一个时间戳，默认情况下Window中涉及的时间都是指当前消息处理时间，这时候每个tuple对应的时间戳是通过System.currentTime()生成的；但Storm/Jstorm 以支持以消息本身的时间（event time）来定义窗口、执行窗口操作，这时候每个tuple必须携带一个时间戳，且消息携带的时间戳必须以预设好的字段来标识。</p>
+<h3 id="2-乱序消息的处理问题"><a href="#2-乱序消息的处理问题" class="headerlink" title="2.乱序消息的处理问题"></a>2.乱序消息的处理问题</h3><p>如果说上面的问题通过添加字段来解决对你来说太简单了，那么这个问题可能对你来说有点困难。</p>
+<p> 当用户的处理节点是通过基于Event Time的时间窗口来处理数据时（如果按每个bolt接收消息的时间进行处理则结果毫无用处），它必须在确定所有属于该时间窗口的消息全部流入操作节点后才能开始数据处理。但是由于消息可能是乱序的（因为spout/bolt是分散并行的，而且只负责发送和接收收据tuple，tuple到达多个相同的bolt时间会不同，甚至超过设置的窗口时间），所以操作节点无法直接确认何时所有属于该时间窗口的消息全部流入此操作符。这时候Storm/Jstorm以和flink一样，引入了WaterMark的概念。</p>
+<p>WaterMark本身也是一条消息，包含一个时间戳，Storm/Jstorm使用WaterMark标记所有小于该时间戳的消息都已流入，Storm/Jstorm会会根据已经流入该节点的消息定时生成一个包含该时间戳的WaterMark，插入到消息流中输出到Storm/Jstorm流处理系统中，Storm/Jstorm操作符按照时间窗口缓存所有流入的消息，当bolt节点处理到 WaterMark时，它对所有小于该WaterMark时间戳的时间窗口数据进行处理并发送到下一个处理节点。</p>
+<p>为了保证能够处理所有属于某个时间窗口的消息，bolt节点必须等到大于这个时间窗口的WaterMark之后才能开始对该时间窗口的消息进行处理，相对于基于消息处理时间的时间窗口，基于event time的窗口需要<strong>占用更多内存，且会直接影响消息处理的延迟时间</strong>。对此，一个可能的优化措施是，<strong>对于聚合类的操作，我们建议提前对部分消息进行聚合操作</strong>，当有属于该时间窗口的新消息流入时，基于之前的部分聚合结果继续计算，这样的话，只需缓存中间计算结果即可，无需缓存该时间窗口的所有消息。</p>
+<p>有关WaterMark的详细介绍及原理参照 <a href="http://jstorm.io/ProgrammingGuide_cn/AdvancedUsage/Window.html" target="_blank" rel="noopener">http://jstorm.io/ProgrammingGuide_cn/AdvancedUsage/Window.html</a></p>
+<h3 id="3-窗口内存不足问题"><a href="#3-窗口内存不足问题" class="headerlink" title="3.窗口内存不足问题"></a>3.窗口内存不足问题</h3><p>Storm/Jstorm的窗口机制最大的问题是所有窗口都需要憋数据，即，消息过来的时候，并不会触发窗口计算， 只是简单地把数据堆在内存中，一直到达触发窗口计算的条件，才会拿所有的数据进行计算。显然，这种设计是不实用的，窗口稍微大一点就会爆掉了。</p>
+<p>基于此，JStorm重新设计了窗口的实现，在<strong>2.3版本</strong>中开始提供对新窗口机制的实现。但是现在对方集群提供的版本是<strong>Jstorm2.1.1</strong>，也就是说现在这个问题我们还无法解决。</p>
+<h3 id="4-窗口状态管理"><a href="#4-窗口状态管理" class="headerlink" title="4.窗口状态管理"></a>4.窗口状态管理</h3><p>由于window处理节点的executor处理消息是以一个窗口为维度，如果其中窗口中的一条tuple处理失败，可能就会造成整个窗口所有数据replay。</p>
+<h3 id="5-与Spark-Streaming-对比"><a href="#5-与Spark-Streaming-对比" class="headerlink" title="5. 与Spark Streaming 对比"></a>5. 与Spark Streaming 对比</h3><p>恭喜你，如果你用Spark Streaming将不存在上述任何一个问题。</p>
+<p>针对消息乱序问题，Spark Streaming 在入口按窗口设置的时间一次读取窗口数据，然后进行处理，不需要像Bolt一样发送处理后的数据到下一个Bolt,也就不存在消息乱序，</p>
+<p>针对窗口状态管理，Spark Streaming 处理的是整个窗口的数据，而不是单个数据的处理，所以不存在单个数据处理失败，整个窗口重新计算。</p>
+<p>其实<strong>Storm/Jstorm的spout/bolt架构就不适合做窗口机制</strong>，后面我们将根据底层模型详细探讨。</p>
+<p>Storm/Jstorm的更新解决了部分问题，但是由于<strong>底层架构不同，可以说Storm/Jstorm解决的是Spark中不存在的问题</strong></p>
+<h1 id="3-SQL引擎的支持"><a href="#3-SQL引擎的支持" class="headerlink" title="3.SQL引擎的支持"></a>3.SQL引擎的支持</h1><p>Sql是一种声明式语言，属于更高一级的抽象，像数据库的sql语句一样，我们只需要关注获取什么数据，而不需要关注程序的获取过程，过程交由数据库内部去执行，</p>
+<h2 id="1-SQL引擎优点"><a href="#1-SQL引擎优点" class="headerlink" title="1. SQL引擎优点"></a>1. SQL引擎优点</h2><p>通过sql 可以 简化我们对数据的查询包括实现复杂的比较，过滤，统计，聚合，join等查询，可以用一句复杂的sql语句实现复杂的业务逻辑，比在代码中实现功能要简洁方便得多。一句SQL能解决的问题没有开发人员愿意写代码去解决。</p>
+<p><strong>SQL**</strong>引擎大大简化了程序的编写，增加了工作效率，同时降低了开发人员的门槛**</p>
+<p>然而从Storm官方文档可以看到Storm对于SQL的支持仍处于<code>experimental</code>实验 性质。</p>
+<p>Spark 中由于RDD是不可变的，因此没有工作节点可以修改它; 只处理它并输出一些结果，非常适合基于功能和集合理论的编程模型（如SQL）。<strong>Spark SQL**</strong>对Spark其它组件（比如Spark Streaming）也是原生支持<strong>，</strong>我们甚至可以在窗口机制中执行编写SQL语句。**</p>
+<h2 id="2-利用原SQL语句对项目进行改造"><a href="#2-利用原SQL语句对项目进行改造" class="headerlink" title="2.利用原SQL语句对项目进行改造"></a>2.利用原SQL语句对项目进行改造</h2><p>一些单机运行的老项目，由于业务扩展需要进行大数据改造，数据仓库不再是mysql或oracle, 如何把之前操作数据库编写的SQL语句进行分布式改造，有两种方式进行改造</p>
+<p>一是将原SQL语句还原成代码程序，编写代码实现原有SQL语句的功能，这种方式对于简单的SQL语句可以接受，但是对于聚合，join，嵌套查询等SQL语句，再还原成代码形式，不仅难度高而且编写程序将十分复杂。</p>
+<p>二是将SQL语句原封不动的移植到Spark SQL程序上，在这个过程中，我们只需要模拟创建视图表，然后执行原来的SQL语句，什么都不需要改变。</p>
+<p><strong>在Storm/Jstorm中我们只有第一种可以选择，Spark中可以方便的使用移植过来的SQL，大大降低开发成本，提高开发效率。</strong></p>
+<h1 id="4-开发成本比较"><a href="#4-开发成本比较" class="headerlink" title="4.开发成本比较"></a>4.开发成本比较</h1><p>本节将探讨使用Storm/Jstorm和Spark的开发成本，开发成本涉及到因素非常多，但是在大数据开发中，语言的抽象程度是第一位的，越抽象程序越简洁，越容易被重用 开发成本也就越低。排第二位的个人认为是框架的支持程度，一个好的框架首先是尽量让开发人员编写更少的代码，框架如果支持解析sql语句，开发就会容易许多倍。其它涉及开发成本的因素还有开发人员的熟悉程度，代码是否可以重用，后期扩展与维护等，下面我们一一探讨。</p>
+<h2 id="1-语言抽象程度"><a href="#1-语言抽象程度" class="headerlink" title="1.语言抽象程度"></a>1.语言抽象程度</h2><p>考察开发的语言抽象程度比较： 汇编语言 &lt; 命令式编程 &lt; 函数式编程 &lt; SQL</p>
+<p>SQL抽象程度最高， 函数式编程其次，命令式编程最低，语言的抽象程度和开发成本有什么关联呢，</p>
+<p>直观的从代码量来观察，抽象程度越高，代码量越小，所以SQL最小，函数式编程其次，命令式编程最多，编写代码量越少，开发成本越低。</p>
+<p>Storm/Jstorm一般用命令式编程开发，Storm/Jstorm Trident的main函数的实现了抽象编程，但是还不是语言层面的函数式编程，其它类和方法则是命令式编程。</p>
+<p>Spark不仅支持函数式编程，而且推荐你采用函数式编程，Spark还能让你在代码中使用sql语句进行查询，将返回的结果进行下一步的操作（Storm/Jstorm想都不敢想）。</p>
+<h2 id="2-框架通用性比较"><a href="#2-框架通用性比较" class="headerlink" title="2.框架通用性比较"></a>2.框架通用性比较</h2><p>Storm/Jstorm只能进行流处理，<strong>由于一个完整的应用程序，不仅需要流处理，还需要交互式处理（比如restful请求等）, 批处理（离线处理），迭代处理等，而这Spark都可以做到，所有的功能都可以集中在一个Spark程序中。而且Spark所有的组件都统一建立在抽象的RDD模型之上, 包括Spark SQL 和Spark Streaming ， 所以这些组件在一个程序中能够无缝兼容，互相原生支持。</strong></p>
+<h2 id="2-开发人员熟悉程度"><a href="#2-开发人员熟悉程度" class="headerlink" title="2.开发人员熟悉程度"></a>2.开发人员熟悉程度</h2><p>从开发人员熟悉程度来看，SQL和命令式编程只要是开发人员都了解并且非常熟悉，而对于函数式编程，大多数开发人员并不是很熟悉，甚至没有接触过。</p>
+<p>但是命令式编程在分布式程序开发中存在巨大的问题。平常命令式编程编写在单机上运行的程序是没有问题的，虽然我们要处理并发，加锁等问题，但是只在单机运行的程序中处理这些问题还不是特别困难。但是在分布式集群中，要处理的问题成指数级别上升，再通过命令式编程编写代码处理这些问题就不现实了，</p>
+<p>这个时候我们有两个选择，一种是采用框架来帮我们处理这些问题，比如Storm/Jstorm, 语言仍然是命令式，但是框架会帮你处理这些问题，我们依然只需要通过命令式编程实现业务逻辑。另外一个选择是提升抽象程度，采用函数式编程或SQL，让语言的底层代码来帮你处理这些问题，你只要通过api/sql描述你的目的。</p>
+<p>从上面的wordcout例子我们可以比较得出，虽然Storm/Jstorm框架已经简化了你的开发，但是你还是不得不继承各种类然后实现各种方法，尤其是处理join，统计，比较等复杂业务的时候，你需要花费巨大的精力来思考如何实现，并且无比繁琐，而这可能函数式编程一行代码就能解决，这就是编程中抽象的威力。</p>
+<p>可以看到，随着大数据分布式开发业务复杂度的提升，函数式编程、SQL、框架的组合是开发的趋势，大数据开发人员需要由命令式到函数式编程范式的转变。所以从开发人员熟悉的角度来说最好是能采用声明式的SQL（需要框架支持，不支持开发成本就很高），然后是函数式编程。而这Spark全部支持。</p>
+<h2 id="3-后期扩展和维护"><a href="#3-后期扩展和维护" class="headerlink" title="3.后期扩展和维护"></a>3.后期扩展和维护</h2><p>一个程序开发完成后，需要不断的添加新功能或者变更需求，如何用更加简单方便的添加是程序扩展要考虑的问题。在Storm/Jstorm中如果你需要添加新功能或者变更需求，你都需要改变 拓扑结构，重新构建DAG，然后编写业务代码，而在Spark中你只需要修改业务代码。</p>
+<h2 id="4-代码重用"><a href="#4-代码重用" class="headerlink" title="4.代码重用"></a>4.代码重用</h2><p>在Storm/Jstorm中，不允许为流处理和批处理应用相同的代码，比如<strong>流处理实现功能的代码在窗口机制内不能用！！！</strong>，需要再次进行开发。</p>
+<p>在Spark中，无论是流处理还是批处理都可以用相同的代码，因为Spark中的流处理实际上还是批处理。</p>
+<h2 id="5-结论"><a href="#5-结论" class="headerlink" title="5.结论"></a>5.结论</h2><p>开发成本不仅是每一个公司需要考虑的问题，也是每一个开发人员需要关注的问题，如何用最少的资源创造最大的效益，从上述的分析中，我们可以得出，是否支持SQL开发是降低开发成本的关键。这也是为什么许多大公司都要对大数据框架开发一套SQL, 比如Hive：把sql解析后用MapReduce 运行，SparkSQL：把sql解析后用Spark 运行， Phoenix：一个绕过了MapReduce运行在HBase上的SQL框架。</p>
+<p>很不幸的是作为最早的一个大数据实时处理框架，Storm/Jstorm 的SQL仍然处于实验状态，落后太多。</p>
+<h1 id="5-从架构说起"><a href="#5-从架构说起" class="headerlink" title="5.从架构说起"></a>5.从架构说起</h1><h2 id="1-通过消息队列实现"><a href="#1-通过消息队列实现" class="headerlink" title="1.通过消息队列实现"></a>1.通过消息队列实现</h2><p>文章开头单词计数的例子向大家展示了Storm/Jstorm的spout/Bolt处理模型，spout接收数据然后发射Tuple（数据）, Bolt 接收Tuple进行处理后发射Tuple或选择不发射。这里只考察Tuple, Tuple究竟是如何从Spout到Bolt的，或者从Bolt到下一个Bolt是如何传输的，答案是通过消息队列</p>
+<p>图片来源于 storm@twitter 论文</p>
+<p><img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/5.png" alt=""><br><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/5.png" alt=""></p>
+<p>没错，就是消息队列，相信在开发中都曾经用过实现消息队列的各种产品，比如Rabbitmq, ActiveMQ，ZeroMq等，Storm用的是zeromq，所以简单来说，Storm/Jstorm 流式处理的逻辑，spout接收数据处理后发送tuple到队列，bolt从这个队列中接收tuple，处理后发送下一个tuple到另外一个队列等待下一个bolt从队列中获取tuple。是的，逻辑就是这么简单，这也是为什么Storm/Jstorm消息处理速度快的原因，消息处理完发送到队列就可以了然后处理下一条到来的消息，你会觉得很惊讶，这 完全就是一个通过队列实现高速运转的系统，你甚至都可以自己搭建消息队列模拟Storm/Jstorm来实现单词计数。</p>
+<h2 id="2-回顾窗口机制"><a href="#2-回顾窗口机制" class="headerlink" title="2.回顾窗口机制"></a>2.回顾窗口机制</h2><p>如果要你自己搭建消息队列模拟Storm/Jstorm来实现窗口机制，你会同样遇到第二节提到的同样问题，比如你有办法解决窗口机制中乱序消息的问题吗？ 对你来说可能难于登天，所以Storm/Jstorm开发人员真的是尽力了。</p>
+<h2 id="3-回顾Storm-Jstorm的-Trident"><a href="#3-回顾Storm-Jstorm的-Trident" class="headerlink" title="3.回顾Storm/Jstorm的 Trident"></a>3.回顾Storm/Jstorm的 Trident</h2><p>每个组件只需要从队列中获取消息进行处理发送到下一个队列，Storm/Jstorm没有状态管理，也不适合具有状态管理的操作，然而从简单的计数到复杂的aggr,join等都是需要状态管理，Storm/Jstorm简单的单词计数的例子都需要自己管理单词个数的状态，你可以想象如果自己去开发管理复杂的aggr,join等操作的状态，你会很困难。</p>
+<p>Storm/Jstorm Trident的出现解决了这个问题，Storm/Jstorm Trident高级抽象组件实现了状态管理，但是Trident不再是流处理，而是变成批处理（从这里可以看出在真正的流处理中实现joins，aggregations等其实是很难实现，不然流处理的Storm/Jstorm的高级抽象组件Trident也不会变成批处理），Tident提供了 joins（数据流融合）, aggregations（聚合）, grouping（分组）, functions（自定义函数）, 以及 filters（过滤）等功能，让你可以实现复杂的操作。但是性能会下降很</p>
+<p>多。</p>
+<p>而Trident不是编程语言，只是加上一层抽象，最终还是解析成Storm/Jstorm的Topolog去执行，试想一个通过队列实现高速运转的系统，你要实现joins/aggregations等复杂操作，要管理的状态变量是何其之多，在Storm/Jstorm框架中这些都有Trident帮你解决，你会感觉还不赖，但是我告诉你如果编程语言本身就支持joins、aggregations等复杂操作，你还会用Trident吗？没错，这就是<strong>函数式编程（**</strong>Java8<strong><strong>开始支持函数式编程，</strong></strong>scala<strong><strong>原生支持），</strong></strong>join,aggregations<strong><strong>等复杂操作只是它的一个</strong></strong>api<strong>**或者称内置方法而已</strong>，简直是一个天上一个地下的区别。</p>
+<h2 id="4-回顾Storm-Jstorm的SQL引擎开发"><a href="#4-回顾Storm-Jstorm的SQL引擎开发" class="headerlink" title="4.回顾Storm/Jstorm的SQL引擎开发"></a>4.回顾Storm/Jstorm的SQL引擎开发</h2><p>1.从Trident的单词计数例子上看，用Trident进行开发其实并不容易，和Storm/Jstorm进行开发差不了太多，因为它还是命令式编程，只是在构建topology时用上了Trident的一些封装好的方法，一般用Trident是因为需要实现有仅一次（exactly once）的语义。</p>
+<p>Storm/Jstorm SQL 就是解析成Trident去执行，遗憾的是由于抽象程度不高，所以Storm/Jstorm SQL 解析成Trident是非常复杂的，而且代码量必然很多（代码量和抽象程度有关），或许这是导致开发SQL引擎进展缓慢的原因。</p>
+<p><strong>Spark SQL**</strong>中，<strong><strong>SQL</strong></strong>是被解析成函数式编程语言，所以容易的就能被解析执行。**</p>
+<p>\2.  数据的可变还是不可变</p>
+<p>一般需要操作的数据是不变的才容易开发声明式引擎（SQL只是声明式引擎的一种，比如elasticseach的所有的命令（查询，插入，更新等）操作也是一种声明式引擎，但它不是SQL, 还有MongoDB的所有命令集合，它们有自己的一套查询机制），在mysql和Oracle中，操作的数据是已经存在数据库中数据，它是不变的，所以你无论调用多少次相同的SQL, 返回的结果都是相同的，在Spark中操作的数据RDD, 它也是不变的，只处理它并输出一些结果，非常适合开发SQL引擎。</p>
+<p>然而Storm/Jstorm的数据在内部是通过队列变动的，数据具有不确定性，所以Storm/Jstorm 不适合开发SQL引擎。</p>
+<p>\3.  Storm/Jstorm SQL引擎查询结果不能交互</p>
+<p>因为在Storm/Jstorm程序中只能构建一个topology, 也就是只有一个DAG(有向无环图),数据按流程处理，我们把一句SQL查询对应一个topology, 一个SQL语句就相当于一个应用程序， 在一个应用程序中你无法利用上一个DAG生成的结果去执行下一步的DAG，就是说在一个应用中不能有多个sql语句，<strong>你只能写一个sql语句实现该应用的所有功能，在一个Storm/Jstorm程序中只能构建一个Topology</strong>这个特征对于程序开发简直是致命的了，后面将更详细的描述。</p>
+<p>顺便可以简单推断，在SQL语句中不能有两个查询，也就是开发的<strong>SQL引擎必然不支持嵌套查询（在storm/Jstorm的官网上也确实没找到关于嵌套子查询）</strong>。</p>
+<h2 id="5-与Spark架构对比"><a href="#5-与Spark架构对比" class="headerlink" title="5.与Spark架构对比"></a>5.与Spark架构对比</h2><p>简单来说，Spark 每个节点都拷贝有执行程序，框架把数据分发送到节点后，每个节点获取这部分数据单独计算，需要时再汇总，从中我们可以看出这和Storm/Jstorm完全不同，分到每个节点的数据是不变的（所以更容易处理，也容易实现SQL查询），执行程序也是分布在每个节点，Spark真正实现了分布式计算。从底层处理数据来说它不是流处理，包括Spark Streaming 归结到底也是批处理，所以在流式处理速度上来说Spark比不上Storm/Jstorm（Spark 秒级别，Storm/Jstorm是毫秒级）。</p>
+<h1 id="6-Storm-Jstorm程序开发中的难点"><a href="#6-Storm-Jstorm程序开发中的难点" class="headerlink" title="6.Storm/Jstorm程序开发中的难点"></a>6.Storm/Jstorm程序开发中的难点</h1><p>在5.4节中提到了用Storm/Jstorm开发程序，在一个Storm程序中只能构建一个topology，不能利用上一个DAG生成的结果去执行下一步。这个问题对于开发来说很致命，这个问题特别重要，以至于不得不用一节进行详细的探讨。</p>
+<p>一个Storm程序只能构建一个topology, 也就是这个Storm/Jstorm程序只有一个DAG(有向无环图),然后按DAG流程处理，包括高级抽象Trident解析成Storm/Jstorm程序后也只是一个Topology, 对于流程简单的Storm程序来说，这并不是个问题，但是如果是一个很复杂的程序，DAG（有向无环图）就会变的很长很复杂。</p>
+<p>首先 你需要自己手动设计这个复杂的DAG（有向无环图），然后不断测试这个DAG（有向无环图）是否符合你的流程 ，然后更改DAG（有向无环图）是牵一发而动全身的，面对一个随需求随时更改的DAG（有向无环图），构建DAG（有向无环图）的开发任务就很大了，然后你构建的这个复杂DAG（有向无环图）是无法重用的，每一次都需要重新构建DAG（有向无环图）, 所以光是构建DAG（有向无环图）这一个步骤就需要花费大量精力。</p>
+<p>因为一个应用程序中只能有一个DAG（有向无环图）,所以<strong>在这个应用程序中你无法分解这个DAG（有向无环图）</strong>, 如果你想分解这个DAG（有向无环图）, 这时候你就只有一个选择，开发多个应用程序，每个应用程序中构建一个稍微简单的DAG（有向无环图）,这么做也行不通，一个是多个应用程序会占用更多的系统资源，更重要的问题是你无法简单的直接利用上一个DAG程序生成的结果去执行下一步，除非你把上一个DAG程序生成的结果存储到某个地方，然后下一个程序再去取这个数据，但是没人会这么写程序。</p>
+<p>就像下面的例子，获取两个DAG生成的结果，然后比较元素个数， select * from table1是一个DAG, select * from table1是另外一个DAG, 通常程序是这么写的（<strong>示例是Spark SQL语法，也可以观察到sql与代码是集成的, storm sql是无法集成到程序中的</strong>）</p>
+<p>val list1 = sql(“select * from table1”)</p>
+<p>val list2 = sql(“select * from table2”)</p>
+<p>if(list.size() &gt; list2 .size()） return true </p>
+<p>分三步，很正常的一段代码，</p>
+<p>但是对于Storm ,每个DAG之间不存在这个变量 每个计算的部分都需要抽出来， “select * from table1”这个DAG生成的结果你需要存储到某个地方(比如redis),然后“select * from table2”这个DAG生成的结果你同样需要存储到某个地方(比如redis)，然后你发现你还需要构建一个DAG, 这个DAG需要先从redis中获取上述两个DAG存储的结果, 然后进行比较计算，没人会这么写程序。</p>
+<p>归结到底，用Storm不能开发很复杂的应用。</p>
+<p>但是用Spark开发任何复杂的应用都将会很流畅，Spark作为一个通用分布式计算框架，形成了完整的生态，集成了流处理，交互式处理, 批处理，迭代处理等，所有的功能都可以集中在一个Spark程序中。你可以在这个程序中写命令式代码，写函数式代码，写Spark sql, 写Spark Streaming , 写Spark Graph ，写Spark MLib， 因为Spark所有的组件都统一建立在抽象的RDD模型之上， 所以这些组件在一个程序中能够无缝兼容，互相原生支持。就像下图所展示的架构</p>
+<p><img src="Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/6.png" alt=""><br><img src="/images/Storm%E6%8E%A2%E8%AE%A8%E5%8F%8A%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/6.png" alt=""></p>
+<h1 id="7-结论"><a href="#7-结论" class="headerlink" title="7.结论"></a>7.结论</h1><p><strong>如果你的程序任务量小（不复杂）但是速度要求非常高（毫秒级别），Storm/Jstorm 是你不二的选择。</strong></p>
+<p>如果任务复杂，采用Storm会有各种各样的难点去解决，开发任务将会急剧上升，开发难度也会翻倍，甚至影响到项目开发进度，所以更<strong>强烈建议采用Spark一站式解决方案。</strong></p>
+<h1 id="8-引用和参考文档"><a href="#8-引用和参考文档" class="headerlink" title="8.引用和参考文档"></a>8.引用和参考文档</h1><p>[1] Storm 官方论文 storm @twitter</p>
+<p><a href="https://cs.brown.edu/courses/cs227/archives/2015/papers/ss-storm.pdf" target="_blank" rel="noopener">https://cs.brown.edu/courses/cs227/archives/2015/papers/ss-storm.pdf</a></p>
+<p>[2] Storm 官方文档</p>
+<p><a href="http://storm.apache.org/" target="_blank" rel="noopener">http://storm.apache.org/</a></p>
+<p>[3] JStorm 官方文档</p>
+<p><a href="http://jstorm.io/" target="_blank" rel="noopener">http://jstorm.io/</a></p>
+<p>[4] Spark Streaming Programming Guide</p>
+<p><a href="https://spark.apache.org/docs/2.2.0/streaming-programming-guide.html" target="_blank" rel="noopener">https://spark.apache.org/docs/2.2.0/streaming-programming-guide.html</a></p>
+<p>[5] 实时流处理Storm、Spark Streaming、Samza、Flink对比</p>
+<p><a href="https://www.jianshu.com/p/1ef4cbfc89ba" target="_blank" rel="noopener">https://www.jianshu.com/p/1ef4cbfc89ba</a></p>
+<p>[6] Comparing Apache Spark, Storm, Flink and Samza stream processing engines - Part 1</p>
+<p><a href="https://blog.scottlogic.com/2018/07/06/comparing-streaming-frameworks-pt1.html" target="_blank" rel="noopener">https://blog.scottlogic.com/2018/07/06/comparing-streaming-frameworks-pt1.html</a></p>
+<p>[7] Storm高级原语（四） — Trident API 综述</p>
+<p><a href="http://www.flyne.org/article/216" target="_blank" rel="noopener">http://www.flyne.org/article/216</a></p>
+<p>[8] Stream Processing Everywhere – What to Use?</p>
+<p><a href="https://mapr.com/blog/stream-processing-everywhere-what-use/" target="_blank" rel="noopener">https://mapr.com/blog/stream-processing-everywhere-what-use/</a></p>
+<p>[9] Apache Storm vs. Spark Streaming – two Stream Processing Platforms compared</p>
+<p><a href="https://www.slideshare.net/gschmutz/apache-stoapache-storm-vs-spark-streaming-two-stream-processing-platforms-comparedrm-vsapachesparkv11" target="_blank" rel="noopener">https://www.slideshare.net/gschmutz/apache-stoapache-storm-vs-spark-streaming-two-stream-processing-platforms-comparedrm-vsapachesparkv11</a> </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Storm/" rel="tag"># Storm</a>
+              <a href="/tags/Spark/" rel="tag"># Spark</a>
+              <a href="/tags/Flink/" rel="tag"># Flink</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/03/Elasticsearch%E4%BB%8B%E7%BB%8D(%E5%9B%9B)/" rel="prev" title="Elasticsearch介绍(四)">
+      <i class="fa fa-chevron-left"></i> Elasticsearch介绍(四)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/01/06/Flume%E6%9E%84%E5%BB%BA%E9%AB%98%E5%8F%AF%E7%94%A8%E5%8F%AF%E6%89%A9%E5%B1%95%E7%9A%84%E6%B5%B7%E9%87%8F%E6%97%A5%E5%BF%97%E9%87%87%E9%9B%86%E7%B3%BB%E7%BB%9F/" rel="next" title="Flume构建高可用可扩展的海量日志采集系统">
+      Flume构建高可用可扩展的海量日志采集系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#摘要"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#介绍"><span class="nav-number">2.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1．从单词计数例子开始"><span class="nav-number">3.</span> <span class="nav-text">1．从单词计数例子开始</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Storm-Jstorm的架构和示例"><span class="nav-number">3.1.</span> <span class="nav-text">1.Storm&#x2F;Jstorm的架构和示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Storm-Jstorm-Trident的架构和示例"><span class="nav-number">3.2.</span> <span class="nav-text">2. Storm&#x2F;Jstorm Trident的架构和示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Spark架构和示例"><span class="nav-number">3.3.</span> <span class="nav-text">3.Spark架构和示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Flink架构和示例"><span class="nav-number">3.4.</span> <span class="nav-text">3.Flink架构和示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-单词计数简单总结"><span class="nav-number">3.5.</span> <span class="nav-text">4.单词计数简单总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-代码量对比"><span class="nav-number">3.5.1.</span> <span class="nav-text">1.代码量对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-DAG（有向无环图）构建"><span class="nav-number">3.5.2.</span> <span class="nav-text">2.DAG（有向无环图）构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-状态管理对比"><span class="nav-number">3.5.3.</span> <span class="nav-text">2.状态管理对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2．时间窗口的探讨"><span class="nav-number">4.</span> <span class="nav-text">2．时间窗口的探讨</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-介绍时间窗口"><span class="nav-number">4.1.</span> <span class="nav-text">1.介绍时间窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-滚动窗口（Tumbling-Window）"><span class="nav-number">4.1.1.</span> <span class="nav-text">1.滚动窗口（Tumbling Window）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-滑动窗口（Sliding-Window）"><span class="nav-number">4.1.2.</span> <span class="nav-text">2.滑动窗口（Sliding Window）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-时间窗口的单词计数例子"><span class="nav-number">4.2.</span> <span class="nav-text">2.时间窗口的单词计数例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Storm-Jstorm的窗口机制需要解决的问题"><span class="nav-number">4.3.</span> <span class="nav-text">3.Storm&#x2F;Jstorm的窗口机制需要解决的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Bolt不带消息时间"><span class="nav-number">4.3.1.</span> <span class="nav-text">1.Bolt不带消息时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-乱序消息的处理问题"><span class="nav-number">4.3.2.</span> <span class="nav-text">2.乱序消息的处理问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-窗口内存不足问题"><span class="nav-number">4.3.3.</span> <span class="nav-text">3.窗口内存不足问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-窗口状态管理"><span class="nav-number">4.3.4.</span> <span class="nav-text">4.窗口状态管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-与Spark-Streaming-对比"><span class="nav-number">4.3.5.</span> <span class="nav-text">5. 与Spark Streaming 对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SQL引擎的支持"><span class="nav-number">5.</span> <span class="nav-text">3.SQL引擎的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-SQL引擎优点"><span class="nav-number">5.1.</span> <span class="nav-text">1. SQL引擎优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-利用原SQL语句对项目进行改造"><span class="nav-number">5.2.</span> <span class="nav-text">2.利用原SQL语句对项目进行改造</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-开发成本比较"><span class="nav-number">6.</span> <span class="nav-text">4.开发成本比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-语言抽象程度"><span class="nav-number">6.1.</span> <span class="nav-text">1.语言抽象程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-框架通用性比较"><span class="nav-number">6.2.</span> <span class="nav-text">2.框架通用性比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-开发人员熟悉程度"><span class="nav-number">6.3.</span> <span class="nav-text">2.开发人员熟悉程度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-后期扩展和维护"><span class="nav-number">6.4.</span> <span class="nav-text">3.后期扩展和维护</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-代码重用"><span class="nav-number">6.5.</span> <span class="nav-text">4.代码重用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-结论"><span class="nav-number">6.6.</span> <span class="nav-text">5.结论</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-从架构说起"><span class="nav-number">7.</span> <span class="nav-text">5.从架构说起</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-通过消息队列实现"><span class="nav-number">7.1.</span> <span class="nav-text">1.通过消息队列实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-回顾窗口机制"><span class="nav-number">7.2.</span> <span class="nav-text">2.回顾窗口机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-回顾Storm-Jstorm的-Trident"><span class="nav-number">7.3.</span> <span class="nav-text">3.回顾Storm&#x2F;Jstorm的 Trident</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-回顾Storm-Jstorm的SQL引擎开发"><span class="nav-number">7.4.</span> <span class="nav-text">4.回顾Storm&#x2F;Jstorm的SQL引擎开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-与Spark架构对比"><span class="nav-number">7.5.</span> <span class="nav-text">5.与Spark架构对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-Storm-Jstorm程序开发中的难点"><span class="nav-number">8.</span> <span class="nav-text">6.Storm&#x2F;Jstorm程序开发中的难点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-结论"><span class="nav-number">9.</span> <span class="nav-text">7.结论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-引用和参考文档"><span class="nav-number">10.</span> <span class="nav-text">8.引用和参考文档</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

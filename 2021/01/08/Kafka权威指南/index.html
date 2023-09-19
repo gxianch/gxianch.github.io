@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="参数设置是重点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka权威指南">
+<meta property="og:url" content="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="参数设置是重点">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/cover.jpg">
+<meta property="article:published_time" content="2021-01-08T03:03:06.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:41.586Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰✰">
+<meta property="article:tag" content="OReilly">
+<meta property="article:tag" content="※※">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Kafka权威指南 | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka权威指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-08 11:03:06" itemprop="dateCreated datePublished" datetime="2021-01-08T11:03:06+08:00">2021-01-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:41" itemprop="dateModified" datetime="2023-09-19T17:08:41+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kafka/" itemprop="url" rel="index">
+                    <span itemprop="name">Kafka</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <img src="/2021/01/08/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/cover.jpg" class="label">
+<p><img src="Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/cover.jpg" alt=""></p>
+<p>参数设置是重点</p>
+<a id="more"></a>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><ul>
+<li><blockquote>
+<p>第 1 章 初识 Kafka</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>紧凑型日志主题只为每个键保留一个变更数据，所以可以长时间使用，不需要担心消息过期问题, (不同于delete清理策略，compact清理策略只为每个键保留一个变更数据)</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 2 章 安装 Kafka</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>如果不知道这些信息，那么根据经验，把分区的大小限制在 25GB 以内可以得到比较理想的效果。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>message.max.bytesbroker 通过设置 message.max.bytes 参数来限制单个消息的大小，默认值是 1 000 000，也就是 1MB</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>消费者客户端设置的 fetch.message.max.bytes 必须与服务器端设置的消息大小进行协调。如果这个值比message.max.bytes 小，那么消费者就无法读取比较大的消息，导致出现消费者被阻塞的情况。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>服务器端可用的内存容量是影响客户端性能的主要因素。磁盘性能影响生产者，而内存影响消费者。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 3 章 Kafka 生产者——向 Kafka写入数据</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>图 3-1：Kafka 生产者组件图</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\01. acksacks 参数指定了必须要有多少个分区副本收到消息，生产者才会认为消息写入是成功的。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\02. buffer.memory该参数用来设置生产者内存缓冲区的大小，生产者用它缓冲要发送到服务器的消息。如果应用程序发送消息的速度超过发送到服务器的速度，会导致生产者空间不足。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\03. compression.type</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\04. retries生产者从服务器收到的错误有可能是临时性的错误（比如分区找不到首领）。在这种情况下，retries 参数的值决定了生产者可以重发消息的次数，如果达到这个次数，生产者会放弃重试并返回错误。默认情况下，生产者会在每次重试之间等待 100ms，不过可以通过retry.backoff.ms 参数来改变这个时间间隔。建议在设置重试次数和重试时间间隔之前，先测试一下恢复一个崩溃节点需要多少时间（比如所有分区选举出首领需要多长时间），让总的重试时间比 Kafka 集群从崩溃中恢复的时间长，否则生产者会过早地放弃重试。不过有些错误不是临时性错误，没办法通过重试来解决（比如“消息太大”错误）。一般情况下，因为生产者会自动进行重试，所以就没必要在代码逻辑里处理那些可重试的错误。你只需要处理那些不可重试的错误或重试次数超出上限的情况。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\05. batch.size当有多个消息需要被发送到同一个分区时，生产者会把它们放在同一个批次里。该参数指定了一个批次可以使用的内存大小，按照字节数计算（而不是消息个数）。当批次被填满，批次里的所有消息会被发送出去。不过生产者并不一定都会等到批次被填满才发送，半满的批次，甚至只包含一个消息的批次也有可能被发送。所以就算把批次大小设置得很大，也不会造成延迟，只是会占用更多的内存而已。但如果设置得太小，因为生产者需要更频繁地发送消息，会增加一些额外的开销。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\06. linger.ms该参数指定了生产者在发送批次之前等待更多消息加入批次的时间。KafkaProducer 会在批次填满或 linger.ms 达到上限时把批次发送出去。默认情况下，只要有可用的线程，生产者就会把消息发送出去，就算批次里只有一个消息。把 linger.ms 设置成比 0 大的数，让生产者在发送批次之前等待一会儿，使更多的消息加入到这个批次。虽然这样会增加延迟，但也会提升吞吐量（因为一次性发送更多的消息，每个消息的开销就变小了）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\07. client.id</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\08. max.in.flight.requests.per.connection该参数指定了生产者在收到服务器响应之前可以发送多少个消息。它的值越高，就会占用越多的内存，不过也会提升吞吐量。把它设为 1 可以保证消息是按照发送的顺序写入服务器的，即使发生了重试。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\09. timeout.ms、request.timeout.ms 和 metadata.fetch.timeout.msrequest.timeout.ms 指定了生产者在发送数据时等待服务器返回响应的时间，metadata.fetch.timeout.ms 指定了生产者在获取元数据（比如目标分区的首领是谁）时等待服务器返回响应的时间。如果等待响应超时，那么生产者要么重试发送数据，要么返回一个错误（抛出异常或执行回调）。timeout.ms 指定了 broker 等待同步副本返回消息确认的时间，与 asks 的配置相匹配——如果在指定时间内没有收到同步副本的确认，那么 broker 就会返回一个错误。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\10. max.block.ms该参数指定了在调用 send() 方法或使用 partitionsFor() 方法获取元数据时生产者的阻塞时间。当生产者的发送缓冲区已满，或者没有可用的元数据时，这些方法就会阻塞。在阻塞时间达到 max.block.ms 时，生产者会抛出超时异常。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\11. max.request.size该参数用于控制生产者发送的请求大小。它可以指能发送的单个消息的最大值，也可以指单个请求里所有消息总的大小。例如，假设这个值为1MB，那么可以发送的单个最大消息为 1MB，或者生产者可以在单个请求里发送一个批次，该批次包含了 1000 个消息，每个消息大小为1KB。另外，broker 对可接收的消息最大值也有自己的限制（message.max.bytes），所以两边的配置最好可以匹配，避免生产者发送的消息被 broker 拒绝。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\12. receive.buffer.bytes 和 send.buffer.bytes这两个参数分别指定了 TCP socket 接收和发送数据包的缓冲区大小。如果它们被设为 -1，就使用操作系统的默认值。如果生产者或消费者与 broker 处于不同的数据中心，那么可以适当增大这些值，因为跨数据中心的网络一般都有比较高的延迟和比较低的带宽。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 4 章 Kafka 消费者——从 Kafka读取数据</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>\01. fetch.min.bytes该属性指定了消费者从服务器获取记录的最小字节数。broker 在收到消费者的数据请求时，如果可用的数据量小于 fetch.min.bytes 指定的大小，那么它会等到有足够的可用数据时才把它返回给消费者。这样可以降低消费者和 broker 的工作负载，因为它们在主题不是很活跃的时候（或者一天里的低谷时段）就不需要来来回回地处理消息。如果没有很多可用数据，但消费者的 CPU 使用率却很高，那么就需要把该属性的值设得比默认值大。如果消费者的数量比较多，把该属性的值设置得大一点可以降低 broker 的工作负载。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\02. fetch.max.wait.ms我们通过 fetch.min.bytes 告诉 Kafka，等到有足够的数据时才把它返回给消费者。而 feth.max.wait.ms 则用于指定 broker 的等待时间，默认是 500ms。如果没有足够的数据流入 Kafka，消费者获取最小数据量的要求就得不到满足，最终导致 500ms 的延迟。如果要降低潜在的延迟（为了满足 SLA），可以把该参数值设置得小一些。如果fetch.max.wait.ms 被设为 100ms，并且 fetch.min.bytes 被设为1MB，那么 Kafka 在收到消费者的请求后，要么返回 1MB 数据，要么在 100ms 后返回所有可用的数据，就看哪个条件先得到满足。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\03. max.partition.fetch.bytes该属性指定了服务器从每个分区里返回给消费者的最大字节数。它的默认值是 1MB，也就是说，KafkaConsumer.poll() 方法从每个分区里返<br>回的记录最多不超过 max.partition.fetch.bytes 指定的字节。如果一个主题有 20 个分区和 5 个消费者，那么每个消费者需要至少 4MB 的可用内存来接收记录。</p>
+</blockquote>
+<blockquote>
+<p>回的记录最多不超过 max.partition.fetch.bytes 指定的字节。如果一个主题有 20 个分区和 5 个消费者，那么每个消费者需要至少 4MB 的可用内存来接收记录。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\04. session.timeout.ms该属性指定了消费者在被认为死亡之前可以与服务器断开连接的时间，默认是 3s。如果消费者没有在 session.timeout.ms 指定的时间内发送心跳给群组协调器，就被认为已经死亡，协调器就会触发再均衡，把它的分区分配给群组里的其他消费者。该属性与 heartbeat.interval.ms紧密相关。heartbeat.interval.ms 指定了 poll() 方法向协调器发送心跳的频率，session.timeout.ms 则指定了消费者可以多久不发送心跳。所以，一般需要同时修改这两个属性，heartbeat.interval.ms 必须比 session.timeout.ms 小，一般是 session.timeout.ms 的三分之一。如果 session.timeout.ms 是 3s，那么 heartbeat.interval.ms 应该是 1s。把 session.timeout.ms 值设得比默认值小，可以更快地检测和恢复崩溃的节点，不过长时间的轮询或垃圾收集可能导致非预期的再均衡。把该属性的值设置得大一些，可以减少意外的再均衡，不过检测节点崩溃需要更长的时间。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\05. auto.offset.reset该属性指定了消费者在读取一个没有偏移量的分区或者偏移量无效的情况下（因消费者长时间失效，包含偏移量的记录已经过时并被删除）该作何处理。它的默认值是 latest，意思是说，在偏移量无效的情况下，消费者将从最新的记录开始读取数据（在消费者启动之后生成的记录）。另一个值是 earliest，意思是说，在偏移量无效的情况下，消费者将从起始位置读取分区的记录。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\06. enable.auto.commit我们稍后将介绍几种不同的提交偏移量的方式。该属性指定了消费者是否自动提交偏移量，默认值是 true。为了尽量避免出现重复数据和数据丢失，可以把它设为 false，由自己控制何时提交偏移量。如果把它设为 true，还可以通过配置 auto.commit.interval.ms 属性来控制提交的频率。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\07. partition.assignment.strategy</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\08. client.id</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\09. max.poll.records该属性用于控制单次调用 call() 方法能够返回的记录数量，可以帮你控制在轮询里需要处理的数据量。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>\10. receive.buffer.bytes 和 send.buffer.bytes<br>socket 在读写数据时用到的 TCP 缓冲区也可以设置大小。如果它们被设为 -1，就使用操作系统的默认值</p>
+</blockquote>
+<blockquote>
+<p>socket 在读写数据时用到的 TCP 缓冲区也可以设置大小。如果它们被设为 -1，就使用操作系统的默认值</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>为了能够继续之前的工作，消费者需要读取每个分区最后一次提交的偏移量，然后从偏移量指定的地方继续处理。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 5 章 深入 Kafka</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>本章并不会涵盖 Kafka的每一个设计和实现细节，而是集中讨论以下 3 个有意思的话题：● Kafka 如何进行复制；● Kafka 如何处理来自生产者和消费者的请求；● Kafka 的存储细节，比如文件格式和索引。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 5-4：消费者只能看到已经复制到 ISR 的消息</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Kafka 通过改变主题的保留策略来满足这些使用场景。早于保留时间的旧事件会被删除，为每个键保留最新的值，从而达到清理的效果。很显然，只有当应用程序生成的事件里包含了键值对时，为这些主题设置 compact 策略才有意义。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图 5-8：清理前后的分区片段</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如果只为每个键保留最近的一个消息，那么当需要删除某个特定键所对应的所有消息时，我们该怎么办？这种情况是有可能发生的，比如一个用户不再使用我们的服务，那么完全可以把与这个用户相关的所有信息从系统中删除。为了彻底把一个键从系统里删除，应用程序必须发送一个包含该键且值为null 的消息。清理线程发现该消息时，会先进行常规的清理，只保留值为null 的消息。该消息（被称为墓碑消息）会被保留一段时间，时间长短是可配置的。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 6 章 可靠的数据传递</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>简而言之，如果我们允许不同步的副本成为首领，那么就要承担丢失数据和出现数据不一致的风险。如果不允许它们成为首领，那么就要接受较低的可用性，因为我们必须等待原先的首领恢复到可用状态。如果把 unclean.leader.election.enable 设为 true，就是允许不同步的副本成为首领（也就是“不完全的选举”），那么我们将面临丢失消息的风险。如果把这个参数设为 false，就要等待原先的首领重新上线，从而降低了可用性。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如果要确保已提交的数据被写入不止一个副本，就需要把最少同步副本数量设置为大一点的值。对于一个包含 3 个副本的主题，如果min.insync.replicas 被设为 2，那么至少要存在两个同步副本才能向分区写入数据。如果 3 个副本都是同步的，或者其中一个副本变为不可用，都不会有什么问题。不过，如果有两个副本变为不可用，那么 broker 就会停止接受生产者的请求。尝试发送数据的生产者会收到 NotEnoughReplicasException 异常。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 7 章 构建数据管道</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第 8 章 跨集群数据镜像</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第 9 章 管理 Kafka</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第 10 章 监控 Kafka</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>示例：列出集群的非同步分区。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在这个示例中，broker 2 出现在所有的副本清单里，但没有出现在所有的同步副本（ISR）清单里，所以要将注意力放在这个 broker 上。如果没有发现这样的 broker，那么问题有可能出在整个集群上。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>● CPU 使用。<br>● 网络输入吞吐量。● 网络输出吞吐量。● 磁盘平均等待时间。● 磁盘使用百分比。上述任何一种资源出现过度消耗，都会表现为分区的不同步</p>
+</blockquote>
+<blockquote>
+<p>● 网络输入吞吐量。● 网络输出吞吐量。● 磁盘平均等待时间。● 磁盘使用百分比。上述任何一种资源出现过度消耗，都会表现为分区的不同步</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>能够导致 Kafka 性能衰退的一个比较常见的硬件问题是磁盘故障。<br>Kafka 使用磁盘来存储消息，生产者的性能与磁盘的写入速度有直接关系。这里出现的任何偏差都会表现为生产者和复制消息者的性能问题，而后者会导致分区的不同步。因此，应该持续地监控磁盘，并在出现问题时马上进行修复。</p>
+</blockquote>
+<blockquote>
+<p>Kafka 使用磁盘来存储消息，生产者的性能与磁盘的写入速度有直接关系。这里出现的任何偏差都会表现为生产者和复制消息者的性能问题，而后者会导致分区的不同步。因此，应该持续地监控磁盘，并在出现问题时马上进行修复。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>该指标表示从消费者向 broker 发送请求所需要的时间。请求的延迟通过消费者的 fetch.min.bytes 和 fetch.max.wait.ms 这两个参数进行控制。一个缓慢的主题会出现不稳定的延迟，有时候 broker 响应很快（有可用消息的时候），有时候甚至无法在 fetch.max.wait.ms 规定的时间内完成响应（没有可用消息的时候）。如果主题有相对稳定和足够的消息流量，那么查看这个指标或许会更有意义。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第 11 章 流式处理</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>如果能够捕捉数据库的变更事件，并形成事件流，流式处理作业就可以监听事件流，并及时更新缓存。捕捉数据库的变更事件并形成事件流，这个过程被称为 CDC——变更数据捕捉（Change Data Capture）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰</a>
+              <a href="/tags/OReilly/" rel="tag"># OReilly</a>
+              <a href="/tags/%E2%80%BB%E2%80%BB/" rel="tag"># ※※</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/05/I-Heart-Logs/" rel="prev" title="I Heart Logs">
+      <i class="fa fa-chevron-left"></i> I Heart Logs
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/09/%E6%99%9A%E6%B8%85%E4%B8%83%E5%8D%81%E5%B9%B4-%E5%85%A8%E4%BA%94%E5%86%8C-%E5%94%90%E5%BE%B7%E5%88%9A/" rel="next" title="晚清七十年-全五册-唐德刚">
+      晚清七十年-全五册-唐德刚 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="书名直接告诉我们这本书是干嘛的，利用Python进行数据分析必备的一本书，首先讲解Python基础，然后如何通过Python进行数据处理和可视化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Python进行数据分析第二版">
+<meta property="og:url" content="http://yoursite.com/2020/12/19/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="书名直接告诉我们这本书是干嘛的，利用Python进行数据分析必备的一本书，首先讲解Python基础，然后如何通过Python进行数据处理和可视化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/19/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/cover.jpg">
+<meta property="article:published_time" content="2020-12-19T08:47:01.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:43.801Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰✰✰">
+<meta property="article:tag" content="OReilly">
+<meta property="article:tag" content="※※">
+<meta property="article:tag" content="数据分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/19/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/19/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>利用Python进行数据分析第二版 | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/19/%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用Python进行数据分析第二版
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-19 16:47:01" itemprop="dateCreated datePublished" datetime="2020-12-19T16:47:01+08:00">2020-12-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>书名直接告诉我们这本书是干嘛的，利用Python进行数据分析必备的一本书，首先讲解Python基础，然后如何通过Python进行数据处理和可视化</p>
+
+<p><img src="%E5%88%A9%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AC%AC%E4%BA%8C%E7%89%88/cover.jpg" alt=""></p>
+<a id="more"></a>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><ul>
+<li><blockquote>
+<p>第1章 准备工作</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第2章 Python语法基础，IPython和JupyterNotebooks</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>表2-5 Datetime格式化指令（与ISO C89兼容）</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第3章 Python的数据结构、函数和文件</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>元组元组是一个固定长度，不可改变的Python序列对象。创建元组的最简单方式，是用逗号分隔一列值：In [1]: tup = 4, 5, 6</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>拆分元组如果你想将元组赋值给类似元组的变量，Python会试图拆分等号右边的值：</p>
+<p>In [15]: tup = (4, 5, 6)In [16]: a, b, c = tup</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>列表与元组对比，列表的长度可变、内容可以被修改。你可以用方括号定义，或用list函数：</p>
+<p>In [36]: a_list = [2, 3, 7, None]</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>zip函数zip可以将多个列表、元组或其它序列成对组合成一个元组列表：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>reversed函数reversed可以从后向前迭代一个序列：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>字典</p>
+<p>字典可能是Python最为重要的数据结构。它更为常用的名字是哈希映射或关联数组。它是键值对的大小可变集合，键和值都是Python对象。创建字典的方法之一是使用尖括号，用冒号分隔键和值：</p>
+<p>In [101]: empty_dict = {}</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>集合</p>
+<p>集合是无序的不可重复的元素的集合。你可以把它当做字典，但是只有键没有值。可以用两种方式创建集合：通过set函数或使⽤尖括号set语句：</p>
+<p>In [133]: set([2, 2, 2, 1, 3, 3])</p>
+<p>Out[133]: {1, 2, 3}</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表3-1 Python的集合操作</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>列表、集合和字典推导式列表推导式是Python最受喜爱的特性之⼀。它允许用户方便的从一个集合过滤元素，形成列表，在传递参数的过程中还可以修改元素。形式如下：</p>
+<p>[expr for val in collection if condition]</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>函数可以有一些位置参数（positional）和一些关键字参数（keyword）。关键字参数通常用于指定默认值或可选参数。在上面的函数中，x和y是位置参数，而z则是关键字参数</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>关键字参数必须位于位置参数（如果有的话）之后</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>返回多个值</p>
+<p>在我第一次用Python编程时（之前已经习惯了Java和C++），最喜欢的一个功能是：函数可以返回多个值</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第4章 NumPy基础：数组和⽮量计算</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>ndarray是一个通用的同构数据多维容器，也就是说，其中的所有元素必须是相同类型的。每个数组都有一个shape（一个表示各维度大小的元组）和一个dtype（一个用于说明数组数据类型的对象）：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表4-1 数组创建函数</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图4-2 二维数组切片</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表4-5列出了全部的基本数组统计⽅法</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>NumPy中的集合函数请参见表4-6</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表4-7中列出了⼀些最常⽤的线性代数函数。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表4-8列出了numpy.random中的部分函数</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第5章 pandas入门</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>Series看成是一个定长的有序字典</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如果数据被存放在一个Python字典中，也可以直接通过这个字典来创建Series：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>DataFrame既有行索引也有列索引，它可以被看做由Series组成的字典（共用同一个索引）</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>建DataFrame的办法有很多，最常用的一种是直接传入一个由等长列表或NumPy数组组成的字典：</p>
+<p>data = {‘state’: [‘Ohio’, ‘Ohio’, ‘Ohio’, ‘Nevada’, ‘Nevada’, ‘Nevada’], ‘year’: [2000, 2001, 2002, 2001, 2002, 2003], ‘pop’: [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]}</p>
+<p>frame = pd.DataFrame(data)</p>
+<p>结果DataFrame会自动加上索引（跟Series一样），且全部列会被有序排列：</p>
+<p>In [45]: frame<br>Out[45]: pop state year</p>
+<p>0 1.5 Ohio 2000</p>
+<p>1 1.7 Ohio 2001</p>
+<p>2 3.6 Ohio 2002</p>
+<p>3 2.4 Nevada 2001</p>
+<p>4 2.9 Nevada 2002</p>
+<p>5 3.2 Nevada 2003</p>
+</blockquote>
+<blockquote>
+</blockquote>
+</li>
+<li><blockquote>
+<p>通过类似字典标记的方式或属性的方式，可以将DataFrame的列获取为一个Series：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>注意，返回的Series拥有原DataFrame相同的索引，且其name属性也已经被相应地设置好了。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>另一种常见的数据形式是嵌套字典：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表5-1列出了DataFrame构造函数所能接受的各种数据。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表5-2列出了这些函数。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>使用ffill可以实现前向值填充：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表5-3列出了reindex函数的各参数及说明。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表5-4 DataFrame的索引选项</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>DataFrame和Series之间的运算跟不同维度的NumPy数组⼀样，DataFrame和Series之间算术运算也是有明确规定的。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表5-8列出了所有与描述统计相关的⽅法。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第6章 数据加载、存储与文件格式</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>pandas提供了一些用于将表格型数据读取为DataFrame对象的函数。表6-1对它们进行了总结，其中read_csv和read_table可能会是你今后⽤得最多的。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表6-2列出了pandas.read_csv和pandas.read_table常见的选项。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>6.3 Web APIs</p>
+<p>交互许多网站都有⼀些通过JSON或其他格式提供数据的公共API。通过Python访问这些API的办法有不少。一个简单易⽤的办法（推荐）是requests包</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>6.4 数据库交互</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>将数据从SQL加载到DataFrame的过程很简单，此外pandas还有⼀些能够简化该过程的函数。例如，我将使⽤SQLite数据库（通过Python内置的sqlite3驱动器）</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>SQLAlchemy项目是一个流行的Python SQL工具，它抽象出了SQL数据库中的许多常见差异。pandas有一个read_sql函数，可以让你轻松的从SQLAlchemy连接读取数据。这里，我们用SQLAlchemy连接SQLite数据库，并从之前创建的表读取数据：</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第7章 数据清洗和准备</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>表7-1 NA处理方法</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>另一个滤除DataFrame⾏的问题涉及时间序列数据。假设你只想留下一部分观测数据，可以用thresh参数实现此目的：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>填充缺失数据你可能不想滤除缺失数据（有可能会丢弃跟它有关的其他数据），而是希望通过其他方式填补那些“空洞”。对于大多数情况而言，fillna方法是最主要的函数</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>fillna函数参数</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>Series的map方法可以接受一个函数或含有映射关系的字典型对象</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>替换值</p>
+<p>利用fillna方法填充缺失数据可以看做值替换的一种特殊情况。前面已经看到，map可用于修改对象的数据⼦集，而replace则提供了一种实现该功能的更简单、更灵活的方式</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>检测和过滤异常值</p>
+<p>过滤或变换异常值（outlier）在很大程度上就是运用数组运算。来看一个含有正态分布数据 DataFrame：</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>排列和随机采样</p>
+<p>利用numpy.random.permutation函数可以轻松实现对Series或DataFrame的列的排列工作</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>计算指标/哑变量</p>
+<p>另一种常用于统计建模或机器学习的转换方式是：将分类变量（categorical variable）转换为“哑变量”或“指标矩阵”。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表7-3列出了Python内置的字符串方法。</p>
+<p>这些运算大部分都能使用正则表达式实现（马上就会看到）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>表7-5 部分矢量化字符串方法</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第8章 数据规整：聚合、合并和重塑</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>根据级别汇总统计许多对DataFrame和Series的描述和汇总统计都有一个level选项，它用于指定在某条轴上求和的级别。再以上面那个DataFrame为例，我们可以根据⾏或列上的级别来进行求和：</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第9章 绘图和可视化</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第10章 数据聚合与分组运算</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第11章 时间序列</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第12章 pandas⾼级应⽤</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第13章 Python建模库介绍</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>statsmodels包含的模型有：<br>线性模型，广义线性模型和健壮线性模型</p>
+<p>线性混合效应模型</p>
+<p>方差（ANOVA）方法分析</p>
+<p>时间序列过程和状态空间模型</p>
+<p>广义矩估计</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><blockquote>
+<p>估计时间序列过程</p>
+<p>statsmodels的另一模型类是进行时间序列分析，包括自回归过程、卡尔曼滤波和其它态空间模型，和多元自回归模型</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><blockquote>
+<p>第14章 数据分析案例</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰</a>
+              <a href="/tags/OReilly/" rel="tag"># OReilly</a>
+              <a href="/tags/%E2%80%BB%E2%80%BB/" rel="tag"># ※※</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/19/%E5%A4%A7%E5%98%B4%E5%B7%B4%E6%BC%AB%E8%B0%88%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="prev" title="大嘴巴漫谈数据挖掘">
+      <i class="fa fa-chevron-left"></i> 大嘴巴漫谈数据挖掘
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/19/%E4%B8%8D%E6%9C%8D%E4%BB%8E%E7%9A%84%E6%B1%9F%E6%B9%96-%E7%8E%8B%E6%80%A1/" rel="next" title="不服从的江湖-王怡">
+      不服从的江湖-王怡 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

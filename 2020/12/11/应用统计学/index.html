@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="统计教材看过很多本，很多写的非常枯燥，公式一大堆，对非专业人士不友好，这是最适合本人阅读的一本书，难度中等，理解统计学概念的一本好书">
+<meta property="og:type" content="article">
+<meta property="og:title" content="应用统计学">
+<meta property="og:url" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/index.html">
+<meta property="og:site_name" content="g.xian 的博客">
+<meta property="og:description" content="统计教材看过很多本，很多写的非常枯燥，公式一大堆，对非专业人士不友好，这是最适合本人阅读的一本书，难度中等，理解统计学概念的一本好书">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/cover.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/ba6dbeb7428dd9d4f6bd151b7cee0533.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/ba6dbeb7428dd9d4f6bd151b7cee0533.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/20d08e5e9ee4b9da94d6428e8a95c329.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/20d08e5e9ee4b9da94d6428e8a95c329.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/dd7ae06b6094dc2aa4760a66a294c938.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/dd7ae06b6094dc2aa4760a66a294c938.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/5eaf6da55fc0f141d7ef1f189163f07f.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/5eaf6da55fc0f141d7ef1f189163f07f.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/7d31afa9531d3533b130d6f11154748c.png">
+<meta property="og:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/7d31afa9531d3533b130d6f11154748c.png">
+<meta property="article:published_time" content="2020-12-11T01:04:59.000Z">
+<meta property="article:modified_time" content="2023-09-19T09:08:44.409Z">
+<meta property="article:author" content="g.xian">
+<meta property="article:tag" content="✰✰✰✰✰">
+<meta property="article:tag" content="统计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/cover.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>应用统计学 | g.xian 的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">g.xian 的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="g.xian">
+      <meta itemprop="description" content="hexo cl&&hexo g&& hexo d本地hexo s">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="g.xian 的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          应用统计学
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-11 09:04:59" itemprop="dateCreated datePublished" datetime="2020-12-11T09:04:59+08:00">2020-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-19 17:08:44" itemprop="dateModified" datetime="2023-09-19T17:08:44+08:00">2023-09-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">数学</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>统计教材看过很多本，很多写的非常枯燥，公式一大堆，对非专业人士不友好，这是最适合本人阅读的一本书，难度中等，理解统计学概念的一本好书</p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/cover.jpg" class="label">
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/cover.jpg" alt=""></p>
+<a id="more"></a>
+
+<h2 id="应用统计学"><a href="#应用统计学" class="headerlink" title="应用统计学"></a>应用统计学</h2><ul>
+<li><blockquote>
+<p>第一章 绪论</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第二章 统计数据的收集与整理</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第三章 数据分布特征描述</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>标准差（standard deviation）是指总体各单位标志值与其算术平均数离差平方的算术平均数的平方根，又称均方差。一般用符号σ表示，其平方称为方差（variance）。总体方差通常用σ2表示</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>例3.23某组四名学生成绩如表3.12所示，试计算其标准差。表3.12某组四名学生成绩资料解：根据表3.12所示的资料，应采用简单标准差公式来计算。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在平均水平相等的情况下，通过计算标准差，可以用来比较两个同类社会经济现象平均数的代表性：标准差越大，表明标志变动程度越大，平均数的代表性越弱；标准差越小，表明标志变动程度越小，平均数的代表性越强。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>方差或标准差都是根据全部数据计算的，因此它们能够充分利用全部数据的差异信息，全面反映出数据的离散程度。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第四章 抽样推断</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>这只能利用样本指标值“2.767”对其进行推断了，具体推断方法可以采取参数估计和假设检验两种方式。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>对于参数估计而言，其目的是对总体均值的所在区间进行估计，也即全体居民的平均潜在购买力水平在2.767上下一个区间范围内，这里需要解决两个问题，一是区间估计的可靠度有多大？二是区间估计的误差是多少？这就是本章所要涉及的抽样推断的重要内容之一。对于假设检验而言，其本质目的与参数估计类似，也是对总体均值水平进行推断，只是过程不同，其首先需要对总体平均潜在购买力做一个假设，假设其等于、大于或小于2.767，然后利用样本信息求出一个统计量值，之后将这一统计量值与查表所得的临界值进行比较，最终做出是否拒绝之前所做假设的判断。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在抽样推断理论中，包含两种类型的推断方法，一种是参数估计，另一种是假设检验。参数估计侧重于用样本信息对总体某一特征做出近似估计，如根据某地区部分居民的收入与支出信息估计出该地区全体居民的平均消费潜力大概在何种水平；假设检验侧重于用样本信息验证总体是否具有某种特征，如根据样本信息预先判断某地区居民的平均消费潜力在何种水平上，然后再利用样本信息来验证这一判断是否成立。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>常用的总体参数有总体平均数（或总体成数）、总体标准差（或总体方差）</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>常用的样本参数有样本平均数（或样本成数）、样本离差（或样本方差）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>中心极限定理。比如对某班学生进行抽样，规定每次抽取5个学生，可以进行30次抽样，每次抽样均能算出一个样本指标的均值，则30次抽样算出的样本均值便是，，，…，，这些均值组合在一起所呈现出的分布便是正态分布。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>中心极限定理是参数区间估计的重要基本原理</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>参数估计就是以所计算的样本指标来估计相应的总体指标。参数估计有点估计和区间估计两种形式。一般实践中，常用样本平均数、样本成数、样本方差或标准差估计总体平均数、总体成数、总体方差或标准差。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>参数的点估计是指当总体参数不清楚时，用一个特定值（一般用样本统计量）对其进行估计，称为点估计。一般而言，就是首先从总体中抽取部分个体作为样本，从样本出发构造一些统计量，作为总体某些未知参数的估计量，当获得一组样本值时，就可以据此算出该统计量的具体数值，则此统计量的值就可以看作对总体参数的一种估计，这种做法就称为参数的点估计。如用样本均值代替总体均值，用样本离差代替总体方差。在操作中，进行n次抽样，每次抽取 k个样本，则可以得到n组分别包含k个样本的样本系列，由于n 组样本包含的个体均不完全相同，故利用 n 组样本可以求得 n 个不同的统计量值，也即n 个不同的点估计值，所以总体参数的点估计值会随着样本观察值的不同而不同，带有一定的随机性。常用的点估计求法包括数字特征法、极大似然估计法。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>例4.1已知某班学生的身高X服从Nμ(σ2, )，其中，参数μσ2、未知，现从该班学生中抽出6名学生作为样本，身高分别为165cm、168cm、173cm、173cm、175cm、180cm，求μσ2、的估计值。解：由数字特征法可知</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>通过样本测定一个范围，使得这个范围按给定的概率，包含总体参数的指标值，则这个概率被称为置信度，这个范围被称为置信区间</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>如α=0.0，5则表示在100次抽样估计中，有95次抽样估计的区间是包含总体参数的，而其余5次并不包含总体参数。但在实际操作中，也并非α越小就越好α，越小，就必然要求(,)的长度越大，也就导致区间估计的范围较宽，估计的精度就下降了。</p>
+</blockquote>
+<p>如α=0.05 ？？则表示在100次抽样估计中，有95次抽样估计的区间是包含总体参数的，而其余5次并不包含总体参数。<br>但在实际操作中，也并非α越小就越好α，越小，就必然要求(,)的长度越大，也就导致区间估计的范围较宽，估计的精度就下降了。</p>
+</li>
+<li><blockquote>
+<p>设样本X1,X2”, ,Xn来自正态总体Nμ( ,σ2)，这里σ2已知，总体均值μ未知</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>已知正态母群体和总体方差时，对总体均值的估计
+这个估计是很简单的，通过公式：
+
+-1.96 &lt;= (a-μ)/(σ/√n)) &lt;= +1.96
+可以推出μ的95%置信区间是：
+
+
+a-1.96(σ/√n) &lt;= μ &lt;= a+1.96(σ/√n)
+对于每一个指定的自由度，如果求T的95%置信区间，只需要左右分别去掉0.025即可。
+如自由度为10的t分布的95%置信区间是-2.228 &lt;= T &lt;= 2.228。
+通过前面推导出来的T的统计量即可得到对总体均值μ的估计。
+
+作者：Endzzz
+链接：https://www.jianshu.com/p/3d0477224db9</code></pre><ul>
+<li><blockquote>
+<p>例4.3某零部件生产厂家生产一种零部件，假设其质量为随机变量 X，服从正态分布N(μ,σ2)，其中，σ2为50。现在从该厂生产的一批零部件中随机地抽取了30个产品进行测试，测得它们的平均质量为600kg。请计算该厂生产的这一批零部件的平均质量的置信水平为95%的置信区间</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>解：由已知条件可得，总体方差σ2=50，样本容量为n=30，样本均值。置信水平为1−α=0.95，查表可得。因此该厂此批零部件平均质量的95%的置信区间为（597.47，602.53）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>2.未知方差σ2的正态总体</p>
+</blockquote>
+</li>
+</ul>
+<pre><code>已知正态母群体，未知总体方差时，对总体均值的估计
+现在只剩下最后一个困难的问题了，如何在只知道样本数据的情况下的得到总体均值的估计。
+从前面的讨论中其实可以看出，除总体均值μ以外，如果我们能只用样本数据得到的统计量
+，清楚其分布，我们自然就可以得到总体均值的估计。
+
+英国化学家戈塞特发现了这样一个分布，并命名为t分布。我们可以看一下t分布的定义和特征。
+
+如下公式表示的统计量T服从自由度为n-1的t分布：
+
+
+我们知道，从正态母群体中的n个样本数据得到的统计量z服从标准正态分布：
+
+
+但是在现实中，统计量σ往往是未知的，所有不能通过z来求得总体均值的估计。
+事实上统计量T和z形式上很像，不难看出，如果n足够大的时候，T的分布趋近于标准正态分布，
+但是当n并不是足够大的时候，T的分布和标准正态分布的偏差并不能被忽略。
+
+t分布的概率密度分布图和特征如下：
+
+对于每一个指定的自由度，如果求T的95%置信区间，只需要左右分别去掉0.025即可。
+如自由度为10的t分布的95%置信区间是-2.228 &lt;= T &lt;= 2.228。通过前面推导出来的
+T的统计量即可得到对总体均值μ的估计。
+
+作者：Endzzz
+链接：https://www.jianshu.com/p/3d0477224db9</code></pre><ul>
+<li><blockquote>
+<p>因在于该统计量不但包含待估参数μ，还含有未知变量σ，在获得样本观测值后，无法计算出置信区间。此时须考虑用样本方差来代替σ2，即构造下述统计量</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>图4.2σ 2 未知情况下总体均值的置信区间例4.4生产厂家生产一种灯泡，假设其寿命为随机变量 X，服从正态分布N 2 ( ,μσ)，其中，σ2未知。现在从该厂生产的灯泡中随机地抽取50个产品进行测试，直到灯泡寿命终止，测得它们的平均寿命为1200小时，样本标准差为60小时。试计算，在置信水平为95%情况下，该厂此种灯泡平均寿命的置信区间。解：由已知条件可得，样本标准差S=60，样本容量n=50，样本均值。置信水平为1−α=0.95，查表可得 因此该厂此种灯泡平均寿命的95%的置信区间为（1183.37，1216.63）。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>例4.7设要检验10000件某产品的质量，现随机抽取100件，发现其中有25件废品，要求用重置抽样的方法以95%的置信度对该批产品的合格率进行区间估计。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第四节 假设检验在实际生活中，我们经常会遇到这样的问题，当对某一事物做出调整之后，总是想检验一下调整后的事物发展是否变得与调整之前不一样，也即调整前后是否发生显著变化。如车间维修工人对相关机器进行了检修，那么检修后的机器的生产效率是否比检修之前发生了明显好转？公司销售部门对产品销售方案做出了调整，那么方案调整之后的销售活动是否比之前有了明显改善</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>假设检验有两个大的步骤，首先对事物总体的某一特征做出假设，其次根据样本信息进行检验。这与参数估计还是有明显区别的</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>参数估计并不对事物总体的某一特征预先做出判断，而是直接抽取样本，根据样本信息计算样本某一特征的指标值，然后再利用该样本指标值对总体同一特征的指标值进行推断，而推断结果通常是用区间估计来表示</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>判断一个问题到底是用参数估计还是用假设检验予以解决，主要是根据该问题的性质来判断，若某一问题是让你估计事物总体特征的指标值大小，则只能使用参数估计方法；若某一问题是让你判断事物总体特征的指标值是否发生了明显改变，则只能使用假设检验方法。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>假设检验的一般步骤如下。第一步，依据所研究问题的不同情况，建立原假设H0和备择假设H1</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第二步，在原假设H0成立条件下，依据总体服从的分布，构建一个合适的样本统计量，该统计量不包含任何的未知参数，然后将各样本值代入该统计量，从而算得一个关于样本的统计量值。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第三步，给定显著性水平α以及相应的自由度，查表求出临界值。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第四步，将第二步求得的样本统计量值与第三步查表求得的临界值进行比较，做出拒绝或接受原假设或对立假设的判断</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（一）总体为正态分布且方差已知</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>例4.9某医院想了解病人的候诊时间与以往相比是否发生了显著的变化，往年情况是，平均每个病人的候诊时间是50分钟，方差为400。现在抽取100名病人的平均候诊时间为55分钟。试帮助医院作出决策（取α=0.01）。解：第一步，建立假设。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>检验统计量,也就是z值（z分数/z-score)</p>
+</blockquote>
+<p>检验统计量,也就是z值（z分数/z-score) 比5%的临界值小，所以我们在95%的置信区间认为它是稳定序列</p>
+<p><a href="https://my.oschina.net/zhiyonghe/blog/906307" target="_blank" rel="noopener">https://my.oschina.net/zhiyonghe/blog/906307</a><br>时间序列预测全攻略（附带Python代码）AirPassengers.csv<br>原始的时间序列<br># Test Statistic 0.815369<br># p-value 0.991880<br># #Lags Used 13.000000<br># Number of observations Used 130.000000<br># Critical value(1%) -3.481682<br># Critical value(5%) -2.884042<br># Critical value(10%) -2.578770<br>#看到 t-statistic 的值 -0.815369要大于10%的显著性水平，所以无法拒绝原假设，另外，p-value的值也很大。<br>消除趋势后<br># Test Statistic -3.162908<br># p-value 0.022235<br># #Lags Used 13.000000<br># Number of observations Used 130.000000<br># Critical value(1%) -3.486535<br># Critical value(5%) -2.886151<br># Critical value(10%) -2.579896<br>#看到 t-statistic 的值 -3.162908 要小于5%，所以拒绝原假设，另外，p-value的值也很小，所以说明一阶差分之后的数据是平稳的。</p>
+</li>
+<li><blockquote>
+<p>当α=0.01时，查表得</p>
+</blockquote>
+<p>α/2 = 0.005<br>1-0.005=0.995<br>查表0.995最左边2.5，最上面是0.7~0.8之间，得到2.575</p>
+</li>
+<li><blockquote>
+<p>例4.10某电池使用寿命服从正态分布，生产厂家声称其生产的某种5号电池平均使用寿命在3小时以上，方差为1。现在从中抽取25个电池，测得其平均使用寿命为2.5小时，试判断厂家说法是否正确（取α=0.05）。解：第一步，建立假设。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>当α=0.05时，查表得zα=−1.645</p>
+</blockquote>
+<p>显著性水平a=0.05，怎么查表求临界值u0.05</p>
+<p>1-0.05=0.95<br>0.95最左边是1.6 最上面是0.04~0.05. 查找结果1.645， 最终结果-1.645</p>
+</li>
+<li><h3 id="双侧T检验"><a href="#双侧T检验" class="headerlink" title="双侧T检验"></a>双侧T检验</h3><blockquote>
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/ba6dbeb7428dd9d4f6bd151b7cee0533.png" alt=""></p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/ba6dbeb7428dd9d4f6bd151b7cee0533.png" class="label">
+</blockquote>
+</li>
+<li><blockquote>
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/20d08e5e9ee4b9da94d6428e8a95c329.png" alt=""></p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/20d08e5e9ee4b9da94d6428e8a95c329.png" class="label">
+</blockquote>
+<p>H0:u=250,H1:u!=250，双侧T检验<br>单侧 75% 80% 85% 90% 95% 97.5% 99%<br>双侧 50% 60% 70% 80% 90% 95% 98%<br>9 0.703 0.883 1.100 1.383 1.833 2.262<br>50 0.679 0.849 1.047 1.299 1.676 2.009</p>
+</li>
+<li><blockquote>
+<p>故拒绝原假设 0H</p>
+</blockquote>
+<p>双侧T检验<br>零假设H0: μ=0，对立假设Ha: μ≠0（p value可以通俗的理解为同时满足tscore和对立假设的概率，所以越小越支持原假设）<br>如果t score=1.96，此时p value就是两个白色面积的和，等于0.05<br>如果t score=−1.96，此时p value也是两个白色面积的和，等于0.05</p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/dd7ae06b6094dc2aa4760a66a294c938.png" class="label">
+
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/dd7ae06b6094dc2aa4760a66a294c938.png" alt="img"></p>
+</li>
+<li><h3 id="单侧T检验"><a href="#单侧T检验" class="headerlink" title="单侧T检验"></a>单侧T检验</h3><blockquote>
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/5eaf6da55fc0f141d7ef1f189163f07f.png" alt="img"></p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/5eaf6da55fc0f141d7ef1f189163f07f.png" class="label">
+</blockquote>
+</li>
+<li><blockquote>
+<p>当α=0.05时，查表得(1)1.68tαn− =。</p>
+</blockquote>
+<p>H0:u=12,H1:u&gt;12单侧T检验<br>单侧 75% 80% 85% 90% 95% 97.5% 99%<br>双侧 50% 60% 70% 80% 90% 95% 98%<br>9 0.703 0.883 1.100 1.383 1.833 2.262<br>50 0.679 0.849 1.047 1.299 1.676 2.009</p>
+</li>
+<li><blockquote>
+<p>故接受备择假设H1</p>
+</blockquote>
+<p>3.54在1.68右边，说明面积比0.05还要小，概率比5%还要小，<br>所以拒绝原假设，接收H1</p>
+<p>单侧T检验,针对标准差<br>零假设H0:μ=0，对立假设Ha:μ&gt;0<br>如果t score=1.96，此时p value就是右边白色小三角的面积，等于0.025<br>如果t score=−1.96，此时p value是左边白色面积加上中间蓝色面积的和，等于0.975<br>零假设H0:μ=0，对立假设Ha:μ&lt;0<br>如果tscore=1.96，此时p value就是右边白色面积加上中间蓝色面积的和，等于0.975<br>如果tscore=−1.96，此时p value是左边白色面积，等于0.025</p>
+<p><img src="%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/7d31afa9531d3533b130d6f11154748c.png" alt="img"></p>
+<img src="/2020/12/11/%E5%BA%94%E7%94%A8%E7%BB%9F%E8%AE%A1%E5%AD%A6/7d31afa9531d3533b130d6f11154748c.png" class="label">
+
+
+
+</li>
+</ul>
+<ul>
+<li><blockquote>
+<p>质原理是利用样本信息去推断总体信息。而在这一过程中，需要首先确定样本量，然后在汇总样本信息的前提下，计算样本指标，再据此计算抽样误差，最后，在一定置信度下，由样本指标和抽样误差共同确定置信区间</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>在参数估计中，有点估计和区间估计两种形式，而区间估计需要涉及误差的计算，一般使用抽样极限误差作为抽样调查所能允许的最大误差</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><blockquote>
+<p>第五章 方差分析</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>方差分析(Analysis of Variance)，又称“变异数分析”或“F 检验”，是 R.A.Fisher 发明的，用于两个及两个以上样本均数差别的显著性检验</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>当试验中考察的因素只有一个时，称为单因素试验；若同时研究两个或两个以上的因素对试验指标的影响时，则称为两因素或多因素试验。试验因素常用大写字母 A，B，C，…表示</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第六章 相关与回归分析</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>第七章 时间序列分析</p>
+</blockquote>
+<ul>
+<li><blockquote>
+<p>间序列的分析模型时间序列由长期趋势、季节变动、循环变动和不规则变动四类因素组成。由于趋势变动是由现象内在的本质因素决定的，这些因素对现象各时期的指标值起着支配性的作用，因此，在进行时间序列分析时，通常以长期趋势值（T ）为绝对量基础，再根据各类变动对时间序列的影响是否独立，建立两种模型，即加法模型和乘法模型。（1）加法模型。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（2）乘法模型。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>测定各个时期的趋势值的方法很多，在这里主要介绍时距扩大法、移动平均法和趋势方程法，其中趋势方程法中最重要的方法是最小二乘法。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（二）移动平均法</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>移动平均法是采用逐项递进的办法，将原时间序列中若干项数据进行平均，通过平均来消除或减弱时间序列中的不规则变动和其他变动，从而呈现出现象发展变化的长期趋势。若平均的数据项数为n ，就称为n项移动平均。如表7.11所示，分别选取3项和4项指标值平均，逐期移动，计算某些时期的长期趋势值。表7.11移动平均法长期趋势计算表</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（1）移动平均法对原时间序列具有修匀或平滑的作用，使得原序列的起伏波动被削弱了，而且平均的时距项数n越大，移动平均的修匀作用越强。</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（三）最小二乘法</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>最小二乘法是通过拟合时间t为解释变量、所考察指标为被解释变量的回归方程来测定现象的长期趋势。最小二乘法的最大优点是</p>
+</blockquote>
+</li>
+<li><blockquote>
+<p>（二）移动平均趋势剔除法该方法的使用首先要测定出时间序列各期的趋势值，然后将原序列中的趋势成分消除，最后通过平均的方法消除不规则变动，从而测定出季节变动规律。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><blockquote>
+<p>第八章 统计指数</p>
+</blockquote>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰</a>
+              <a href="/tags/%E7%BB%9F%E8%AE%A1/" rel="tag"># 统计</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/11/%E4%BD%A0%E4%B8%8D%E7%9F%A5%E9%81%93%E7%9A%84JavaScript(%E4%B8%8A%E5%8D%B7)/" rel="prev" title="你不知道的JavaScript(上卷)">
+      <i class="fa fa-chevron-left"></i> 你不知道的JavaScript(上卷)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/17/Vue-js-2-Web-Development-Projects-Learn-Vue-js-by-building-6-web-apps/" rel="next" title="Vue.js 2 Web Development Projects Learn Vue.js by building 6 web apps">
+      Vue.js 2 Web Development Projects Learn Vue.js by building 6 web apps <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#应用统计学"><span class="nav-number">1.</span> <span class="nav-text">应用统计学</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双侧T检验"><span class="nav-number">1.1.</span> <span class="nav-text">双侧T检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单侧T检验"><span class="nav-number">1.2.</span> <span class="nav-text">单侧T检验</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="g.xian"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">g.xian</p>
+  <div class="site-description" itemprop="description">hexo cl&&hexo g&& hexo d本地hexo s</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">150</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">g.xian</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
