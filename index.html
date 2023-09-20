@@ -180,7 +180,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -194,7 +194,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">无数据告警算法评估</a>
+            <a href="/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">无数据告警差集算法评估</a>
         </h1>
 
         <div class="post-meta">
@@ -211,7 +211,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-20 15:05:15" itemprop="dateModified" datetime="2023-09-20T15:05:15+08:00">2023-09-20</time>
+                <time title="修改时间：2023-09-20 17:48:35" itemprop="dateModified" datetime="2023-09-20T17:48:35+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -236,28 +236,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="实时计算无数据告警的逻辑"><a href="#实时计算无数据告警的逻辑" class="headerlink" title="实时计算无数据告警的逻辑"></a>实时计算无数据告警的逻辑</h2><h3 id="基线数据定义："><a href="#基线数据定义：" class="headerlink" title="基线数据定义："></a>基线数据定义：</h3><p>基线数据是一组带时分的时序数据，时分是根据配置对24小时进行分割得到，比如配置1分钟内没数据告警，则24小时按1分钟进行分割，则分割成00:01, 00:02…的时序数据,总共1440条记录，1440条表示每个1分钟窗口内有一条数据。配置5分钟内没数据则告警，则按5分钟进行分割，则分割成00:05, 00:10…的时序数据,每个时间窗口内有且仅有一条数据。每个任务对应一组基线数据。</p>
-<h3 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h3><p>并集：对于给定的两个集合，返回一个包含两个集合中所有元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93c585c6a1b84~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"></p>
-<p>交集：对于给定的两个集合，返回一个包含两个集合中共有元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93ca4118bf2d7~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"><br>差集：对于给定的两个集合，返回一个包含所有存在于第一个集合且不存在于第二个集合的元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93deea973de09~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"></p>
-<h3 id="告警实现逻辑"><a href="#告警实现逻辑" class="headerlink" title="告警实现逻辑:"></a>告警实现逻辑:</h3><p>定义基线数据后，基线数据作为一个流和原数据流进行合并，同一个任务的基线数据的key和流数据的key是相同的，计算时间窗口内基线数据的key作为一个集合A，流数据的key作为一个集合B，两个集合取差集，元素key1存在A中，且key1不存在于B中, 则key1就是作为告警发出的数据。</p>
-<h3 id="差集算法："><a href="#差集算法：" class="headerlink" title="差集算法："></a>差集算法：</h3><p>为了模拟无数据告警的差集算法，模拟基线数据作为集合A，生成一百万条key，模拟流数据作为集合B，生成999000条key，集合A/B差集就是输出的告警key。</p>
-<h5 id="嵌套两个for循环遍历集合"><a href="#嵌套两个for循环遍历集合" class="headerlink" title="嵌套两个for循环遍历集合"></a>嵌套两个for循环遍历集合</h5><p>嵌套两个for循环来遍历这两个集合，时间复杂度是O(n^2)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testFor</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.err.println(<span class="string">"-------------testFor-------------"</span>);  </span><br><span class="line">    List&lt;String&gt; listA = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;OneMillion;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        listA.add(key1);  </span><br><span class="line">    &#125;  </span><br><span class="line">    List&lt;String&gt; listB =   createRandomList(listA,<span class="number">999000</span>);  </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();  </span><br><span class="line">    listA.removeAll(listB);  </span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(<span class="string">"//testFor:"</span>+(date1.getTime()-date.getTime())/<span class="number">1000</span>+<span class="string">"秒"</span>);  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//testFor: 30分钟内未出结果</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="用Hash表将嵌套的for循环改为单个的for循环"><a href="#用Hash表将嵌套的for循环改为单个的for循环" class="headerlink" title="用Hash表将嵌套的for循环改为单个的for循环"></a>用Hash表将嵌套的for循环改为单个的for循环</h5><p>借助Hash表的快速访问能力来将嵌套的for循环改为单个的for循环，时间复杂度是O(n),代码示例及耗时</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testHashSet</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.err.println(<span class="string">"-------------testHashSet-------------"</span>);  </span><br><span class="line">    List&lt;String&gt; listA = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;OneMillion;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        listA.add(key1);  </span><br><span class="line">    &#125;  </span><br><span class="line">    List&lt;String&gt; listB =   createRandomList(listA,<span class="number">999000</span>);  </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();  </span><br><span class="line">    listA.removeAll(<span class="keyword">new</span> HashSet(listB));  </span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(<span class="string">"//testHashSet:"</span>+(<span class="keyword">double</span>)(date1.getTime()-date.getTime())/<span class="number">1000</span>+<span class="string">"秒"</span>);  </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//testHashSet:0.476秒</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="BitmapHash结构"><a href="#BitmapHash结构" class="headerlink" title="BitmapHash结构"></a>BitmapHash结构</h5><p>key通过Math.abs(key.hashCode())方式转整数进行位图计算，时间复杂度是O(1)，耗时明显减少，但是hash有碰撞概率，有概率出现误告警</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testBitmapHashCode</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.err.println(<span class="string">"-------------testBitmapHashCode-------------"</span>);  </span><br><span class="line">    BitSet bitmap = <span class="keyword">new</span> BitSet();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;OneMillion;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap.set(Math.abs(key1.hashCode()));  <span class="comment">//9995594 有重复  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    BitSet bitmap1 = <span class="keyword">new</span> BitSet();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">999000</span>;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap1.set(Math.abs(key1.hashCode()));  </span><br><span class="line">    &#125;  </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(bitmap.stream().count());  </span><br><span class="line">    bitmap.andNot(bitmap1);  </span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(<span class="string">"testBitmapHashCode:"</span>+(<span class="keyword">double</span>)(date1.getTime()-date.getTime())/<span class="number">1000</span>+<span class="string">"秒"</span>);  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//testBitmapHashCode:0.243秒</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="RoaringBitmap结构"><a href="#RoaringBitmap结构" class="headerlink" title="RoaringBitmap结构"></a>RoaringBitmap结构</h5><p>相比Bitmap，占用空间更小，计算更快 ，但是缺点同BitmapHash结构，字符串hash转整数的过程出现碰撞，会出现误告警</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testRoaringBitmapHashCode</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.err.println(<span class="string">"-------------testRoaringBitmapHashCode-------------"</span>);  </span><br><span class="line">    RoaringBitmap bitmap = <span class="keyword">new</span> RoaringBitmap();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;OneMillion;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap.add(Math.abs(key1.hashCode()));  <span class="comment">//9995594 有重复  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    RoaringBitmap bitmap1 = <span class="keyword">new</span> RoaringBitmap();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">999000</span>;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap1.add(Math.abs(key1.hashCode()));  </span><br><span class="line">    &#125;  </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();  </span><br><span class="line">    bitmap.andNot(bitmap1);  </span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(<span class="string">"testRoaringBitmapHashCode:"</span>+(<span class="keyword">double</span>)(date1.getTime()-date.getTime())/<span class="number">1000</span>+<span class="string">"秒"</span>);  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//testRoaringBitmapHashCode:0.048秒</span></span><br></pre></td></tr></table></figure>
-
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>上述差集方式分两类<br>第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。<br>第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的缺点是要求必须是整数(需要将字符串hash成整数后代入RoaringBitmap结构进行位图计算)，在字符串hash转整数的过程中有一定概率出现hash碰撞，导致误告警，而且求差集的数据量越大，出现hash碰撞的次数越多，误告警数据越多。<br>因此需要根据使用情况进行选择，如果允许出现一定的误告警，建议采用Bitmap位图结构。</p>
-
+          <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>上述差集方式分两类<br>第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。<br>第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的缺点是要求必须是整数(需要将字符串hash成整数后代入RoaringBitmap结构进行位图计算)，在字符串hash转整数的过程中有一定概率出现hash碰撞，导致误告警，而且求差集的数据量越大，出现hash碰撞的次数越多，误告警数据越多。<br>因此需要根据使用情况进行选择，如果允许出现一定的误告警，建议采用Bitmap位图结构。<br>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -615,6 +602,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="郭富城">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭富城的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/" class="post-title-link" itemprop="url">马伯庸-古董局中局</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-09-06 08:51:57" itemprop="dateCreated datePublished" datetime="2023-09-06T08:51:57+08:00">2023-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-20 17:51:53" itemprop="dateModified" datetime="2023-09-20T17:51:53+08:00">2023-09-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
+                    <span itemprop="name">历史</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>马伯庸不仅是个小说家，更是个通透人，小说里面很多厉害的人物说话那是滴水不漏，从他的小说里可以看到人情事故，圆润，里面的人物所作所为值得揣摩，可以帮助读者理解这个社会，正如书中所说，鉴古董易，鉴人心难。这本书也是告诉你如何鉴别人心</p>
+<p> <img src="https://img2.doubanio.com/view/subject/l/public/s28340242.jpg" alt="jpg"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E4%B8%A4%E4%BA%AC%E5%8D%81%E4%BA%94%E6%97%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -706,91 +777,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/" class="post-title-link" itemprop="url">马伯庸-古董局中局</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-09-06 08:51:57" itemprop="dateCreated datePublished" datetime="2023-09-06T08:51:57+08:00">2023-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:46" itemprop="dateModified" datetime="2023-09-19T17:08:46+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>马伯庸不仅是个小说家，更是个通透人，小说里面很多厉害的人物说话那是滴水不漏，从他的小说里可以看到人情事故，圆润，里面的人物所作所为值得揣摩，可以帮助读者理解这个社会，正如书中所说，鉴古董易，鉴人心难。这本书也是告诉你如何鉴别人心</p>
-<p> <img src="https://img2.doubanio.com/view/subject/l/public/s28340242.jpg" alt="jpg"></p>
-<p> <a href="https://book.douban.com/subject/26650957/" target="_blank" rel="noopener">https://book.douban.com/subject/26650957/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/09/06/%E9%A9%AC%E4%BC%AF%E5%BA%B8-%E5%8F%A4%E8%91%A3%E5%B1%80%E4%B8%AD%E5%B1%80/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/22/Flink%20Table%20API%E5%92%8CSQL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -822,7 +808,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:59:39" itemprop="dateModified" datetime="2023-09-19T17:59:39+08:00">2023-09-19</time>
+                <time title="修改时间：2023-09-20 17:49:50" itemprop="dateModified" datetime="2023-09-20T17:49:50+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -849,162 +835,14 @@
       
           <h2 id="Flink-Table-API-amp-SQL实现"><a href="#Flink-Table-API-amp-SQL实现" class="headerlink" title="Flink Table API &amp; SQL实现"></a>Flink Table API &amp; SQL实现</h2><p>Apache Flink 有两种关系型 API 来做流批统一处理：Table API 和 SQL。Table API 是用于 Scala 和 Java 语言的查询API，它可以用一种非常直观的方式来组合使用选取、过滤、join 等关系型算子。Flink SQL 是基于 [Apache Calcite]来实现的标准 SQL。这两种 API 中的查询对于批（DataSet）和流（DataStream）的输入有相同的语义，也会产生同样的计算结果。</p>
 <p>Table API 和 SQL 两种 API 是紧密集成的，以及 DataStream 和 DataSet API。你可以在这些 API 之间，以及一些基于这些 API 的库之间轻松的切换。</p>
-<p>写入kafka的测试数据:</p>
-<p>{“ip”:”192.168.199.104”,”port”:”1521”,”metric”:20}<br>{“ip”:”192.168.199.104”,”port”:”1521”,”metric”:21}<br>{“ip”:”192.168.199.104”,”port”:”1521”,”metric”:22}<br>{“ip”:”192.168.199.104”,”port”:”1522”,”metric”:23}<br>{“ip”:”192.168.199.104”,”port”:”1521”,”metric”:24}<br>{“ip”:”192.168.199.105”,”port”:”1521”,”metric”:25}<br>{“ip”:”192.168.199.105”,”port”:”1521”,”metric”:26}<br>{“ip”:”192.168.199.105”,”port”:”1522”,”metric”:27}</p>
-<h3 id="Table-API实现求平均值"><a href="#Table-API实现求平均值" class="headerlink" title="Table API实现求平均值"></a>Table API实现求平均值</h3><p>创建表方式2种，由DataStream来创建表和DDL创建表</p>
-<p>核心代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">StreamExecutionEnvironment env &#x3D; StreamExecutionEnvironment.getExecutionEnvironment();</span><br><span class="line">       EnvironmentSettings settings &#x3D;                    EnvironmentSettings.newInstance().inStreamingMode().useBlinkPlanner().build();</span><br><span class="line">       StreamTableEnvironment  tEnv &#x3D; StreamTableEnvironment.create(env, settings);</span><br><span class="line">   	Properties sourceProperties &#x3D; new Properties();</span><br><span class="line">	sourceProperties.setProperty(&quot;bootstrap.servers&quot;, &quot;ip:port&quot;);</span><br><span class="line">	sourceProperties.setProperty(&quot;group.id&quot;, &quot;test&quot;);</span><br><span class="line">	FlinkKafkaConsumer&lt;KafkaEntity&gt; kafkaConsumer &#x3D; new FlinkKafkaConsumer&lt;KafkaEntity&gt;(</span><br><span class="line">			&quot;flinksql&quot;, new KafkaEntityDeserializationSchema(), sourceProperties);</span><br><span class="line">	kafkaConsumer.setStartFromEarliest();</span><br><span class="line">	DataStream&lt;KafkaEntity&gt; kafkaStream &#x3D; env.addSource(kafkaConsumer);</span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;方式一  fromDataStream创建表</span><br><span class="line">	 Table kafkaTable &#x3D; tEnv.fromDataStream(kafkaStream,Expressions.$(&quot;ip&quot;),Expressions.$(&quot;port&quot;),Expressions.$(&quot;metric&quot;));</span><br><span class="line">     Table tab1 &#x3D; tEnv.sqlQuery(&quot;select ip, avg(metric) as avgvalue from &quot;+kafkaTable+&quot; group by ip&quot;);</span><br><span class="line">	 tab1.execute().print();</span><br><span class="line">	 </span><br><span class="line">	 </span><br><span class="line">	&#x2F;&#x2F;方式二   createTemporaryView临时视图模式创建表</span><br><span class="line">	 tEnv.createTemporaryView(&quot;flinksql&quot;, kafkaStream,Expressions.$(&quot;ip&quot;),Expressions.$(&quot;port&quot;),Expressions.$(&quot;metric&quot;));</span><br><span class="line">     Table tab2 &#x3D; tEnv.sqlQuery(&quot;select ip, avg(metric) as avgvalue from flinksql group by ip&quot;);</span><br><span class="line">     tab2.execute().print();</span><br><span class="line">     </span><br><span class="line">     &#x2F;&#x2F;方式三  DDL语句创建表</span><br><span class="line">     tEnv.executeSql(ddl);</span><br><span class="line">	 tEnv.sqlQuery(sql);</span><br><span class="line">	</span><br><span class="line">		env.execute(&quot;sql&quot;);</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="SQL实现求平均值"><a href="#SQL实现求平均值" class="headerlink" title="SQL实现求平均值"></a>SQL实现求平均值</h3><p>创建Flink Table的DDL语句：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> flinksql (</span><br><span class="line">	ip <span class="keyword">STRING</span>,</span><br><span class="line">	PORT <span class="keyword">STRING</span>,</span><br><span class="line">	metric <span class="built_in">BIGINT</span>,</span><br><span class="line">	proctime <span class="keyword">AS</span> PROCTIME () </span><br><span class="line">	) <span class="keyword">WITH</span> (</span><br><span class="line">	<span class="string">'connector'</span> = <span class="string">'kafka'</span>,</span><br><span class="line">	<span class="string">'topic'</span> = <span class="string">'flinksql'</span>,</span><br><span class="line">	<span class="string">'properties.bootstrap.servers'</span> = <span class="string">'ip:port'</span>,</span><br><span class="line">	<span class="string">'properties.group.id'</span> = <span class="string">'test1'</span>,</span><br><span class="line">	<span class="string">'format'</span> = <span class="string">'json'</span>,</span><br><span class="line"><span class="string">'scan.startup.mode'</span> = <span class="string">'earliest-offset'</span> </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>根据ip聚合查指标平均值的sql语句:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> ip,  <span class="keyword">avg</span>(metric)  <span class="keyword">from</span> flinksql <span class="keyword">GROUP</span> <span class="keyword">BY</span> ip</span><br></pre></td></tr></table></figure>
-<p>返回结果:<br>| ip              | avg(metric) |<br>| :————-: | :——-: |<br>| 192.168.199.104 | 20        |<br>| 192.168.199.104 | 20        |<br>| 192.168.199.104 | 21        |<br>| 192.168.199.104 | 21        |<br>| <strong>192.168.199.104</strong> | <strong>22</strong>    |<br>| 192.168.199.105 | 25        |<br>| 192.168.199.105 | 25    |<br>| <strong>192.168.199.105</strong> | <strong>26</strong> |</p>
-<p>Flink SQL从kafka中获取到新数据就会触发一次平均值计算，只有最后一个值是最终值（粗体标识）</p>
-<p>根据ip，port 聚合查指标平均值的sql语句</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> ip, port, <span class="keyword">avg</span>(metric)  <span class="keyword">from</span> flinksql <span class="keyword">GROUP</span> <span class="keyword">BY</span> ip,port</span><br></pre></td></tr></table></figure>
-
-
-
-<table>
-<thead>
-<tr>
-<th>ip</th>
-<th>port</th>
-<th>avg(metric)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>192.168.199.104</td>
-<td>1521</td>
-<td>20</td>
-</tr>
-<tr>
-<td>192.168.199.104</td>
-<td>1521</td>
-<td>20</td>
-</tr>
-<tr>
-<td><strong>192.168.199.104</strong></td>
-<td><strong>1521</strong></td>
-<td><strong>21</strong></td>
-</tr>
-<tr>
-<td><strong>192.168.199.105</strong></td>
-<td><strong>1521</strong></td>
-<td><strong>25</strong></td>
-</tr>
-<tr>
-<td><strong>192.168.199.105</strong></td>
-<td><strong>1522</strong></td>
-<td><strong>27</strong></td>
-</tr>
-<tr>
-<td><strong>192.168.199.104</strong></td>
-<td><strong>1522</strong></td>
-<td><strong>23</strong></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/22/Flink%20Table%20API%E5%92%8CSQL/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
         
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/22/Flink%E5%AE%9E%E7%8E%B0%E6%89%B9%E5%A4%84%E7%90%86%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/22/Flink%E5%AE%9E%E7%8E%B0%E6%89%B9%E5%A4%84%E7%90%86%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/" class="post-title-link" itemprop="url">Flink实现批处理离线计算</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-22 08:51:57" itemprop="dateCreated datePublished" datetime="2023-08-22T08:51:57+08:00">2023-08-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:59:32" itemprop="dateModified" datetime="2023-09-19T17:59:32+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flink/" itemprop="url" rel="index">
-                    <span itemprop="name">Flink</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>笔者的项目，一直是用flink进行流处理，为什么这次写flink批处理离线计算呢，因为客户提的新需求更适合用批处理离线计算:</p>
-<ol>
-<li><p>客户不需要实时计算的结果，认为实时结果对他们没有参考意义</p>
-</li>
-<li><p>客户要求计算一个月(或更长时间)内历史数据的基准值，认为一个月(或更长时间)历史数据得到的基准值才能更加准确的评估和预测未来的趋势</p>
-</li>
-</ol>
-<h2 id="一-批处理介绍"><a href="#一-批处理介绍" class="headerlink" title="一 批处理介绍"></a>一 批处理介绍</h2><p>大数据计算分为离线计算和实时计算，离线计算就是我们通常说的批计算，代表是Hadoop MapReduce、Hive等大数据技术，实时计算也被称作流计算，代表是Storm、Spark Streaming、Flink等大数据技术。<br>批处理在大数据世界有着悠久的历史。批处理主要操作大容量静态数据集，并在计算过程完成后返回结果。<br>批处理模式中使用的数据集通常符合下列特征<br>有界：批处理数据集代表数据的有限集合<br>持久：数据通常始终存储在某种类型的持久存储位置中<br>大量：海量数据集<br>批处理非常适合需要访问全套记录才能完成的计算工作。例如在计算总数和平均数时，必须将数据集作为一个整体加以处理，而不能将其视作多条记录的集合。这些操作要求在计算进行过程中数据维持自己的状态。<br>需要处理大量数据的任务通常最适合用批处理操作进行处理。无论直接从持久存储设备处理数据集，或首先将数据集载入内存，批处理系统在设计过程中就充分考虑了数据的量，可提供充足的处理资源。由于批处理在应对大量持久数据方面的表现极为出色，因此经常被用于对历史数据进行分析。</p>
-<h2 id="二-批处理vs流处理"><a href="#二-批处理vs流处理" class="headerlink" title="二 批处理vs流处理"></a>二 批处理vs流处理</h2><p>相信各位已经看过诸多流计算优点的文章，流计算的优点笔者就略过, 下面说一下批处理相比流处理的优点。</p>
-<h3 id="1-批处理的吞吐量大、资源利用率高"><a href="#1-批处理的吞吐量大、资源利用率高" class="headerlink" title="1 批处理的吞吐量大、资源利用率高"></a>1 批处理的吞吐量大、资源利用率高</h3><p>由于批量和流式处理数据粒度不一样，批量每次处理一定大小的数据块（输入一般采用文件系统），一个任务处理完一个数据块之后，才将处理好的中间数据发送给下游。流式计算则是以单条记录为单位，任务在处理完一条记录之后，然后发送给下游进行处理。流式计算来一条记录就计算一次，计算量巨大，当不需要中间值的时候，这种计算属实浪费，因此<strong>批处理的吞吐量更大、资源利用率更高、系统的开销更小</strong>。</p>
-<h3 id="2-批处理容易实现精准计算"><a href="#2-批处理容易实现精准计算" class="headerlink" title="2 批处理容易实现精准计算"></a>2 批处理容易实现精准计算</h3><h4 id="2-1-流处理数据丢失和重复处理"><a href="#2-1-流处理数据丢失和重复处理" class="headerlink" title="2.1 流处理数据丢失和重复处理"></a>2.1 流处理数据丢失和重复处理</h4><p>精确一次(exactly once)是指数据处理没有数据丢失和重复处理的现象。<br>流处理的数据来源一般是消息队列，是无界的，数据是一条一条获取，在加载数据时可能会出现网络连接等问题，所以流处理需要解决数据丢失和重复处理的问题，实现精确一次(exactly once)的语义相对复杂，目前storm流框架目前不支持(exactly once)，spark为了支持(exactly once)引入预写日志(AWL)并且offset由Spark自身管理  ，flink为了支持(exactly once)引入快照(snapshot)机制， 虽然流处理能够解决数据丢失和重复计算问题，但需要引入各种机制，而这增加了系统消耗的资源。<br><strong>批处理的数据源是静态块，比如文件，hdfs文件，批处理一次性加载一批数据，基本不会出现数据丢失和重复计算的情况。</strong></p>
-<h4 id="2-2-流处理水印-watermark-忽略数据"><a href="#2-2-流处理水印-watermark-忽略数据" class="headerlink" title="2.2 流处理水印(watermark)忽略数据"></a>2.2 流处理水印(watermark)忽略数据</h4><p>如果说流处理引入各种机制增加资源消耗可以解决数据丢失和重复处理问题，那么对于乱序数据流则存在忽略数据的可能。<br>流处理数据没有边界，需要窗口(window)的概念，根据窗口来汇总计算。窗口(window)类型有很多种, 滚动窗口(Tumbling Window)、滑动窗口(Sliding Window)和会话窗口(Session window)等，窗口(window)中需要定义时间，流处理中存在事件时间(event time)和处理时间(process time)。对于乱序的数据，为此又引入了水印(watermark)机制。具体概念读者自行查阅。<br>水印(watermark)有一个允许延时(allow lateness)的参数, 窗口(window)接收到水印(watermark)后，再等待一段时间才会关闭窗口，如果这段时间有些数据依然没有发送过来，那就只能忽略它们了。允许延时(allow lateness)参数设置的大，系统占用的资源就多，而且允许延时(allow lateness)的参数不能设置无限大，因此如果数据源异常乱序，流处理的窗口就等不到延时数据过来就进行汇总计算，导致延时数据未处理。<br><strong>批处理数据有界，所有的数据全部都会加载，不用考虑数据源的顺序，不会出现忽略数据的情况，也不需要窗口(window) ，时间，水印等机制。</strong></p>
-<h2 id="三-Flink实现批处理离线计算"><a href="#三-Flink实现批处理离线计算" class="headerlink" title="三 Flink实现批处理离线计算"></a>三 Flink实现批处理离线计算</h2><p>通过上面简单的介绍和对比，发现客户的需求更适合用批处理离线计算，由于Flink是一个流处理框架， 可以处理有边界和无边界的数据流。无边界的数据就是流数据，有边界的数据就是批数据，因此Flink也是支持批处理的。所以笔者采用Flink进行批处理计算。<br>以下是核心代码:<br>flink执行环境：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();</span><br></pre></td></tr></table></figure>
-
-<p>从kafka中获取DataSet数据源，DataSet表示批处理的数据 (流处理是DataStream)：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DataSet&lt;ConsumerRecords&lt;String, String&gt;&gt; recordsDataSetDataSet = env.createInput(KafkaInputFormat</span><br><span class="line">			.buildKafkaInputFormat().setBootstrapServers(KafkaServers)</span><br><span class="line">			.setGroupId(xx).setTopic(sourceTopic).finish());</span><br></pre></td></tr></table></figure>
-
-<p>继承GenericInputFormat类实现自定义获取kafka数据源 KafkaInputFormat：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KafkaInputFormat</span>  <span class="keyword">extends</span> <span class="title">GenericInputFormat</span>&lt;<span class="title">ConsumerRecords</span>&lt;<span class="title">String</span>, <span class="title">String</span>&gt;&gt; </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">(GenericInputSplit split)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        consumer = <span class="keyword">new</span> KafkaConsumer&lt;String,String&gt;(props);</span><br><span class="line">        initPartionMap();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//获取kafka topic每个分区的偏移量,用做kafka消费结束的标识</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">initPartionMap</span><span class="params">()</span></span>&#123;</span><br><span class="line">		Collection&lt;PartitionInfo&gt; partitionInfos = consumer.partitionsFor(topic);</span><br><span class="line">        List&lt;TopicPartition&gt; tp =<span class="keyword">new</span> ArrayList&lt;TopicPartition&gt;();</span><br><span class="line">        partitionInfos.forEach(partitionInfo -&gt; &#123;</span><br><span class="line">            tp.add(<span class="keyword">new</span> TopicPartition(topic,partitionInfo.partition()));</span><br><span class="line">            consumer.assign(tp);</span><br><span class="line">            consumer.seekToEnd(tp);</span><br><span class="line">            partionOffsetMap.put(partitionInfo.partition(),consumer.position(<span class="keyword">new</span> TopicPartition(topic, partitionInfo.partition())));</span><br><span class="line">            partionBooleanMap.put(partitionInfo.partition(), <span class="keyword">false</span>);     </span><br><span class="line">            <span class="comment">//获取参数值后返回最初</span></span><br><span class="line">            consumer.seekToBeginning(tp);</span><br><span class="line">        &#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//消费kafka是否结束</span></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">reachedEnd</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> !partionBooleanMap.containsValue(<span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> ConsumerRecords&lt;String, String&gt; <span class="title">nextRecord</span><span class="params">(ConsumerRecords&lt;String, String&gt; reuse)</span> </span>&#123;</span><br><span class="line">	   <span class="comment">//从kafka中获取一批数据</span></span><br><span class="line">		 <span class="keyword">final</span> ConsumerRecords&lt;String, String&gt; records consumer.poll(Duration.ofMillis(pollTime));</span><br><span class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line">        	Integer partion=record.partition();</span><br><span class="line">        	Long offset=	record.offset();</span><br><span class="line">        	<span class="comment">//表示已有分区已经消费完</span></span><br><span class="line">        	<span class="keyword">if</span>(offset+<span class="number">1</span>==partionOffsetMap.get(partion)) &#123; </span><br><span class="line">        		partionBooleanMap.put(partion, <span class="keyword">true</span>);</span><br><span class="line">        	&#125;</span><br><span class="line">        &#125;</span><br><span class="line">		 <span class="keyword">return</span> records;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="四-总结"><a href="#四-总结" class="headerlink" title="四 总结"></a>四 总结</h2><p>以前的流处理计算过程经过批处理改造后，计算时间大大缩短，也不需要设置窗口(window)、等待时间(allow lateness)和水印(watermark)，而且计算完成程序自动退出，不再占用系统资源。<br>流处理和批处理都有各自的优缺点和应用场景，应该根据项目需求选择合适的。</p>
-
       
     </div>
 
@@ -1054,7 +892,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:59:35" itemprop="dateModified" datetime="2023-09-19T17:59:35+08:00">2023-09-19</time>
+                <time title="修改时间：2023-09-20 17:50:13" itemprop="dateModified" datetime="2023-09-20T17:50:13+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1080,58 +918,14 @@
 
       
           <h3 id="一-为什么要使用广播"><a href="#一-为什么要使用广播" class="headerlink" title="一.为什么要使用广播"></a>一.为什么要使用广播</h3><p>在Flink使用场景中，常常需要获取外部配置或规则数据后进行计算或规则匹配，同时当外部数据发生变化时，Flink中程序也要保持更新，有以下几种方式可以实现</p>
-<h4 id="1-预加载"><a href="#1-预加载" class="headerlink" title="1.预加载"></a>1.预加载</h4><p>在算子的open()方法中读取 MySQL 或其他存储介质，获取全量维表信息比如在算子RichMapFunction的open()方法中获取全部数据，然后在算子中进行使用，这种方法的缺点是如果外部数据更新了Flink是没法知道的，这就需要在开启一个定时任务定时从MySQL中获取最新的数据。</p>
-<h4 id="2-外部查询"><a href="#2-外部查询" class="headerlink" title="2.外部查询"></a>2.外部查询</h4><p>数据不需要存储，仅需要用到外部数据的时候去进行查询，可以保证查询到的数据是最新的，但是对于吞吐量较高的场景，可能与外部（比如 MySQL） 交互就变成了 Flink 任务的瓶颈，虽然可以设置为异步I/O的形式进行交互优化，但优化程度一般有限。</p>
-<h4 id="3-本地缓存"><a href="#3-本地缓存" class="headerlink" title="3.本地缓存"></a>3.本地缓存</h4><p>需要设置过期时间或者定时更新数据，当数据到达过期时间后从新从外部获取，或者定时从外部捞取数据进行更新，不能在外部数据发生变动时，及时更新到Flink程序中。</p>
-<p><strong>预加载和本地缓存难以应对当外部数据发生变化时，数据实时在Flink中保持更新。</strong></p>
-<h3 id="二-什么是广播"><a href="#二-什么是广播" class="headerlink" title="二.什么是广播"></a>二.什么是广播</h3><p>类似于全局性共享的数据，详见官方文档</p>
-<p><a href="https://flink.apache.org/2019/06/26/broadcast-state.html" target="_blank" rel="noopener">https://flink.apache.org/2019/06/26/broadcast-state.html</a></p>
-<p><a href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/dev/stream/state/broadcast_state.html" target="_blank" rel="noopener">https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/dev/stream/state/broadcast_state.html</a></p>
-<p>广播的优势</p>
-<p>广播变量创建后，它可以运行在集群中的任何function上，而不需要多次传递给集群节点，可以直接在内存中拿数据，避免了大量的shuffle，导致集群性能下降。我们可以把一个<strong>dataset 或者不变的缓存对象（例如map list集合对象等）数据集广播出去，然后不同的任务在节点上都能够获取到，并在每个节点上只会存在一份，而不是在每个并发线程中存在</strong>。</p>
-<p>如果不使用broadcast，则在每个节点中的每个任务中都需要拷贝一份dataset数据集，比较浪费内存(也就是一个节点中可能会存在多份dataset数据)。广播变量，可以借助下图辅助理解。</p>
-<p><img src="Flink%E5%B9%BF%E6%92%AD%E7%BB%B4%E8%A1%A8%E6%95%B0%E6%8D%AE%5C1.jpg" alt="1"></p>
-<h3 id="三-广播的使用"><a href="#三-广播的使用" class="headerlink" title="三.广播的使用"></a>三.广播的使用</h3><p>根据广播使用场景将广播的类型分为广播变量和广播流(其实广播原理是一样的)。</p>
-<h4 id="1-广播变量"><a href="#1-广播变量" class="headerlink" title="1.广播变量"></a>1.广播变量</h4><p>将广播的数据作为一个整体或对象广播，比如从MySQL中一次获取全部数据，然后广播出去，因为数据在MySql中，如果MySql中某条记录发生变动，Flink的souce是没法知道，也不会广播。所以只能在souce中定时从MySql中获取全部数据，然后广播更新。</p>
-<p>示例数据格式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kafka源流数据，只有itemid，没有ip和port</span><br><span class="line">&#123;&quot;host&quot;:&quot;orcl&quot;, &quot;itemid&quot;:&quot;7875&quot;, &quot;value&quot;:1&#125;</span><br><span class="line">&#123;&quot;host&quot;:&quot;orcl2&quot;, &quot;itemid&quot;:&quot;7876&quot;, &quot;value&quot;:2&#125;</span><br><span class="line">规则数据集在MySql，itemid关联ip和port</span><br><span class="line">itemid  ip              port</span><br><span class="line">7875	192.168.199.105	1521</span><br><span class="line">7876	192.168.199.106	1526</span><br></pre></td></tr></table></figure>
-
-<p>自定义MySql source, 定时 从Mysql获取全部数据</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void run(SourceContext&lt;HashMap&lt;String, Tuple2&lt;String, Integer&gt;&gt;&gt; ctx) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			while (isRunning) &#123;</span><br><span class="line">				HashMap&lt;String, Tuple2&lt;String, Integer&gt;&gt; output &#x3D; new HashMap&lt;&gt;();</span><br><span class="line">				ResultSet resultSet &#x3D; preparedStatement.executeQuery();</span><br><span class="line">				&#x2F;&#x2F;每隔60s获取全部外部数据集</span><br><span class="line">				while (resultSet.next()) &#123;</span><br><span class="line">					String itemid &#x3D; resultSet.getString(&quot;itemid&quot;);</span><br><span class="line">					String ip &#x3D; resultSet.getString(&quot;ip&quot;);</span><br><span class="line">					int port &#x3D; resultSet.getInt(&quot;port&quot;);</span><br><span class="line">					output.put(itemid, new Tuple2&lt;&gt;(ip, port));</span><br><span class="line">				&#125;</span><br><span class="line">				ctx.collect(output);</span><br><span class="line">				Thread.sleep(1000 * 60);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; catch (Exception ex) &#123;</span><br><span class="line">			log.error(&quot;从Mysql获取配置异常...&quot;, ex);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-<p> 广播代码实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public void processElement(Map&lt;String,Object&gt; value, ReadOnlyContext ctx, Collector&lt;Map&lt;String,Object&gt;&gt; out) throws Exception &#123;</span><br><span class="line">   &#x2F;&#x2F;从广播中获取全量数据</span><br><span class="line">  ReadOnlyBroadcastState&lt;Void, Map&lt;String, Tuple2&lt;String, Integer&gt;&gt;&gt; broadcastState &#x3D; ctx</span><br><span class="line">				.getBroadcastState(ruleStateDescriptor);</span><br><span class="line">				&#x2F;&#x2F;获取全部规则数据进行匹配</span><br><span class="line">    Map&lt;String, Tuple2&lt;String, Integer&gt;&gt;  itemrules&#x3D;  broadcastState.get(null);</span><br><span class="line">  &#x2F;&#x2F;规则数据集为空跳过</span><br><span class="line">    if(itemrules&#x3D;&#x3D;null) &#123;</span><br><span class="line">  	  return;</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;事件流中的itemid</span><br><span class="line">    Object itemidObj &#x3D; value.get(&quot;itemid&quot;); &#x2F;&#x2F; value kafka流中数据获取itemid</span><br><span class="line">	if (itemidObj &#x3D;&#x3D; null) &#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">    Tuple2&lt;String, Integer&gt; itemruld &#x3D; itemrules.get(itemidObj.toString());</span><br><span class="line">    if(itemruld!&#x3D;null)&#123;</span><br><span class="line">  	  &#x2F;&#x2F;匹配成功增加ip,port字段</span><br><span class="line">   	 value.put(&quot;ip&quot;, itemruld.f0);</span><br><span class="line">   	 value.put(&quot;port&quot;, itemruld.f1);</span><br><span class="line">        out.collect(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@Override</span><br><span class="line">public void processBroadcastElement(HashMap&lt;String, Tuple2&lt;String, Integer&gt;&gt; value, Context ctx, Collector&lt;Map&lt;String,Object&gt;&gt; out) throws Exception &#123;</span><br><span class="line">   &#x2F;&#x2F;数据全部更新</span><br><span class="line">	BroadcastState&lt;Void, Map&lt;String, Tuple2&lt;String, Integer&gt;&gt;&gt; broadcastState &#x3D; ctx</span><br><span class="line">			.getBroadcastState(ruleStateDescriptor);</span><br><span class="line">	&#x2F;&#x2F;每次更新全部规则数据</span><br><span class="line">	broadcastState.put(null, value);</span><br><span class="line">    System.out.println(&quot;规则全部更新成功，更新item规则：&quot; + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;itemid&#x3D;7875关联ip&#x3D;192.168.199.104</span><br><span class="line">&#123;host&#x3D;orcl, itemid&#x3D;7875, value&#x3D;1, ip&#x3D;192.168.199.104, port&#x3D;1521&#125;</span><br><span class="line">&#x2F;&#x2F;手动将mysql中的ip&#x3D;192.168.199.104改为ip&#x3D;192.168.199.105，在source 休眠结束后将会更新数据</span><br><span class="line">规则更新成功，更新item规则：&#123;7875&#x3D;(192.168.199.105,1521), 7876&#x3D;(192.168.199.106,1526)&#125;</span><br><span class="line">&#x2F;&#x2F;itemid&#x3D;7875关联ip&#x3D;192.168.199.105</span><br><span class="line">&#123;host&#x3D;orcl, itemid&#x3D;7875, value&#x3D;1, ip&#x3D;192.168.199.105, port&#x3D;1521&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>这种方式和预加载很像，都是通过定时任务加载全部数据，只不过是方法的位置不同，一个是在自定义source中设置休眠时间，另外一个是在算子的open方法中设置定时任务，广播变量的方式同样无法做到数据修改后实时更新。</strong></p>
-<h4 id="2-广播流"><a href="#2-广播流" class="headerlink" title="2.广播流"></a>2.广播流</h4><p>当数据来源于kafka时，Flink消费kafka获取流，将流数据存储在广播状态中，称之为广播流，不同于广播变量一次获取全部数据，广播流是kafka新增一条记录就将这条记录存储到广播中，广播流如何实现外部数据的新增和更新？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">kafka源流数据，只有itemid，没有ip和port</span><br><span class="line">&#123;&quot;host&quot;:&quot;orcl&quot;, &quot;itemid&quot;:&quot;7875&quot;, &quot;value&quot;:1&#125;</span><br><span class="line">&#123;&quot;host&quot;:&quot;orcl2&quot;, &quot;itemid&quot;:&quot;7876&quot;, &quot;value&quot;:2&#125;</span><br><span class="line">规则数据集在kafka，itemid关联ip和port</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7875&quot;,&quot;ip&quot;:&quot;192.168.199.104&quot;,&quot;port&quot;:1521&#125;</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7876&quot;,&quot;ip&quot;:&quot;192.168.199.106&quot;,&quot;port&quot;:1526&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-1-外部数据新增和修改记录"><a href="#2-1-外部数据新增和修改记录" class="headerlink" title="2.1 外部数据新增和修改记录"></a>2.1 外部数据新增和修改记录</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 广播状态底层结构是Map结构</span><br><span class="line">&#x2F;&#x2F;kafka中的数据,flink消费后存储到广播状态,在广播状态中以itemid为key进行存储</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7875&quot;,&quot;ip&quot;:&quot;192.168.199.104&quot;,&quot;port&quot;:1521&#125;</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7876&quot;,&quot;ip&quot;:&quot;192.168.199.106&quot;,&quot;port&quot;:1526&#125;</span><br><span class="line">&#x2F;&#x2F;新增  往kafka写入新记录(key不相同),flink会持续消费kafka并将数据通过Map的put()方法存入广播状态</span><br><span class="line">&#x2F;&#x2F;修改  往kafka写入新记录(key相同)，put()方法覆盖之前的这条记录以达到更新的目的</span><br><span class="line">&#x2F;&#x2F;比如需要更新itemid的ip和port值,要求往kafka中写入一条新数据,比如更新itemid 7875的ip和port</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7875&quot;,&quot;ip&quot;:&quot;192.168.199.105&quot;,&quot;port&quot;:1525&#125;</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-2-删除记录"><a href="#2-2-删除记录" class="headerlink" title="2.2 删除记录"></a>2.2 删除记录</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;kafka中的数据,flink消费后存储到广播状态,以itemid为key进行存储</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7875&quot;,&quot;ip&quot;:&quot;192.168.199.104&quot;,&quot;port&quot;:1521&#125;</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7876&quot;,&quot;ip&quot;:&quot;192.168.199.106&quot;,&quot;port&quot;:1526&#125;</span><br><span class="line">&#x2F;&#x2F;如果需要删除某条记录，往kafka中写入带有key的数据和删除标记即可</span><br><span class="line">&#x2F;&#x2F;比如删除itemid为7875的记录,要求往kafka中写入一条新数据,程序删除广播中itemid7875的记录</span><br><span class="line">&#123;&quot;itemid&quot;:&quot;7875&quot;,&quot;isRemove&quot;:true&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>由于消费kafka流是实时的，kafka的新记录会实时进行消费，根据新记录的内容对广播数据实时的进行新增，修改或删除</strong></p>
-<p>同时由于kafka中的数据是不可变的，当程序需要重启时，只需从头消费kafka即可，由于具有幂等性，最终的广播数据是不会变的。</p>
-<p>示例代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;Flink消费外部kafka规则数据作为流</span><br><span class="line">FlinkKafkaConsumer&lt;ItemRuleEntiy&gt; ruleKafkaConsumer &#x3D; new FlinkKafkaConsumer&lt;ItemRuleEntiy&gt;(&quot;topic&quot;,new ItemRuleEntiyPojoSchema(),properties);</span><br><span class="line">DataStream&lt;ItemRuleEntiy&gt; ruleStream &#x3D; env.addSource(ruleKafkaConsumer);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;广播方法</span><br><span class="line">@Override</span><br><span class="line">public void processBroadcastElement(ItemRuleEntiy value,</span><br><span class="line">		BroadcastProcessFunction&lt;Map&lt;String, Object&gt;, ItemRuleEntiy, Map&lt;String, Object&gt;&gt;.Context ctx,</span><br><span class="line">		Collector&lt;Map&lt;String, Object&gt;&gt; out) throws Exception &#123;</span><br><span class="line">	BroadcastState&lt;String, ItemRuleEntiy&gt; broadcastState &#x3D; ctx.getBroadcastState(ruleStateDescriptor);</span><br><span class="line">	if (StringUtils.isNoneBlank(value.getItemid())) &#123;</span><br><span class="line">		System.out.println(&quot;获取到新的广播规则:&quot; + value);</span><br><span class="line">		&#x2F;&#x2F;相比广播变量，这里每次只存一条规则，相同key则覆盖修改</span><br><span class="line">		broadcastState.put(value.getItemid(), value); &#x2F;&#x2F; 存放数据到广播</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">@Override</span><br><span class="line">public void processElement(Map&lt;String, Object&gt; value,</span><br><span class="line">		BroadcastProcessFunction&lt;Map&lt;String, Object&gt;, ItemRuleEntiy, Map&lt;String, Object&gt;&gt;.ReadOnlyContext ctx,</span><br><span class="line">		Collector&lt;Map&lt;String, Object&gt;&gt; out) throws Exception &#123;</span><br><span class="line">	ReadOnlyBroadcastState&lt;String, ItemRuleEntiy&gt; broadcastState &#x3D; ctx.getBroadcastState(ruleStateDescriptor);</span><br><span class="line">	Object itemidObj &#x3D; value.get(&quot;itemid&quot;); &#x2F;&#x2F; 源kafka流中数据获取itemid</span><br><span class="line">	if (itemidObj &#x3D;&#x3D; null) &#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F; 根据item从广播数据中查找规则,能查到,则增加ip,port字段</span><br><span class="line">	ItemRuleEntiy itemRule &#x3D; broadcastState.get(itemidObj.toString());</span><br><span class="line">	if (itemRule !&#x3D; null) &#123; &#x2F;&#x2F; 从广播中捞取到数据时</span><br><span class="line">		value.put(&quot;ip&quot;, itemRule.getIp());</span><br><span class="line">		value.put(&quot;port&quot;, itemRule.getPort());</span><br><span class="line">		out.collect(value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;  所有广播规则数据:</span><br><span class="line">7875&#x3D;&#123;itemid&#x3D;7875, ip&#x3D;192.168.199.104, port&#x3D;1521&#125;</span><br><span class="line">7876&#x3D;&#123;itemid&#x3D;7876, ip&#x3D;192.168.199.106, port&#x3D;1526&#125;</span><br><span class="line">&#x2F;&#x2F;itemid&#x3D;7875关联ip&#x3D;192.168.199.104</span><br><span class="line">(&#123;host&#x3D;orcl, itemid&#x3D;7875,value&#x3D;1, ip&#x3D;192.168.199.104, port&#x3D;1521&#125;,7875)</span><br><span class="line">&#x2F;&#x2F;kafka写入&#123;itemid&#x3D;7875, ip&#x3D;192.168.199.105, port&#x3D;1521&#125;</span><br><span class="line"> 获取到新的广播规则:&#123;itemid&#x3D;7875, ip&#x3D;192.168.199.105, port&#x3D;1521&#125;</span><br><span class="line"> &#x2F;&#x2F;itemid&#x3D;7875关联ip&#x3D;192.168.199.105</span><br><span class="line">&#123;host&#x3D;orcl,itemid&#x3D;7875, value&#x3D;1, ip&#x3D;192.168.199.105, port&#x3D;1521&#125;,7875)</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="四-总结"><a href="#四-总结" class="headerlink" title="四.总结"></a>四.总结</h3><p><strong>通过kafka广播流的方式最终实现了Flink与外部数据交互的实时更新，不仅是kafka，还有MQ，甚至文件格式都可以作为广播流，广播流要求数据不能从内部更改（无法作为流消息被实时消费),只能通过新增的方式进行修改和删除(新增记录中key相同的表示覆盖修改，带key和删除标记的表示删除)</strong></p>
-<p><strong>相比表(mysql,oracle)只是结果的呈现，日志(kafka或其它队列)是一种带有时间维度（先后顺序）信息的存储，可以说表是二维的，日志是三维的，通过日志可以复原每个时间点的表，但是表不能还原日志。</strong></p>
-<p><strong>广播作为一种流（流明显带有时间特性)，所以当不带时间维度的表作为流时，是没法形成真正意义上的流，只能通过定时获取表的全部数据作为伪流，流中每个时间点的数据也只能是全量表数据，同时定时也就没法做到实时获取。只有带时间维度的日志作为流时，才能做到实时获取，而且每次只获取最新的一条记录即可，不用每次获取全部数据。</strong></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://mp.weixin.qq.com/s/3aDKa0i4GrhtUSyvv_IJkw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/3aDKa0i4GrhtUSyvv_IJkw</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/105304256" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/105304256</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/141637729" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/141637729</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/22/Flink%E5%B9%BF%E6%92%AD%E7%BB%B4%E8%A1%A8%E6%95%B0%E6%8D%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1150,7 +944,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/22/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3sql%E7%A8%BD%E6%9F%A5%E4%B8%AD%E7%9A%84%E6%AF%94%E5%AF%B9%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/22/Flink%E5%AE%9E%E7%8E%B0%E6%89%B9%E5%A4%84%E7%90%86%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1164,7 +958,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2023/08/22/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3sql%E7%A8%BD%E6%9F%A5%E4%B8%AD%E7%9A%84%E6%AF%94%E5%AF%B9%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">布隆过滤器算法解决sql稽查中的比对问题</a>
+            <a href="/2023/08/22/Flink%E5%AE%9E%E7%8E%B0%E6%89%B9%E5%A4%84%E7%90%86%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/" class="post-title-link" itemprop="url">Flink实现批处理离线计算</a>
         </h1>
 
         <div class="post-meta">
@@ -1181,7 +975,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 18:02:42" itemprop="dateModified" datetime="2023-09-19T18:02:42+08:00">2023-09-19</time>
+                <time title="修改时间：2023-09-20 17:50:50" itemprop="dateModified" datetime="2023-09-20T17:50:50+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1189,8 +983,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
+                  <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
                   </a>
                 </span>
             </span>
@@ -1206,769 +1000,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>副本</p>
-<p> <img src="https://img1.doubanio.com/view/subject/l/public/s34026678.jpg" alt="jpg"></p>
-<p><a href="https://book.douban.com/subject/35245517/" target="_blank" rel="noopener">https://book.douban.com/subject/35245517/</a><br>
+          <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>笔者的项目，一直是用flink进行流处理，为什么这次写flink批处理离线计算呢，因为客户提的新需求更适合用批处理离线计算:</p>
+<ol>
+<li><p>客户不需要实时计算的结果，认为实时结果对他们没有参考意义</p>
+</li>
+<li><p>客户要求计算一个月(或更长时间)内历史数据的基准值，认为一个月(或更长时间)历史数据得到的基准值才能更加准确的评估和预测未来的趋势</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2023/08/22/%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3sql%E7%A8%BD%E6%9F%A5%E4%B8%AD%E7%9A%84%E6%AF%94%E5%AF%B9%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/08/22/%E9%99%88%E5%BF%97%E6%AD%A6-%E9%87%91%E8%9E%8D%E7%9A%84%E9%80%BB%E8%BE%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2023/08/22/%E9%99%88%E5%BF%97%E6%AD%A6-%E9%87%91%E8%9E%8D%E7%9A%84%E9%80%BB%E8%BE%91/" class="post-title-link" itemprop="url">陈志武-金融的逻辑</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-08-22 08:51:57" itemprop="dateCreated datePublished" datetime="2023-08-22T08:51:57+08:00">2023-08-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 18:03:25" itemprop="dateModified" datetime="2023-09-19T18:03:25+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%87%91%E8%9E%8D/" itemprop="url" rel="index">
-                    <span itemprop="name">金融</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/22/%E4%B8%AD%E5%9B%BD%E4%B8%80%E4%B9%9D%E4%BA%94%E4%B8%83-%E5%B0%A4%E5%87%A4%E4%BC%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/22/%E4%B8%AD%E5%9B%BD%E4%B8%80%E4%B9%9D%E4%BA%94%E4%B8%83-%E5%B0%A4%E5%87%A4%E4%BC%9F/" class="post-title-link" itemprop="url">中国一九五七-尤凤伟</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-22 08:51:57" itemprop="dateCreated datePublished" datetime="2022-04-22T08:51:57+08:00">2022-04-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有点像夹边沟，描写知识分子在反右中的悲催命运，看完不甚唏嘘</p>
-<h2 id="内容简介-·-·-·-·-·-·"><a href="#内容简介-·-·-·-·-·-·" class="headerlink" title="内容简介 · · · · · ·"></a><a href="https://book.douban.com/subject/1021677/" target="_blank" rel="noopener">内容简介 · · · · · ·</a></h2><p>本书以罕见的真诚和气概对一九五七年“反右”事件进行了全面的诘问与描述，展现出一代知识分子无端遭劫，身陷囹圄，心灵经受阉割的苦难历程。作品以北京某大学的整风反右开篇，到一批知识者获罪落狱，几易劳改农场改造而收笔，通过对众多人物形象的塑造和复杂故事情节的构建以及独特环境的烘托，淋漓尽致地展现了周文祥、冯俐、李戊孟、吴启都等莘莘学子难以言状的炼狱生涯。小说不仅对大量惊心动魄且鲜为人知的历史真相做了充分展露与描写，更对复杂人性中诸如善恶、生存、欲望、性爱等多个层面在特殊境遇下的异常形态做了深刻揭示与剖析。是一代知识者的罹难史与心灵史。写得情景交融，催人泪下，具有强烈的思想震撼力和艺术感染力。历史是一面镜子。小说以深远广阔的视角，以求真尚实的笔触，以质朴别致的艺术风格和从容而具张力的文学语言，形象而又真实地再现了这段在人们记忆中留了深重阴影的历史。正视这段历史并从中反思，于当今社会之进步不无警示与教益。</p>
-<p> <img src="https://images-cn.ssl-images-amazon.cn/images/I/41UgQ-n-4pL._SX342_BO1,204,203,200_.jpg" alt="jpg"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/22/%E4%B8%AD%E5%9B%BD%E4%B8%80%E4%B9%9D%E4%BA%94%E4%B8%83-%E5%B0%A4%E5%87%A4%E4%BC%9F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/22/%E4%B9%89%E5%92%8C%E5%9B%A2%E8%BF%90%E5%8A%A8%E7%9A%84%E8%B5%B7%E6%BA%90-%E5%91%A8%E9%94%A1%E7%91%9E/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/22/%E4%B9%89%E5%92%8C%E5%9B%A2%E8%BF%90%E5%8A%A8%E7%9A%84%E8%B5%B7%E6%BA%90-%E5%91%A8%E9%94%A1%E7%91%9E/" class="post-title-link" itemprop="url">义和团运动的起源-周锡瑞</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-22 08:51:57" itemprop="dateCreated datePublished" datetime="2022-04-22T08:51:57+08:00">2022-04-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>专业性太强，弃坑</p>
-<p> <img src="https://img1.doubanio.com/view/subject/l/public/s34026678.jpg" alt="jpg"></p>
-<p><a href="https://book.douban.com/subject/35245517/" target="_blank" rel="noopener">https://book.douban.com/subject/35245517/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/22/%E4%B9%89%E5%92%8C%E5%9B%A2%E8%BF%90%E5%8A%A8%E7%9A%84%E8%B5%B7%E6%BA%90-%E5%91%A8%E9%94%A1%E7%91%9E/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/04/22/%E5%8E%8B%E8%A3%82%E7%9A%84%E5%BA%95%E5%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/22/%E5%8E%8B%E8%A3%82%E7%9A%84%E5%BA%95%E5%B1%82/" class="post-title-link" itemprop="url">压裂的底层</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-22 08:51:57" itemprop="dateCreated datePublished" datetime="2022-04-22T08:51:57+08:00">2022-04-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A4%BE%E4%BC%9A/" itemprop="url" rel="index">
-                    <span itemprop="name">社会</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>看了几页，天然气征地污染环境，在中国这都不叫个事，中国的强拆征地污染比这不知狠了多少倍，美国人民太大题小做了，还获奖，这都能叫压裂的底层，那中国就是粉碎的底层，像美国这样牺牲几个底层就叫嚷着，怎么集中力量办大事，没看头弃坑了<img src="https://img2.doubanio.com/view/subject/l/public/s34067701.jpg" alt="jpg"></p>
-<p><a href="https://book.douban.com/subject/35642035/" target="_blank" rel="noopener">https://book.douban.com/subject/35642035/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/04/22/%E5%8E%8B%E8%A3%82%E7%9A%84%E5%BA%95%E5%B1%82/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/28/%E9%A5%A5%E9%A5%BF%E7%9A%84%E7%9B%9B%E4%B8%96%EF%BC%9A%E4%B9%BE%E9%9A%86%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%97%E4%B8%8E%E5%A4%B1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/28/%E9%A5%A5%E9%A5%BF%E7%9A%84%E7%9B%9B%E4%B8%96%EF%BC%9A%E4%B9%BE%E9%9A%86%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%97%E4%B8%8E%E5%A4%B1/" class="post-title-link" itemprop="url">饥饿的盛世：乾隆时代的得与失</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-28 08:51:57" itemprop="dateCreated datePublished" datetime="2022-03-28T08:51:57+08:00">2022-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:45" itemprop="dateModified" datetime="2023-09-19T17:08:45+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>从来就没有所谓的盛世，有的只是血腥残忍和谎言</p>
-<p> <img src="https://img9.doubanio.com/view/subject/l/public/s24404464.jpg" alt="jpg"></p>
-<p> <a href="https://book.douban.com/subject/11636077/" target="_blank" rel="noopener">https://book.douban.com/subject/11636077/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/28/%E9%A5%A5%E9%A5%BF%E7%9A%84%E7%9B%9B%E4%B8%96%EF%BC%9A%E4%B9%BE%E9%9A%86%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BE%97%E4%B8%8E%E5%A4%B1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/02/22/%E4%B8%AD%E5%9B%BD%E5%86%9C%E6%B0%91%E8%B0%83%E6%9F%A5-%E9%99%88%E6%A1%82%E6%A3%A3-%E6%98%A5%E6%A1%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/22/%E4%B8%AD%E5%9B%BD%E5%86%9C%E6%B0%91%E8%B0%83%E6%9F%A5-%E9%99%88%E6%A1%82%E6%A3%A3-%E6%98%A5%E6%A1%83/" class="post-title-link" itemprop="url">中国农民调查-陈桂棣-春桃</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-22 14:43:18" itemprop="dateCreated datePublished" datetime="2022-02-22T14:43:18+08:00">2022-02-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 书已被禁，目前豆瓣也没有收录，只有一个《中国农民工调查》，因此封面也只能截图了</p>
-<p>读完《秦制两千年》后读到这本，深感两千年以来百姓从来就是被剥削被压迫的对象，农民种地缴皇粮，各种苛捐杂税，劳役，一直在温饱线上挣扎，从公元前多少年直到公元2006年取消农业税，多少年了绑在农民身上的铰链才伸开一些，2006到现在2022其实也才过去不到16年，农民逃离2千多年的黑暗时期也才16年。</p>
-<p>作者勇气可嘉，为农民发声，作家改变农民命运，全中国的农民应该感谢他。</p>
-<p>回忆小时候收稻子，晒稻子，推车送到大队去交粮食，记得那个时候还有人头税，交多少不清楚，学校学杂费也多，学杂费找爸妈要钱，有时候爸妈手上也没钱，就拖着，没交学杂费去上学在学校都抬不起头，老师也是三天两头催。家里吃的最多的菜就是南瓜，长大后见南瓜都绕着走，吃吐了，除稻田外麻和棉花是主要农作物，打麻是那种脚踩手拖的打麻机，每次坐上打麻机就犯恶心，那个时候的愿望就是长大了再不打麻，所以我都梦想算是实现了吧，还有一点就是以后的生活不管多苦，我都觉得比起打麻，已经很算好的了，摘棉花还好，就是太阳有点晒。</p>
-<p>书中说的税费改革在生活中没有中印象，印象中的是取消农业税后，才没有那些摊派，杂费，才觉得日子好过一点。中国农业税加起来也就三百多个亿，没多少钱，相反征收过程中的成本远不止这些，加上根据面积和人头的摊派，杂费更是压得农民喘不过气。以前的村支书村干部很是威风，也是自从取消农业税后，如今村干部也就没什么存在感了，不用交税也就不用被村干部克扣和摊派了。</p>
-<p>虽然没有终结马表法里的帝制，也没有实现民主，不过两千多年来中国农民第一次不用交皇粮，也没有苛捐杂税，算得上是中国农民历史上最好的时代，农民第一次能吃饱饭，虽然原因更多是因为科技进步，工业产值高，政府看不上绳头小利的农业税，但也不得不感谢朝廷的网开一面。</p>
-
-
-<p><img src="%E4%B8%AD%E5%9B%BD%E5%86%9C%E6%B0%91%E8%B0%83%E6%9F%A5-%E9%99%88%E6%A1%82%E6%A3%A3-%E6%98%A5%E6%A1%83/cover.png" alt=""></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/22/%E4%B8%AD%E5%9B%BD%E5%86%9C%E6%B0%91%E8%B0%83%E6%9F%A5-%E9%99%88%E6%A1%82%E6%A3%A3-%E6%98%A5%E6%A1%83/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/02/20/%E8%B0%8C%E6%97%AD%E5%BD%AC-%E7%A7%A6%E5%88%B6%E4%B8%A4%E5%8D%83%E5%B9%B4%EF%BC%9A%E5%B0%81%E5%BB%BA%E5%B8%9D%E7%8E%8B%E7%9A%84%E6%9D%83%E5%8A%9B%E8%A7%84%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/20/%E8%B0%8C%E6%97%AD%E5%BD%AC-%E7%A7%A6%E5%88%B6%E4%B8%A4%E5%8D%83%E5%B9%B4%EF%BC%9A%E5%B0%81%E5%BB%BA%E5%B8%9D%E7%8E%8B%E7%9A%84%E6%9D%83%E5%8A%9B%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">谌旭彬-秦制两千年：封建帝王的权力规则</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-02-20 14:43:18" itemprop="dateCreated datePublished" datetime="2022-02-20T14:43:18+08:00">2022-02-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:45" itemprop="dateModified" datetime="2023-09-19T17:08:45+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p> 六星神书, 两千年来的盛世真相，帝制下从来就没有盛世，有也是皇帝和统治集团的盛世，对于百姓而言，有的只是挣扎求生存，为了统治的稳定和满足自身的欲望，帝制的统治集团不惜采用法家的贫民/弱民/愚民政策(或儒表法里，或马表法里，马指马克思，秦晖语)。<br> 两千年的贫民/弱民/愚民政策政策在当下依然频繁上演，朱元璋删《孟子》内容变《孟子节文》，就因为里面写了民为贵，君为轻等和现在的书籍，电影，电视剧审核删节又有什么区别，朱元璋对归化突厥人送物资免税收和现在对非洲留学生给钱一样，拿纳税人的钱博自己的名声，现在的防火墙何尝不是愚民政策，国营企业垄断何尝不是以前的盐铁专营剥削民众。很多政策与古代何其相似，<br> 两千年只是不停的改朝换代，从来没有把皇帝和统治集团的权力关入笼子，现代能将权力关入笼子的民主一直遭受帝制的打压，在贫民/弱民/愚民政策下，实现把权力关入笼子难于登天，不实现民主将权力关入笼子也就无法终结秦制，两千年过后，我们却仍在原地。</p>
-<p>结合《中国农民调查》，看现在的农民有多苦就知道以前的农民不知道比这苦多少倍，还有一本《晚清官场镜像：杜凤治日记研究》观察清朝的农民，总之历朝历代的农民都是一部血泪史, &lt;&lt;饥饿的盛世：乾隆时代的得与失&gt;&gt;更是揭露盛世真相都谎言</p>
-<p> <img src="https://img2.doubanio.com/view/subject/l/public/s33912621.jpg" alt="jpg"><br> <a href="https://book.douban.com/subject/35356472/" target="_blank" rel="noopener">https://book.douban.com/subject/35356472/</a><br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/20/%E8%B0%8C%E6%97%AD%E5%BD%AC-%E7%A7%A6%E5%88%B6%E4%B8%A4%E5%8D%83%E5%B9%B4%EF%BC%9A%E5%B0%81%E5%BB%BA%E5%B8%9D%E7%8E%8B%E7%9A%84%E6%9D%83%E5%8A%9B%E8%A7%84%E5%88%99/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/30/%E5%8F%B2%E8%AE%B0%E7%9A%84%E8%AF%BB%E6%B3%95%EF%BC%9A%E5%8F%B8%E9%A9%AC%E8%BF%81%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%96%E7%95%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/30/%E5%8F%B2%E8%AE%B0%E7%9A%84%E8%AF%BB%E6%B3%95%EF%BC%9A%E5%8F%B8%E9%A9%AC%E8%BF%81%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%96%E7%95%8C/" class="post-title-link" itemprop="url">史记的读法：司马迁的历史世界</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-30 14:43:18" itemprop="dateCreated datePublished" datetime="2022-01-30T14:43:18+08:00">2022-01-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:43" itemprop="dateModified" datetime="2023-09-19T17:08:43+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>//TODO: ibook上未分享出来</p>
-<p><img src="https://img9.doubanio.com/view/subject/l/public/s33506895.jpg" alt="jpg"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/30/%E5%8F%B2%E8%AE%B0%E7%9A%84%E8%AF%BB%E6%B3%95%EF%BC%9A%E5%8F%B8%E9%A9%AC%E8%BF%81%E7%9A%84%E5%8E%86%E5%8F%B2%E4%B8%96%E7%95%8C/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/01/30/%E6%98%8E%E6%9A%97%E4%B9%8B%E9%97%B4%EF%BC%9A%E9%B2%81%E8%BF%85%E4%BC%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="郭富城">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭富城的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/01/30/%E6%98%8E%E6%9A%97%E4%B9%8B%E9%97%B4%EF%BC%9A%E9%B2%81%E8%BF%85%E4%BC%A0/" class="post-title-link" itemprop="url">明暗之间：鲁迅传</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-01-30 14:43:18" itemprop="dateCreated datePublished" datetime="2022-01-30T14:43:18+08:00">2022-01-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-19 17:08:45" itemprop="dateModified" datetime="2023-09-19T17:08:45+08:00">2023-09-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%8E%86%E5%8F%B2/" itemprop="url" rel="index">
-                    <span itemprop="name">历史</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://img3.doubanio.com/view/subject/l/public/s33964070.jpg" alt="jpg"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/30/%E6%98%8E%E6%9A%97%E4%B9%8B%E9%97%B4%EF%BC%9A%E9%B2%81%E8%BF%85%E4%BC%A0/#more" rel="contents">
+              <a class="btn" href="/2023/08/22/Flink%E5%AE%9E%E7%8E%B0%E6%89%B9%E5%A4%84%E7%90%86%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1992,7 +1031,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2067,7 +1106,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

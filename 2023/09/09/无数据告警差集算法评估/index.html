@@ -46,24 +46,24 @@
   };
 </script>
 
-  <meta name="description" content="实时计算无数据告警的逻辑基线数据定义：基线数据是一组带时分的时序数据，时分是根据配置对24小时进行分割得到，比如配置1分钟内没数据告警，则24小时按1分钟进行分割，则分割成00:01, 00:02…的时序数据,总共1440条记录，1440条表示每个1分钟窗口内有一条数据。配置5分钟内没数据则告警，则按5分钟进行分割，则分割成00:05, 00:10…的时序数据,每个时间窗口内有且仅有一条数据。每个">
+  <meta name="description" content="总结：上述差集方式分两类第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="无数据告警算法评估">
-<meta property="og:url" content="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/index.html">
+<meta property="og:title" content="无数据告警差集算法评估">
+<meta property="og:url" content="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/index.html">
 <meta property="og:site_name" content="郭富城的博客">
-<meta property="og:description" content="实时计算无数据告警的逻辑基线数据定义：基线数据是一组带时分的时序数据，时分是根据配置对24小时进行分割得到，比如配置1分钟内没数据告警，则24小时按1分钟进行分割，则分割成00:01, 00:02…的时序数据,总共1440条记录，1440条表示每个1分钟窗口内有一条数据。配置5分钟内没数据则告警，则按5分钟进行分割，则分割成00:05, 00:10…的时序数据,每个时间窗口内有且仅有一条数据。每个">
+<meta property="og:description" content="总结：上述差集方式分两类第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93c585c6a1b84~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp">
 <meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93ca4118bf2d7~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp">
 <meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93deea973de09~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp">
 <meta property="article:published_time" content="2023-09-09T12:09:30.000Z">
-<meta property="article:modified_time" content="2023-09-20T07:05:15.925Z">
+<meta property="article:modified_time" content="2023-09-20T09:48:35.655Z">
 <meta property="article:author" content="郭富城">
 <meta property="article:tag" content="bitmap">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93c585c6a1b84~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp">
 
-<link rel="canonical" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
+<link rel="canonical" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
 
 
 <script id="page-configurations">
@@ -75,7 +75,7 @@
   };
 </script>
 
-  <title>无数据告警算法评估 | 郭富城的博客</title>
+  <title>无数据告警差集算法评估 | 郭富城的博客</title>
   
 
 
@@ -185,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/09/09/%E6%97%A0%E6%95%B0%E6%8D%AE%E5%91%8A%E8%AD%A6%E5%B7%AE%E9%9B%86%E7%AE%97%E6%B3%95%E8%AF%84%E4%BC%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -198,7 +198,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          无数据告警算法评估
+          无数据告警差集算法评估
         </h1>
 
         <div class="post-meta">
@@ -215,7 +215,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-20 15:05:15" itemprop="dateModified" datetime="2023-09-20T15:05:15+08:00">2023-09-20</time>
+                <time title="修改时间：2023-09-20 17:48:35" itemprop="dateModified" datetime="2023-09-20T17:48:35+08:00">2023-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,7 +247,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="实时计算无数据告警的逻辑"><a href="#实时计算无数据告警的逻辑" class="headerlink" title="实时计算无数据告警的逻辑"></a>实时计算无数据告警的逻辑</h2><h3 id="基线数据定义："><a href="#基线数据定义：" class="headerlink" title="基线数据定义："></a>基线数据定义：</h3><p>基线数据是一组带时分的时序数据，时分是根据配置对24小时进行分割得到，比如配置1分钟内没数据告警，则24小时按1分钟进行分割，则分割成00:01, 00:02…的时序数据,总共1440条记录，1440条表示每个1分钟窗口内有一条数据。配置5分钟内没数据则告警，则按5分钟进行分割，则分割成00:05, 00:10…的时序数据,每个时间窗口内有且仅有一条数据。每个任务对应一组基线数据。</p>
+        <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>上述差集方式分两类<br>第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。<br>第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的缺点是要求必须是整数(需要将字符串hash成整数后代入RoaringBitmap结构进行位图计算)，在字符串hash转整数的过程中有一定概率出现hash碰撞，导致误告警，而且求差集的数据量越大，出现hash碰撞的次数越多，误告警数据越多。<br>因此需要根据使用情况进行选择，如果允许出现一定的误告警，建议采用Bitmap位图结构。<br> <a id="more"></a></p>
+<h2 id="实时计算无数据告警的逻辑"><a href="#实时计算无数据告警的逻辑" class="headerlink" title="实时计算无数据告警的逻辑"></a>实时计算无数据告警的逻辑</h2><h3 id="基线数据定义："><a href="#基线数据定义：" class="headerlink" title="基线数据定义："></a>基线数据定义：</h3><p>基线数据是一组带时分的时序数据，时分是根据配置对24小时进行分割得到，比如配置1分钟内没数据告警，则24小时按1分钟进行分割，则分割成00:01, 00:02…的时序数据,总共1440条记录，1440条表示每个1分钟窗口内有一条数据。配置5分钟内没数据则告警，则按5分钟进行分割，则分割成00:05, 00:10…的时序数据,每个时间窗口内有且仅有一条数据。每个任务对应一组基线数据。</p>
 <h3 id="集合运算"><a href="#集合运算" class="headerlink" title="集合运算"></a>集合运算</h3><p>并集：对于给定的两个集合，返回一个包含两个集合中所有元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93c585c6a1b84~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"></p>
 <p>交集：对于给定的两个集合，返回一个包含两个集合中共有元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93ca4118bf2d7~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"><br>差集：对于给定的两个集合，返回一个包含所有存在于第一个集合且不存在于第二个集合的元素的新集合。<br><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/6/26/16b93deea973de09~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp" alt="jpg"></p>
 <h3 id="告警实现逻辑"><a href="#告警实现逻辑" class="headerlink" title="告警实现逻辑:"></a>告警实现逻辑:</h3><p>定义基线数据后，基线数据作为一个流和原数据流进行合并，同一个任务的基线数据的key和流数据的key是相同的，计算时间窗口内基线数据的key作为一个集合A，流数据的key作为一个集合B，两个集合取差集，元素key1存在A中，且key1不存在于B中, 则key1就是作为告警发出的数据。</p>
@@ -267,7 +268,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testRoaringBitmapHashCode</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    System.err.println(<span class="string">"-------------testRoaringBitmapHashCode-------------"</span>);  </span><br><span class="line">    RoaringBitmap bitmap = <span class="keyword">new</span> RoaringBitmap();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;OneMillion;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap.add(Math.abs(key1.hashCode()));  <span class="comment">//9995594 有重复  </span></span><br><span class="line">    &#125;  </span><br><span class="line">    RoaringBitmap bitmap1 = <span class="keyword">new</span> RoaringBitmap();  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">999000</span>;i++)&#123;  </span><br><span class="line">        String key1=<span class="string">"ip(192.168.199.10"</span>+i+<span class="string">")#port("</span>+i+<span class="string">")#service_name(orcl)#time(23:30:00)"</span>+i;  </span><br><span class="line">        bitmap1.add(Math.abs(key1.hashCode()));  </span><br><span class="line">    &#125;  </span><br><span class="line">    Date date = <span class="keyword">new</span> Date();  </span><br><span class="line">    bitmap.andNot(bitmap1);  </span><br><span class="line">    Date date1 = <span class="keyword">new</span> Date();  </span><br><span class="line">    System.out.println(<span class="string">"testRoaringBitmapHashCode:"</span>+(<span class="keyword">double</span>)(date1.getTime()-date.getTime())/<span class="number">1000</span>+<span class="string">"秒"</span>);  </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//testRoaringBitmapHashCode:0.048秒</span></span><br></pre></td></tr></table></figure>
 
 
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>上述差集方式分两类<br>第一类是直接获取key取差集，表现最好的是用Hash表将嵌套的for循环改为单个的for循环，时间复杂度为O(n),一百万条key时间耗时 0.476秒。<br>第二类是将key进行hash转换后再取差集，表现最好的是采用RoaringBitmap结构，时间复杂度是O(1)，耗时0.048秒，相比第一类最优耗时 0.476秒，时间减少一个数量级，但是RoaringBitmap结构的缺点是要求必须是整数(需要将字符串hash成整数后代入RoaringBitmap结构进行位图计算)，在字符串hash转整数的过程中有一定概率出现hash碰撞，导致误告警，而且求差集的数据量越大，出现hash碰撞的次数越多，误告警数据越多。<br>因此需要根据使用情况进行选择，如果允许出现一定的误告警，建议采用Bitmap位图结构。</p>
 
     </div>
 
@@ -349,7 +349,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#实时计算无数据告警的逻辑"><span class="nav-number">1.</span> <span class="nav-text">实时计算无数据告警的逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基线数据定义："><span class="nav-number">1.1.</span> <span class="nav-text">基线数据定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合运算"><span class="nav-number">1.2.</span> <span class="nav-text">集合运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#告警实现逻辑"><span class="nav-number">1.3.</span> <span class="nav-text">告警实现逻辑:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差集算法："><span class="nav-number">1.4.</span> <span class="nav-text">差集算法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#嵌套两个for循环遍历集合"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">嵌套两个for循环遍历集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用Hash表将嵌套的for循环改为单个的for循环"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">用Hash表将嵌套的for循环改为单个的for循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BitmapHash结构"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">BitmapHash结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RoaringBitmap结构"><span class="nav-number">1.4.0.4.</span> <span class="nav-text">RoaringBitmap结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">1.5.</span> <span class="nav-text">总结：</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#总结："><span class="nav-number">1.</span> <span class="nav-text">总结：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实时计算无数据告警的逻辑"><span class="nav-number">2.</span> <span class="nav-text">实时计算无数据告警的逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基线数据定义："><span class="nav-number">2.1.</span> <span class="nav-text">基线数据定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集合运算"><span class="nav-number">2.2.</span> <span class="nav-text">集合运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#告警实现逻辑"><span class="nav-number">2.3.</span> <span class="nav-text">告警实现逻辑:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差集算法："><span class="nav-number">2.4.</span> <span class="nav-text">差集算法：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#嵌套两个for循环遍历集合"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">嵌套两个for循环遍历集合</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#用Hash表将嵌套的for循环改为单个的for循环"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">用Hash表将嵌套的for循环改为单个的for循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#BitmapHash结构"><span class="nav-number">2.4.0.3.</span> <span class="nav-text">BitmapHash结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RoaringBitmap结构"><span class="nav-number">2.4.0.4.</span> <span class="nav-text">RoaringBitmap结构</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -372,7 +372,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
