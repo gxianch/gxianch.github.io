@@ -6,11 +6,11 @@ toc: true
 mathjax: true
 top: 98
 tags:
-  - TODO //待读
+  - TODO
   - SQL
   - Head First
-  - ✰✰✰✰  //评级
-  - ※※   //难度
+  - ✰✰✰✰
+  - ※※
 
 ---
 
@@ -23,7 +23,13 @@ Head First通俗系列入门书籍之SQL，配图文，入门值得看
 {% asset_img label cover.jpg %}
 ![](深入浅出-SQL/cover.jpg)
 
-<!-- more -->
+### 标签说明
+  - TODO //待读
+  - SQL
+  - ✰✰✰✰  //评级
+  - ※※   //难度
+  
+### 待读书籍
 
 | 名称                                                         | 作者   | 出版社 |
 | ------------------------------------------------------------ | ------ | ------ |
@@ -69,7 +75,7 @@ Head First通俗系列入门书籍之SQL，配图文，入门值得看
 
 
 
-
+### hexo使用
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
   - ※※※※  表示难度
@@ -80,16 +86,17 @@ Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [docume
 
 本地hexo s
 
+### 关闭仓库后再开启设置
 公开仓库后需要设置github-pages为master分支，同时要等一会才可以访问https://gxianch.github.io/
 
 {% asset_img label git.png %}
 ![](Hello-World/git.png)
 
-<!-- more -->
 
 
 
-## Quick Start
+
+## hexo快速开始
 
 ### Create a new post
 
@@ -127,8 +134,8 @@ More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
 
 <font face="黑体" color=green size=5>我是黑体，绿色，尺寸为5</font>
 
-
-## 没有生成index.html文件
+## hexo常见问题
+### 没有生成index.html文件
 
 查看 npm 安装各 hexo 插件的情况
 
