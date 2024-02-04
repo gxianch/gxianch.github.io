@@ -12,7 +12,7 @@ Apache Flink 有两种关系型 API 来做流批统一处理：Table API 和 SQL
 
 Table API 和 SQL 两种 API 是紧密集成的，以及 DataStream 和 DataSet API。你可以在这些 API 之间，以及一些基于这些 API 的库之间轻松的切换。
 
-
+ <!-- more -->
 
 写入kafka的测试数据:
 
