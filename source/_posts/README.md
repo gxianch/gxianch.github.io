@@ -29,38 +29,232 @@ Head First通俗系列入门书籍之SQL，配图文，入门值得看
   - ✰✰✰✰  //评级
   - ※※   //难度
   
-### 待读书籍
+## 待读书籍
+### 文学
 
-| 名称                                                         | 作者   | 出版社 |
-| ------------------------------------------------------------ | ------ | ------ |
-| ~~隳三都：蒙古灭金围城史~~                                   |        |        |
-| 哲学小史                                                     |        |        |
-| 嘉靖帝的四季                                                 |        |        |
-| ~~身份与暴力~~                                               |        |        |
-| ~~午夜将至~~                                                 |        |        |
-| Making China Modern                                          |        | pdf    |
-| 稍息：1981-1984年的中国                                      |        |        |
-| ~~压裂的底层~~                                               |        |        |
-| 法西斯谎言简史                                               |        |        |
-| 反抗平庸之恶                                                 |        |        |
-| 共和的危机                                                   |        |        |
-| [the chinese road to socialism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |        |        |
-| [Chinese education under communism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |        |        |
-| [历史的运用和滥用](https://twitter.com/porcorossin/status/1507352986455982082?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |        | pdf    |
-| 我们共同的朋友                                               | 狄更斯 |        |
-| [codes of the underwordl](https://twitter.com/Real_Danhuang02/status/1485401485395611651?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |        |        |
-|                                                              |        |        |
-|                                                              |        |        |
-|                                                              |        |        |
+| 名称 | 作者 | 出版社 |  |
+| ---- | ---- | ---- | ---- |
+| ~~隳三都：蒙古灭金围城史~~ |  |  |  |
+| 哲学小史 |  |  |  |
+| 嘉靖帝的四季 |  |  |  |
+| ~~身份与暴力~~ |  |  |  |
+| ~~午夜将至~~ |  |  |  |
+| Making China Modern |  | pdf |  |
+| 稍息：1981-1984年的中国 |  |  |  |
+| ~~压裂的底层~~ |  |  |  |
+| 法西斯谎言简史 |  |  |  |
+| 反抗平庸之恶 |  |  |  |
+| 共和的危机 |  |  |  |
+| [the chinese road to socialism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
+| [Chinese education under communism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
+| [历史的运用和滥用](https://twitter.com/porcorossin/status/1507352986455982082?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  | pdf |  |
+| 我们共同的朋友 | 狄更斯 |  |  |
+| [codes of the underwordl](https://twitter.com/Real_Danhuang02/status/1485401485395611651?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
+| 翦商-李硕 |  |  |  |
+| 周灭商与华夏新生 |  |  |  |
+| 银魂：张嘉璈和他的时代 |  |  |  |
+| 遥远的救世主 |  |  | 已下载ibook |
+| 中国震撼 | 张维为 |  | 已下载ibook |
+| 战火中国 方得万 |  |  | 写透了中国国民党兴起、在抗战和内战中崩溃的全过程 |
+| 魏昂德《脱轨的革命：毛泽东时代的中国》 |  |  | 短短三百页写透了中国共产党夺权、建政到带领中国走向灾难的全过程 |
+|  |  |  |  |
+|  |  |  |  |
 
 
 
+```
+# 在这17本书里读懂中国
+**《干校****六记》****(Six Chapters From My Life Downunder)，杨绛/****著**
 
+“在丰富性、道德紧迫性和戏剧性方面，中国历史上几乎没有发生过比文化大革命更具有文学潜力的事件了。[杨绛](https://www.nytimes.com/2016/05/27/books/yang-jiang-chinese-author-and-translator-dies-at-104.html)的《干校六记》用不多的文字记述了她被‘下放’到‘五七干校’接受再教育的两年，是那个时期为数不多的回忆录之一，因此更为珍贵。”
 
+**《中国底层访谈录》(The Corpse Walker: China From The Bottom Up)，廖义武/著**
 
+《中国底层访谈录》收集了作者所做的访谈，是一部“下大力气精心制作的口述历史记录，几乎全部来自西南省份四川。……四川是一个有极大反差的地区：有山也有平原，有工业也有农业，有新近富裕的阶层也有永远贫困的阶层。四川人普遍接受的观念应有尽有，从万物有灵论、道教到毛泽东的无神论，再到四川最大的名人邓小平推行的半资本主义”。
 
+**《中国底层访谈录》(The Corpse Walker: China From The Bottom Up)，廖义武/著**
 
+《中国底层访谈录》收集了作者所做的访谈，是一部“下大力气精心制作的口述历史记录，几乎全部来自西南省份四川。……四川是一个有极大反差的地区：有山也有平原，有工业也有农业，有新近富裕的阶层也有永远贫困的阶层。四川人普遍接受的观念应有尽有，从万物有灵论、道教到毛泽东的无神论，再到四川最大的名人邓小平推行的半资本主义”。
 
+**《富强：中国通往21世纪的长征》(Wealth and Power: China’s Long March to the Twenty-First Century)，****夏伟(Orville Schell)和鲁乐汉(John Delury)/著**  
+
+在本书中，夏伟和鲁乐汉“认为，对一代又一代有影响力的中国人而言，羞耻则激人奋发”。他们审视了“中国文化中一种不同寻常的特性是如何渗透在政治和学术生活中，这是一部调和中国目前的成功与过往的苦痛的佳作。该书还为今天这个更加富强的中国所面临的最大挑战之一打下铺垫，因为中国不可能永远和自己已经驱逐的幽灵作斗争”。
+
+**《帝国的黄昏：鸦片战争及中国最后的黄金时代的终结》The Opium War and the End of China’s Last Golden Age 裴士锋(Stephen R. Platt)/著**  
+
+“在一个财富和权力不可阻挡地从东方转向西方的世纪里，英中两国走向了战争，裴士锋对此做了动人的描述。但是，如果在这个财富和权力同样不可避免地从西方转向东方的时代，这段历史还能给人们提供什么教训，那肯定是卡尔·马克思(Karl Marx)在鸦片战争十年后做出的结论——历史是人类自己创造的，但他们并不能随心所欲地创造历史。”
+
+**《工厂女孩：在一个变化的中国，从乡村走向城市》(Factory Girls: From Village to City in a Changing China)，张彤禾****(Leslie T. Chang)/著**  
+
+“关于中国巨型制造基地的出现，近年来见诸于无数的书籍文章，但张彤禾的选择不是去聚焦在其中发挥作用的广大市场劳动力，而是关注个体，其中大部分是妇女，那些离开村子，到这个经济体前线去寻找财富的她们。”
+
+**《剩女：性别不平等在中国的复活》(Leftover Women: The Resurgence of Gender Inequality in China)，洪理达(Leta Hong Fincher)****/著**
+
+在《剩女》中，洪理达认为，中国女性在25岁左右感受到压力，接受不适宜的婚姻。她认为，性别失衡、单身男人可能造成社会不稳定的潜在可能性，乃至没有安全感的父母的焦虑导致了这一局面，如果她们延迟结婚就会被称为“剩女”。由于父母与配偶的压力，这些女人被系统地剥夺了房子的所有权，必须把不动产记在丈夫名下，就算她们或她们的父母在买房中有很大贡献也是如此。
+
+此外，还有其他无数关于中国的好书。例如：张戎(Jung Chang)的《鸿》(Wild Swans)、张彦(Ian Johnson)的《中国的灵魂》(The Souls of China)、马利德(Richard McGregor)的《党》(The Party)、维克拉姆·塞斯(Vikram Seth)的《从天堂湖》(From Heaven Lake)、史景迁(Jonathan Spence)的《毛泽东》(Mao Zedong)、彼得·霍普柯克(Peter Hopkirk)的《世界屋脊的闯入者》(Trespassers on the Roof of the World)。如果有你特别喜爱的书，请在留言中告诉我们。
+```
+
+```
+## [美国学生读什么书了解中国？(附书单)](https://bbs.gogodutch.com/thread-451993-1-1.html)
+去年用书书目：（15）  
+帕拉维·艾雅尔 《烟雾与镜子:中国经历》  
+Aiyar, Pallavi, Smoke and Mirrors  
+  
+  
+　　凯瑞·布朗 《疲于奔命的巨人：21世纪中国》  
+Brown, Kerry, Struggling Giant, China in the 21st Century  
+  
+  
+　　罗德·吉福特《中国行》  
+Gifford, Rob, China Road  
+  
+  
+　　彼得·海斯勒 (何伟) 《寻路中国》  
+Hessler, Peter, Country Driving  
+  
+  
+　　彼得·海斯勒 (何伟) 《甲骨：游历于中国的历史与现实之间》  
+Hessler, Peter, Oracle Bones:  A Journey Between China's Past and Present  
+  
+  
+　　邓肯·海维特《先富起来：生活在开放中的中国》  
+Hewitt, Duncan, Getting Rich First  
+  
+  
+　　哈金《疯狂》  
+Jin, Ha, The Crazed  
+  
+  
+　　伊恩·约翰逊《野草：当代中国三个变革的故事》  
+Johnson, Ian, Wild Grass:  Three Stories of Change in Modern China  
+  
+  
+　　詹姆斯·金奇《中国震憾世界-饥饿之国的崛起》  
+Kynge, James, China Shakes the World:  The Rise of a Hungry Nation  
+  
+  
+　　廖亦武 《中国底层社会实录》  
+Liao, Yiwu, The Corpse Walker; Real-Life Stories, China from the Bottom Up  
+  
+  
+　　马建 《北京植物人》  
+Ma, Jian, Beijing Coma  
+  
+  
+　　迈克尔·梅尔《老北京的最后岁月》  
+Meyer, Michael, The Last Days of Old Beijing  
+  
+  
+　　潘公凯 《走出毛的阴影：追寻新中国的灵魂》  
+Pan, Philip, Out of Mao's Shadow: The Struggle for the Soul of a New China  
+  
+  
+　　潘文 《中国教训：五位同学及新中国的故事》  
+Pomfret, John, Chinese Lessons: Five Classmates and the Story of the New China  
+  
+  
+　　张丽佳 《社会主义好》  
+Zhang, Lijia, Socialism is Great!  
+  
+  
+建议用书书目：（24）  
+奥利佛·欧古斯特 《红楼深深》  
+August, Oliver, Inside the Red Mansion  
+  
+  
+　　张彤禾 《工厂女工》  
+Chang, Leslie, Factory Girls  
+  
+  
+　　陈桂棣、吴春桃 《中国农民报告》  
+Chen Guidi, Wu Chuntao and Zhu Hong, Will the Boiat Sink the Water?  The Life of China's Peasants  
+  
+  
+　　林瑞秋 《外国宝贝在北京》  
+Dewoskin, Rachel, Foreign Babes in Beijing  
+  
+  
+　　詹姆斯·法罗斯《从明天广场发出的明信片》  
+Fallows, James, Postcards from Tomorrow Square  
+  
+  
+　　亚历山大·哈尼《探寻中国制造的价格优势》  
+Harney, The China Price: The True Cost of Chinese Competitive Advantage  
+  
+  
+　　彼得·海斯勒 (何伟)《消失中的江城：一位西方作家在長江古城探索中国》  
+Hessler, River Town  
+  
+  
+　　康正果 《出中国记：我的反动自述》  
+Kang, Zhengguo, Confessions:  An Innocent Life in Communist China  
+  
+  
+　　马克·莱纳德 《中国怎么想》  
+Leonard, Mark, What Does China Think?  
+  
+  
+　　李存信 《毛的最后一个舞者》  
+Li, Cunxin, Mao's Last Dancer  
+  
+  
+　　李翊云 《流浪汉》  
+Li, Yiyun, The Vagrants  
+  
+  
+　　亚伯拉罕·勒斯特加滕《华夏天路》  
+Lustgarten, Abraham, China's Great Train  
+  
+  
+　　丹尼尔·露西 《拉里的肾》  
+Rose, Daniel Asa, Larry's Kidney  
+  
+  
+　　詹姆斯·麦格雷戈 《十亿消费者》  
+McGregor, Jim, One billion Customers  
+  
+  
+　　梅文诗《红色狂想曲：西方古典音乐如何改变中国》  
+Melvin, Sheila, Rhapsody in Red  
+  
+  
+　　圣扎迦利·麦克西克 《中国深度游》  
+Mexico, Zachary, China Underground  
+  
+  
+　　裘小龙 《红尘岁月：大上海的故事》  
+Qiu, Xiaolong, Years of Red Dust, Stories of Shanghai  
+  
+  
+　　桑晔、白杰明 《真实的中国：共和国的人民》  
+Sang, Ye and Geremie Barme, China Candid: The People in the People's Republic  
+  
+  
+　　华衷《当十亿中国人一起跳起来》  
+Watts, Jonathan, When a Billion Chinese Jump (about environmental issues)  
+  
+  
+　　欣然 《见证中国: 沉默一代的声音》  
+Xinran, China Witness  
+  
+  
+　　欣然 《中国妇女》  
+Xinran, The Women of China  
+  
+  
+　　余华 《兄弟》  
+Yu, Hua, Brothers  
+  
+  
+　　査建英 《弄潮儿》  
+Zha Jianying, Tide Players  
+  
+  
+　　ZZ 《中国，高！》  
+ZZ, China High
+```
+### 编程
 | 名称                                                         | 作者                      | 出版社 |
 | ------------------------------------------------------------ | ------------------------- | ------ |
 | [A conflict of visions ](https://twitter.com/xleaps/status/1477427901729488896?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) | Thomas Sowell             |        |
@@ -73,12 +267,8 @@ Head First通俗系列入门书籍之SQL，配图文，入门值得看
 |                                                              |                           |        |
 |                                                              |                           |        |
 
-
-## 豆瓣不存在的书影音
+###  豆瓣不存在的电影/电视剧
 https://terminus2049.github.io/Not-exist-in-douban/
-
-### 电影/电视剧
-
 |编号|电影/电视剧|年代|导演|IMDB|
 |---|---|---|---|---|
 |1|出租车司机|2017|张勋|[A Taxi Driver](https://www.imdb.com/title/tt6878038/)|
@@ -168,7 +358,7 @@ https://terminus2049.github.io/Not-exist-in-douban/
 |85|大同（中国市长）|2015|周浩|[Datong](https://www.imdb.com/title/tt4056808/)|
 
 
-### 书籍
+###  豆瓣不存在的书籍
 
 |编号|书名|出版社|作者|ISBN|
 |---|---|---|---|---|
@@ -233,6 +423,7 @@ https://terminus2049.github.io/Not-exist-in-douban/
 |57|盛世|麥田|陳冠中|9789861735795|
 |17|我們最幸福：北韓人民的真實生活（_Nothing to Envy: Ordinary Lives in North Korea_）|麥田出版|芭芭拉·德米克 Barbara Demick/黃煜文 譯|9789861207896|
 
+				
 ## hexo使用
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
