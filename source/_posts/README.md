@@ -13,6 +13,8 @@ tags:
   - ※※
 
 ---
+## 关联微信读书插件
+https://github.com/zhaohongxuan/obsidian-weread-plugin
 
 //评价
 Head First通俗系列入门书籍之SQL，配图文，入门值得看
@@ -32,49 +34,43 @@ Head First通俗系列入门书籍之SQL，配图文，入门值得看
 ## 待读书籍
 ### 文学
 
-| 名称 | 作者 | 出版社 |  |
-| ---- | ---- | ---- | ---- |
-| ~~隳三都：蒙古灭金围城史~~ |  |  |  |
-| 哲学小史 |  |  |  |
-| 嘉靖帝的四季 |  |  |  |
-| ~~身份与暴力~~ |  |  |  |
-| ~~午夜将至~~ |  |  |  |
-| Making China Modern |  | pdf |  |
-| 稍息：1981-1984年的中国 |  |  |  |
-| ~~压裂的底层~~ |  |  |  |
-| 法西斯谎言简史 |  |  |  |
-| 反抗平庸之恶 |  |  |  |
-| 共和的危机 |  |  |  |
-| [the chinese road to socialism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
-| [Chinese education under communism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
-| [历史的运用和滥用](https://twitter.com/porcorossin/status/1507352986455982082?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  | pdf |  |
-| 我们共同的朋友 | 狄更斯 |  |  |
-| [codes of the underwordl](https://twitter.com/Real_Danhuang02/status/1485401485395611651?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |
-| 翦商-李硕 |  |  |  |
-| 周灭商与华夏新生 |  |  |  |
-| 银魂：张嘉璈和他的时代 |  |  |  |
-| 遥远的救世主 |  |  | 已下载ibook |
-| 中国震撼 | 张维为 |  | 已下载ibook |
-| 战火中国 方得万 |  |  | 写透了中国国民党兴起、在抗战和内战中崩溃的全过程 |
-| 魏昂德《脱轨的革命：毛泽东时代的中国》 |  |  | 短短三百页写透了中国共产党夺权、建政到带领中国走向灾难的全过程 |
-|  |  |  |  |
-|  |  |  |  |
+| 名称 | 作者 | 出版社 |  |  |
+| ---- | ---- | ---- | ---- | ---- |
+| ~~隳三都：蒙古灭金围城史~~ |  |  |  |  |
+| 哲学小史 |  |  |  |  |
+| 嘉靖帝的四季 |  |  |  |  |
+| ~~身份与暴力~~ |  |  |  |  |
+| ~~午夜将至~~ |  |  |  |  |
+| Making China Modern |  | pdf |  |  |
+| 稍息：1981-1984年的中国 |  |  |  |  |
+| ~~压裂的底层~~ |  |  |  |  |
+| 法西斯谎言简史 |  |  |  |  |
+| 反抗平庸之恶 |  |  |  |  |
+| 共和的危机 |  |  |  |  |
+| [the chinese road to socialism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |  |
+| [Chinese education under communism](https://twitter.com/linyujing/status/1505167799504699392?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |  |
+| [历史的运用和滥用](https://twitter.com/porcorossin/status/1507352986455982082?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  | pdf |  |  |
+| 我们共同的朋友 | 狄更斯 |  |  |  |
+| [codes of the underwordl](https://twitter.com/Real_Danhuang02/status/1485401485395611651?s=20&t=Q9yXOAtTlZqPvXB2_9v8Yw) |  |  |  |  |
+| 翦商-李硕 |  |  |  |  |
+| 周灭商与华夏新生 |  |  |  |  |
+| 银魂：张嘉璈和他的时代 |  |  |  |  |
+| 遥远的救世主 |  |  | 已下载ibook |  |
+| 中国震撼 | 张维为 |  | 已下载ibook |  |
+| 战火中国 方得万 |  |  | 已下载ibook | 写透了中国国民党兴起、在抗战和内战中崩溃的全过程 |
+| 魏昂德《脱轨的革命：毛泽东时代的中国》 |  |  |  | 短短三百页写透了中国共产党夺权、建政到带领中国走向灾难的全过程 |
+| 中国底层访谈录 | 廖义武 |  | 已下载ibook | <br>《中国底层访谈录》收集了作者所做的访谈，是一部“下大力气精心制作的口述历史记录，几乎全部来自西南省份四川。……四川是一个有极大反差的地区：有山也有平原，有工业也有农业，有新近富裕的阶层也有永远贫困的阶层。四川人普遍接受的观念应有尽有，从万物有灵论、道教到毛泽东的无神论，再到四川最大的名人邓小平推行的半资本主义” |
+| 大明帝国的黄昏 |  |  | 已下载ibook |  |
+|  |  |  |  |  |
 
 
 
 ```
 # 在这17本书里读懂中国
-**《干校****六记》****(Six Chapters From My Life Downunder)，杨绛/****著**
+**《干校六记》****(Six Chapters From My Life Downunder)，杨绛/****著**
 
 “在丰富性、道德紧迫性和戏剧性方面，中国历史上几乎没有发生过比文化大革命更具有文学潜力的事件了。[杨绛](https://www.nytimes.com/2016/05/27/books/yang-jiang-chinese-author-and-translator-dies-at-104.html)的《干校六记》用不多的文字记述了她被‘下放’到‘五七干校’接受再教育的两年，是那个时期为数不多的回忆录之一，因此更为珍贵。”
 
-**《中国底层访谈录》(The Corpse Walker: China From The Bottom Up)，廖义武/著**
-
-《中国底层访谈录》收集了作者所做的访谈，是一部“下大力气精心制作的口述历史记录，几乎全部来自西南省份四川。……四川是一个有极大反差的地区：有山也有平原，有工业也有农业，有新近富裕的阶层也有永远贫困的阶层。四川人普遍接受的观念应有尽有，从万物有灵论、道教到毛泽东的无神论，再到四川最大的名人邓小平推行的半资本主义”。
-
-**《中国底层访谈录》(The Corpse Walker: China From The Bottom Up)，廖义武/著**
-
-《中国底层访谈录》收集了作者所做的访谈，是一部“下大力气精心制作的口述历史记录，几乎全部来自西南省份四川。……四川是一个有极大反差的地区：有山也有平原，有工业也有农业，有新近富裕的阶层也有永远贫困的阶层。四川人普遍接受的观念应有尽有，从万物有灵论、道教到毛泽东的无神论，再到四川最大的名人邓小平推行的半资本主义”。
 
 **《富强：中国通往21世纪的长征》(Wealth and Power: China’s Long March to the Twenty-First Century)，****夏伟(Orville Schell)和鲁乐汉(John Delury)/著**  
 
@@ -423,7 +419,10 @@ https://terminus2049.github.io/Not-exist-in-douban/
 |57|盛世|麥田|陳冠中|9789861735795|
 |17|我們最幸福：北韓人民的真實生活（_Nothing to Envy: Ordinary Lives in North Korea_）|麥田出版|芭芭拉·德米克 Barbara Demick/黃煜文 譯|9789861207896|
 
-				
+
+### 王五四文集和韩寒，李承鹏博文 如何本地镜像备份
+
+
 ## hexo使用
 Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
