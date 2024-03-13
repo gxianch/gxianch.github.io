@@ -19,7 +19,7 @@ from #阅读状态/阅读中  where cover != null and readYear=2022
 
 
 ```dataview
-table without id("![]("+ cover + ")") as Cover, file.link as Name , author as Author, categories,tags,readingStatus
+table without id("![]("+ cover + ")") as Cover, file.link as Name , author as Author, categories,tags,readingStatus,lastReadDate  where cover != null SORT lastReadDate desc
 ```
 
 

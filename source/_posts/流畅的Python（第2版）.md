@@ -1,18 +1,25 @@
-﻿# 前言
+---
+title: 流畅的Python（第2版）
+date: 2024-03-01 14:30:13
+categories: [python]
+toc: true
+mathjax: true
+top: 98
+tags:
+  - 技术
+  - python
+  - ※※※
+  - ✰✰✰✰✰
+  - OReilly
+---
 
-## 联系我们
+# 前言
 
-对于本书的评论和技术性问题，请发送电子邮件到：bookquestions@oreilly.com。
-
-要了解更多 O'Reilly 图书和培训的信息，请访问 https://www.oreilly.com/。
-
-我们在 Facebook 的地址如下：https://www.facebook.com/OReilly/。
-
-请关注我们的 Twitter 动态：https://twitter.com/oreillymedia。
-
-我们的 YouTube 视频地址如下：https://www.youtube.com/oreillymedia。
-[2024/2/19 4:01 PM](calibre://view-book/_hex_-43616c696272655f4c696272617279/3/EPUB?open_at=epubcfi%28/12/2/4/140/1%3A0%29)
-
+本地jupyter打开
+```
+(base) xian@guofuchengdeMacBook-Pro ~ % conda activate base
+(base) xian@guofuchengdeMacBook-Pro ~ % jupyter notebook
+```
 http://localhost:8888/tree/PycharmProjects/book/example-code-2e
 
 --------------------
