@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="元数据 [!abstract] 新政治经济学讲义：在中国思索正义、效率与公共选择   书名： 新政治经济学讲义：在中国思索正义、效率与公共选择 作者： 汪丁丁 简介： 在无神的社会里，正义是人与人之间关系的一种性质——它如此重要，以致它在很大程度上影响甚至决定每一个人或绝大多数人是否感觉幸福。我这部讲义，不仅是“新政治经济学”讲义，而且是关于中国人怎样可以生活得更美好的讲义。也因此，这部讲义是我关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信读书&#x2F;新政治经济学讲义：在中国思索正义、效率与公共选择">
+<meta property="og:url" content="http://yoursite.com/2024/02/21/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E6%96%B0%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E8%AE%B2%E4%B9%89%EF%BC%9A%E5%9C%A8%E4%B8%AD%E5%9B%BD%E6%80%9D%E7%B4%A2%E6%AD%A3%E4%B9%89%E3%80%81%E6%95%88%E7%8E%87%E4%B8%8E%E5%85%AC%E5%85%B1%E9%80%89%E6%8B%A9/index.html">
+<meta property="og:site_name" content="郭富城的博客">
+<meta property="og:description" content="元数据 [!abstract] 新政治经济学讲义：在中国思索正义、效率与公共选择   书名： 新政治经济学讲义：在中国思索正义、效率与公共选择 作者： 汪丁丁 简介： 在无神的社会里，正义是人与人之间关系的一种性质——它如此重要，以致它在很大程度上影响甚至决定每一个人或绝大多数人是否感觉幸福。我这部讲义，不仅是“新政治经济学”讲义，而且是关于中国人怎样可以生活得更美好的讲义。也因此，这部讲义是我关">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.weread.qq.com/weread/cover/83/YueWen_842265/t7_YueWen_842265.jpg">
+<meta property="article:published_time" content="2024-02-21T09:14:56.224Z">
+<meta property="article:modified_time" content="2024-02-21T09:14:56.224Z">
+<meta property="article:author" content="郭富城">
+<meta property="article:tag" content="大数据">
+<meta property="article:tag" content="编程">
+<meta property="article:tag" content="读书">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.weread.qq.com/weread/cover/83/YueWen_842265/t7_YueWen_842265.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2024/02/21/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E6%96%B0%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E8%AE%B2%E4%B9%89%EF%BC%9A%E5%9C%A8%E4%B8%AD%E5%9B%BD%E6%80%9D%E7%B4%A2%E6%AD%A3%E4%B9%89%E3%80%81%E6%95%88%E7%8E%87%E4%B8%8E%E5%85%AC%E5%85%B1%E9%80%89%E6%8B%A9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>微信读书/新政治经济学讲义：在中国思索正义、效率与公共选择 | 郭富城的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郭富城的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/02/21/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E6%96%B0%E6%94%BF%E6%B2%BB%E7%BB%8F%E6%B5%8E%E5%AD%A6%E8%AE%B2%E4%B9%89%EF%BC%9A%E5%9C%A8%E4%B8%AD%E5%9B%BD%E6%80%9D%E7%B4%A2%E6%AD%A3%E4%B9%89%E3%80%81%E6%95%88%E7%8E%87%E4%B8%8E%E5%85%AC%E5%85%B1%E9%80%89%E6%8B%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="郭富城">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭富城的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信读书/新政治经济学讲义：在中国思索正义、效率与公共选择
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-21 17:14:56" itemprop="dateCreated datePublished" datetime="2024-02-21T17:14:56+08:00">2024-02-21</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="元数据"><a href="#元数据" class="headerlink" title="元数据"></a>元数据</h1><blockquote>
+<p>[!abstract] 新政治经济学讲义：在中国思索正义、效率与公共选择</p>
+<ul>
+<li><img src="https://cdn.weread.qq.com/weread/cover/83/YueWen_842265/t7_YueWen_842265.jpg" alt=" 新政治经济学讲义：在中国思索正义、效率与公共选择|200"></li>
+<li>书名： 新政治经济学讲义：在中国思索正义、效率与公共选择</li>
+<li>作者： 汪丁丁</li>
+<li>简介： 在无神的社会里，正义是人与人之间关系的一种性质——它如此重要，以致它在很大程度上影响甚至决定每一个人或绝大多数人是否感觉幸福。我这部讲义，不仅是“新政治经济学”讲义，而且是关于中国人怎样可以生活得更美好的讲义。也因此，这部讲义是我关于“中国社会基本问题”的长期探讨的最近一次总结。——汪丁丁《新政治经济学讲义:在中国思索正义、效率与公共选择》以汪丁丁教授于北京大学开设“新政治经济学”课程的讲义为基础，汇集多年来从经济学视角出发求解中国社会基本问题及制度改革前景的思想成果。在本书中，作者首先界定了新政治经济学及其基本问题，进而深入探讨其核心议题——正义，具体包括正义理论中特殊主义与普遍主义的纠缠、正义观念的发展史与社会实践，以及社会正义与公共理性、政治民主的关系等主题，并重点关注艾智仁、奈特与布坎南等经济学家的作品和贡献。同时，作者以跨学科的视域、思想史的方法，梳理了“正义”的实践智慧，最终将全部的理论探讨应用于对中国社会现状的剖析与未来变革方向的探索之中。</li>
+<li>出版时间 2013-09-01 00:00:00</li>
+<li>ISBN： 9787208114708</li>
+<li>分类： 经济理财-财经</li>
+<li>出版社： 上海人民出版社</li>
+<li>PC地址：<a href="https://weread.qq.com/web/reader/47e32a305cda1947eccfb3f" target="_blank" rel="noopener">https://weread.qq.com/web/reader/47e32a305cda1947eccfb3f</a></li>
+</ul>
+</blockquote>
+<h1 id="高亮划线"><a href="#高亮划线" class="headerlink" title="高亮划线"></a>高亮划线</h1><h2 id="序言"><a href="#序言" class="headerlink" title="序言"></a>序言</h2><blockquote>
+<p>📌 在每一个冲突情境里，经验表明，冲突各方对正义的关注超过对效率的关注。“宁为玉碎，不为瓦全”，或囚徒困境的“不合作策略”，虽不符合效率原则，却总是符合某种正义原则<br>⏱ 2019-03-10 11:00:29 ^842265-3-1460-1540</p>
+</blockquote>
+<h2 id="第一讲-新政治经济学的基本问题"><a href="#第一讲-新政治经济学的基本问题" class="headerlink" title="第一讲 新政治经济学的基本问题"></a>第一讲 新政治经济学的基本问题</h2><blockquote>
+<p>📌 于是，我们内部就可团结一致。在人类历史上，这是很古老的政治技巧。当团结出现问题时，可以向外部寻找敌人。<br>马克思在<br>⏱ 2019-03-10 11:35:34 ^842265-4-4339-4428</p>
+</blockquote>
+<blockquote>
+<p>📌 共物品的产权，在怎样的程度上被分享，取决于政治制度及其运行成本。例如，我们可以认为，现在的许多国有企业或多或少实行的是私有产权而不再是公有产权了，所谓“产权虚置”现象。<br>⏱ 2019-03-12 05:42:48 ^842265-4-23099-23212</p>
+</blockquote>
+<blockquote>
+<p>📌 简洁，但每一句都有震撼力量。下面是我的简单翻译：“每一个社会都要解决社会成员之间的兴趣（利益）冲突。这‘解决’（而不是‘取消’）由以产生的过程，称为‘竞争’。‘竞争’的这一定义使得取消竞争成为不可能，故应询问的是采取何种竞争来解决利益冲突。用更能激发情绪的语言描述，就是该社会成员应以何种方式的歧视来决定他们每一个人在多大程度上能够达到自己的目标。歧视、竞争、稀缺，是三个不可分离的概念。”注意这一小节的标题，“稀缺，竞争，产权”。<br>⏱ 2019-03-12 05:53:38 ^842265-4-30954-31199</p>
+</blockquote>
+<blockquote>
+<p>📌 有竞争就有淘汰，问题只是你根据什么标准淘汰。这就是“歧视”概念。只要你采纳了一套淘汰标准，你就是在歧视某些事物或某些人。所以，“歧视”是一个中性词，它只帮助我们理解稀缺和竞争的社会科学本质。<br>⏱ 2019-03-12 05:56:07 ^842265-4-32261-32356</p>
+</blockquote>
+<blockquote>
+<p>📌 自由即一例。在洛克写作的时期，自由是群体的事情，它从来不是一个人的事情。你的“预算线”从这里看出去，艾智仁说，是公共选择的结果，不是你自己可以界定<br>⏱ 2019-03-12 06:03:15 ^842265-4-35779-35852</p>
+</blockquote>
+<blockquote>
+<p>📌 智仁都提醒我们换一个角度看待经济学——与其说它是关于理性选择的科学，不如说它是协调社会冲突的科学。有稀缺就有竞争和歧视，于是有价格和产权，于是有经济体制和政治体制的演化<br>⏱ 2019-03-12 18:37:26 ^842265-4-44705-44789</p>
+</blockquote>
+<blockquote>
+<p>📌 似乎公众永远难以接受经济学的最基本原理，所以，公共理性似乎永远难以摆脱“政客的煽情—多数人的选票—为短期而牺牲长期—有原则的政治家被无原则的政客淘汰”这样一种恶性循环。哈耶克的回答，这是我最希望与读者分享的，哈耶克说他本人是长期的乐观派但短期的悲观派，因为，长期而言，<br>⏱ 2019-03-12 18:38:25 ^842265-4-45153-45287</p>
+</blockquote>
+<h2 id="第二讲-布坎南的公共选择思想与艾智仁和休谟的产权学说"><a href="#第二讲-布坎南的公共选择思想与艾智仁和休谟的产权学说" class="headerlink" title="第二讲 布坎南的公共选择思想与艾智仁和休谟的产权学说"></a>第二讲 布坎南的公共选择思想与艾智仁和休谟的产权学说</h2><blockquote>
+<p>📌 在这一视角下惟一需要考虑的因素是规模与由规模而有的经济效益。换句话说，你需要有“国家”，惟一的理由是规模经济效益，与你的文化认同感或民族情感，或其他任何理由统统无关。有些荒唐，但这是布坎南这本书的基本思路<br>⏱ 2019-03-12 18:44:40 ^842265-5-4055-4157</p>
+</blockquote>
+<blockquote>
+<p>📌 克服机会主义行为，需要培养“政治家气质”。一个民族是否有这样的政治家，而不是仅仅有政客，依赖于这一民族的精神生活方式（<br>⏱ 2019-03-12 18:47:29 ^842265-5-6058-6117</p>
+</blockquote>
+<blockquote>
+<p>📌 斯密《国富论》从来没有讲过自私之理，斯密讲的是自利之理<br>⏱ 2019-03-12 21:25:13 ^842265-5-31799-31826</p>
+</blockquote>
+<blockquote>
+<p>📌 我们经济学家相互之间评价的时候，基本不看重文章和著作，而是看重直觉，或猜对答案的能力。一个学生要获得这样的能力，例如张五常当学生的时候，他听艾智仁的课，同一门课听六个学期，为了什么？他说，就是要学会艾智仁那种直觉，猜对答案的能力。<br>⏱ 2019-03-12 21:32:33 ^842265-5-36692-36807</p>
+</blockquote>
+<blockquote>
+<p>📌 里面安徽凤阳小岗村党支部的那份“试行包产到户”的生死契约。在契约的最后一段，党支部告诉村民，如果我们将来有三长两短，我们的家人由你们负责安排活路。<br>⏱ 2019-03-12 21:33:35 ^842265-5-37074-37147</p>
+</blockquote>
+<blockquote>
+<p>📌 与其说经济学是关于资源有效配置的科学（这是伦敦经济学院罗宾斯的定义），不如说经济学是关于怎样化解利益冲突的科学。￼<br>⏱ 2019-03-12 21:35:30 ^842265-5-38168-38593</p>
+</blockquote>
+<blockquote>
+<p>📌 在幸福三维空间里，这是我的个人见解，精神生活这一维度的核心要素是“自由”，社会生活维度的核心要素是“正义”，物质生活维度的核心要素是“效率”。<br>⏱ 2019-03-12 21:41:01 ^842265-5-44982-45106</p>
+</blockquote>
+<blockquote>
+<p>📌 演化的时间而言，更早形成的正义感应是直接与“结果”相关的，因为动物的认知能力总是从直观逐渐发展到抽象。程序的正义显然比结果的正义更抽象，于是需要探讨两个相互联系的问题：为什么人类要形成程序正义感？什么样的群体结构才需要程序正义感？<br>⏱ 2019-03-12 21:58:30 ^842265-5-53323-53467</p>
+</blockquote>
+<blockquote>
+<p>📌 精神自由的人的外在特点是“不外求”。自由表现为“完全的自足”，<br>⏱ 2019-03-13 07:40:59 ^842265-5-62839-62870</p>
+</blockquote>
+<blockquote>
+<p>📌 判断一个社会是否美好，首要的判据就是看这个社会是否正义，多大程度上是正义<br>⏱ 2019-03-13 07:42:20 ^842265-5-63720-63756</p>
+</blockquote>
+<blockquote>
+<p>📌 大多数中国人不愿直接反对哪怕已经很腐败的政府，他们更常做的是通过私人关系改善自己的处境。<br>⏱ 2019-03-13 07:43:29 ^842265-5-64503-64547</p>
+</blockquote>
+<blockquote>
+<p>📌 李斯特不可能定理的直观表述是：没有一个群体可以同时实现“自由”、“民主”、“集体理性”<br>⏱ 2019-03-13 07:44:53 ^842265-5-65891-65934</p>
+</blockquote>
+<blockquote>
+<p>📌 ，森1970年证明没有一个群体可以同时实现“最小自由”、“集体理性”、“帕累托条件”。<br>⏱ 2019-03-13 07:45:09 ^842265-5-65978-66021</p>
+</blockquote>
+<blockquote>
+<p>📌 产权不是自然的而是人为的发明”￼。我承认，休谟对人<br>⏱ 2019-03-13 21:35:47 ^842265-5-73475-73659</p>
+</blockquote>
+<blockquote>
+<p>📌 政府是社会契约的一种监督方式，而且休谟或许相信这是成本最低的监督方式<br>⏱ 2019-03-13 21:37:26 ^842265-5-74583-74617</p>
+</blockquote>
+<blockquote>
+<p>📌 我很悲观，我很容易想象将来我们的民主生活怎样变得犹如一群恶狗撕咬争夺，只顾私利而无视任何价值。<br>⏱ 2019-03-14 07:43:13 ^842265-5-88081-88128</p>
+</blockquote>
+<h2 id="第三讲-正义理论『两条路线』的纠缠"><a href="#第三讲-正义理论『两条路线』的纠缠" class="headerlink" title="第三讲 正义理论『两条路线』的纠缠"></a>第三讲 正义理论『两条路线』的纠缠</h2><blockquote>
+<p>📌 开放社会及其敌人》，请你们自己阅读。<br>争端一起，意味着那些在原则上有助于解决争端的建设性情感和激情，如尊敬、热爱、为公共事业献身等，就显得无能为力了……只有两种解决办法，一种是运用情感，最终诉诸暴力，另一种运用理性、公道、理性妥协。<br>⏱ 2019-03-14 18:27:54 ^842265-6-1190-1372</p>
+</blockquote>
+<blockquote>
+<p>📌 中国知识分子面对类似的困境。如果他们致力于改善国内的人权状况，并借此鼓吹自由之精神，他们最可能遇到的指责就是“企图将西方文明的各种观念强加于中国本土社会”。例如，哈贝马斯在2001年访问北京期间公开演讲的三大主题——“人权的跨文化意义”、“民主的三个模式”、“全球压力下的民族国家”，在邀请他访华的中国社会科学院哲学研究所内部引发了相当大的“紧张感”<br>⏱ 2019-03-15 18:47:51 ^842265-6-4032-4302</p>
+</blockquote>
+<h1 id="读书笔记"><a href="#读书笔记" class="headerlink" title="读书笔记"></a>读书笔记</h1><h2 id="第三讲-正义理论『两条路线』的纠缠-1"><a href="#第三讲-正义理论『两条路线』的纠缠-1" class="headerlink" title="第三讲 正义理论『两条路线』的纠缠"></a>第三讲 正义理论『两条路线』的纠缠</h2><h3 id="划线评论"><a href="#划线评论" class="headerlink" title="划线评论"></a>划线评论</h3><blockquote>
+<p>📌 二、特殊主义与普遍主义的纠缠<br>现在我们在图3.7的左栏自上而下阅读，即“第三讲B”，勾勒出两百年来围绕正义问题的“两条路线斗争”，更确切地说，是围绕正义问题的两条路线之间的纠缠。<br>休谟和斯密生活在“熟人社会”，我说过，他们并没意识到特殊主义与普遍主义的对立。因为，他们解释世界，是从常识出发，阐述适合每一具体情境的情理。重要的是，他们——尤其是斯密——始终保持一种经验主义的自觉，不愿意将具体情境里的情理扩展到这一情境之外（Hume denies the existence of abstract ideas￼）。  ^54726357-76UcZ4ZoG<br>    - 💭 集政治、经济、哲学、伦理为一体的跨学科书籍，逻辑完备，引用文章书籍信手拈来，足见丁丁大师功力深厚。可惜本人才疏学浅，读汪丁丁之书方觉自己知识面之狭窄，导致阅读吃力，等扩宽各学科知识后再战此书，虽未读完，然获益颇丰。<br>    - ⏱ 2019-03-16 10:25:36</p>
+</blockquote>
+<h1 id="本书评论"><a href="#本书评论" class="headerlink" title="本书评论"></a>本书评论</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/02/21/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E7%BB%8F%E6%B5%8E%E5%AD%A6%E7%9A%84%E6%80%9D%E7%BB%B4%E6%96%B9%E5%BC%8F/" rel="prev" title="微信读书/经济学的思维方式">
+      <i class="fa fa-chevron-left"></i> 微信读书/经济学的思维方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/02/21/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E8%A1%8C%E4%B8%BA%E7%BB%8F%E6%B5%8E%E5%AD%A6%E8%A6%81%E4%B9%89/" rel="next" title="微信读书/行为经济学要义">
+      微信读书/行为经济学要义 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#元数据"><span class="nav-number">1.</span> <span class="nav-text">元数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#高亮划线"><span class="nav-number">2.</span> <span class="nav-text">高亮划线</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序言"><span class="nav-number">2.1.</span> <span class="nav-text">序言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第一讲-新政治经济学的基本问题"><span class="nav-number">2.2.</span> <span class="nav-text">第一讲 新政治经济学的基本问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二讲-布坎南的公共选择思想与艾智仁和休谟的产权学说"><span class="nav-number">2.3.</span> <span class="nav-text">第二讲 布坎南的公共选择思想与艾智仁和休谟的产权学说</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三讲-正义理论『两条路线』的纠缠"><span class="nav-number">2.4.</span> <span class="nav-text">第三讲 正义理论『两条路线』的纠缠</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#读书笔记"><span class="nav-number">3.</span> <span class="nav-text">读书笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第三讲-正义理论『两条路线』的纠缠-1"><span class="nav-number">3.1.</span> <span class="nav-text">第三讲 正义理论『两条路线』的纠缠</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#划线评论"><span class="nav-number">3.1.1.</span> <span class="nav-text">划线评论</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#本书评论"><span class="nav-number">4.</span> <span class="nav-text">本书评论</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郭富城"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">郭富城</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">189</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">107</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭富城</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
