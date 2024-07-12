@@ -1,14 +1,15 @@
 ---
 title: Designing.Data-Intensive.Applications
 date: 2020-12-08 12:49:39
-categories: [存储]
+categories:
+  - 编程
 toc: true
 mathjax: true
 top: 98
 tags:
-  - ddia
   - OReilly
   - ✰✰✰✰✰
+  - 存储
 ---
 
 大名鼎鼎的的ddia, 数据密集型应用系统设计，绝对不容错过的好书

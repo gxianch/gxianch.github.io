@@ -1,7 +1,8 @@
 ---
 title: Masterminds of Programming
 date: 2020-12-17 16:47:01
-categories: [程序员]
+categories:
+  - 编程
 toc: true
 mathjax: true
 top: 98

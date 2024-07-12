@@ -1,20 +1,13 @@
----
-title: Head First SQL
-date: 2020-12-09 20:09:30
-categories: [数据库]
-toc: true
-mathjax: true
-top: 98
-tags:
-  - TODO
-  - SQL
-  - Head First
-  - ✰✰✰✰
-  - ※※
 
----
 ## 关联微信读书插件
 https://github.com/zhaohongxuan/obsidian-weread-plugin
+
+
+### 分割线
+```
+--------------------
+```
+--------------------
 
 //评价
 Head First通俗系列入门书籍之SQL，配图文，入门值得看
