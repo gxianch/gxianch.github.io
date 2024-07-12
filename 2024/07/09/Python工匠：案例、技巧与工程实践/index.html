@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="五星好评，python开发必读书 ![[Pasted image 20240712145118.png]]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python工匠：案例、技巧与工程实践">
+<meta property="og:url" content="http://yoursite.com/2024/07/09/Python%E5%B7%A5%E5%8C%A0%EF%BC%9A%E6%A1%88%E4%BE%8B%E3%80%81%E6%8A%80%E5%B7%A7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="郭富城的博客">
+<meta property="og:description" content="五星好评，python开发必读书 ![[Pasted image 20240712145118.png]]">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-07-12T09:29:32.371Z">
+<meta property="article:author" content="郭富城">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="✰✰✰✰✰✰">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2024/07/09/Python%E5%B7%A5%E5%8C%A0%EF%BC%9A%E6%A1%88%E4%BE%8B%E3%80%81%E6%8A%80%E5%B7%A7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Python工匠：案例、技巧与工程实践 | 郭富城的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郭富城的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/07/09/Python%E5%B7%A5%E5%8C%A0%EF%BC%9A%E6%A1%88%E4%BE%8B%E3%80%81%E6%8A%80%E5%B7%A7%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="郭富城">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭富城的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python工匠：案例、技巧与工程实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-07-09 00:00:00" itemprop="dateCreated datePublished" datetime="2024-07-09T00:00:00+08:00">2024-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-07-12 17:29:32" itemprop="dateModified" datetime="2024-07-12T17:29:32+08:00">2024-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>五星好评，python开发必读书</p>
+<p>![[Pasted image 20240712145118.png]]</p>
+<a id="more"></a>
+
+
+<h1 id="第-3-章-容器类型"><a href="#第-3-章-容器类型" class="headerlink" title="第 3 章 容器类型"></a>第 3 章 容器类型</h1><p>而在代码世界里，同样也有“容器”这个概念。代码里的容器泛指那些专门用来装其他对象的特殊数据类型。在 Python 中，最常见的内置容器类型有四种：列表、元组、字典、集合。</p>
+<h2 id="列表（list）"><a href="#列表（list）" class="headerlink" title="列表（list）"></a>列表（list）</h2><p>　　列表（list）是一种非常经典的容器类型，通常用来存放多个同类对象，比如从 1 到 10 的所有整数：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="元组（tuple）"><a href="#元组（tuple）" class="headerlink" title="元组（tuple）"></a>元组（tuple）</h2><p>  元组（tuple）和列表非常类似，但跟列表不同，它不能被修改。这意味着元组完成初始化后就没法再改动了：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>names = (‘foo’, ‘bar’)<br>names[1] = ‘x’<br>…<br>TypeError: ‘tuple’ object does not support item assignment</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="字典（dict）"><a href="#字典（dict）" class="headerlink" title="字典（dict）"></a>字典（dict）</h2><p>字典（dict）类型存放的是一个个键值对（key: value）。它功能强大，应用广泛，就连 Python 内部也大量使用，比如每个类实例的所有属性，就都存放在一个名为 dict 的字典里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Foo:</span><br><span class="line">    def __init__(self, value):</span><br><span class="line">        self.value &#x3D; value</span><br><span class="line"></span><br><span class="line">foo &#x3D; Foo(&#39;bar&#39;)</span><br><span class="line">print(foo.__dict__, type(foo.__dict__))</span><br><span class="line">　　执行后输出：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#123;&#39;value&#39;: &#39;bar&#39;&#125; &lt;class &#39;dict&#39;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="集合（set）"><a href="#集合（set）" class="headerlink" title="集合（set）"></a>集合（set）</h2><p>集合（set）也是一种常用的容器类型。它最大的特点是成员不能重复，所以经常用来去重（剔除重复元素）：</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>numbers = [1, 2, 2, 1]<br>set(numbers)<br> {1, 2}<br>　　<br>这四种容器类型各有优缺点，适用场景也各不相同。本章将简单介绍每种容器类型的特点，深入分析它们的应用场景，帮你厘清一些常见的概念。更好地掌握容器能帮助你写出更高效的 Python 代码。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="3-2-案例故事"><a href="#3-2-案例故事" class="headerlink" title="3.2 案例故事"></a>3.2 案例故事</h2><h3 id="使用-defaultdict-类型"><a href="#使用-defaultdict-类型" class="headerlink" title="使用 defaultdict 类型"></a>使用 <code>defaultdict</code> 类型</h3><p>defaultdict(default_factory, …) 是一种特殊的字典类型。它在被初始化时，接收一个可调用对象 default_factory 作为参数。之后每次进行 d[key] 操作时，如果访问的 key 不存在，defaultdict 对象会自动调用 default_factory() 并将结果作为值保存在对应的 key 里。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int_dict = defaultdict(int)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int_dict[<span class="string">'foo'</span>] += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p> 当 <code>int_dict</code> 发现键 <code>&#39;foo&#39;</code> 不存在时，它会调用 <code>default_factory</code>——也就是 <code>int()</code>——拿到结果 <code>0</code>，将其保存到字典后再执行累加操作</p>
+<h3 id="使用-MutableMapping-创建自定义字典类型"><a href="#使用-MutableMapping-创建自定义字典类型" class="headerlink" title="使用 MutableMapping 创建自定义字典类型"></a>使用 MutableMapping 创建自定义字典类型</h3><p>在前面的函数里，有一段核心的字典操作代码：先通过 time_cost 计算出 level，然后以 level 为键将请求数保存到字典中。这段代码的逻辑比较独立，假如把它从函数中抽离出来，代码会变得更好理解。</p>
+<p>此时就该自定义字典类型闪亮登场了。自定义字典和普通字典很像，但它可以给字典的默认行为加上一些变化。比如在这个场景下，我们会让字典在操作“响应耗时”键时，直接将其翻译成对应的性能等级。</p>
+<p>在 Python 中定义一个字典类型，可通过继承 MutableMapping 抽象类来实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> enum <span class="keyword">import</span> Enum</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> MutableMapping</span><br><span class="line">　</span><br><span class="line">　</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PagePerfLevel</span><span class="params">(str, Enum)</span>:</span></span><br><span class="line">    LT_100 = <span class="string">'Less than 100 ms'</span></span><br><span class="line">    LT_300 = <span class="string">'Between 100 and 300 ms'</span></span><br><span class="line">    LT_1000 = <span class="string">'Between 300 ms and 1 s'</span></span><br><span class="line">    GT_1000 = <span class="string">'Greater than 1 s'</span></span><br><span class="line">　</span><br><span class="line">　</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PerfLevelDict</span><span class="params">(MutableMapping)</span>:</span></span><br><span class="line">    <span class="string">"""存储响应时间性能等级的字典"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.data = defaultdict(int)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="string">"""当某个性能等级不存在时，默认返回 0"""</span></span><br><span class="line">        <span class="keyword">return</span> self.data[self.compute_level(key)]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        <span class="string">"""将 key 转换为对应的性能等级，然后设置值"""</span></span><br><span class="line">        self.data[self.compute_level(key)] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.data[key]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(self.data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">items</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""按照顺序返回性能等级数据"""</span></span><br><span class="line">        <span class="keyword">return</span> sorted(</span><br><span class="line">            self.data.items(),</span><br><span class="line">            key=<span class="keyword">lambda</span> pair: list(PagePerfLevel).index(pair[<span class="number">0</span>]),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total_requests</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""返回总请求数"""</span></span><br><span class="line">        <span class="keyword">return</span> sum(self.values())</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compute_level</span><span class="params">(time_cost_str)</span>:</span></span><br><span class="line">        <span class="string">"""根据响应时间计算性能等级"""</span></span><br><span class="line">        <span class="keyword">if</span> time_cost_str <span class="keyword">in</span> list(PagePerfLevel):</span><br><span class="line">            <span class="keyword">return</span> time_cost_str</span><br><span class="line"></span><br><span class="line">        time_cost = int(time_cost_str)</span><br><span class="line">        <span class="keyword">if</span> time_cost &lt; <span class="number">100</span>:</span><br><span class="line">            <span class="keyword">return</span> PagePerfLevel.LT_100</span><br><span class="line">        <span class="keyword">elif</span> time_cost &lt; <span class="number">300</span>:</span><br><span class="line">            <span class="keyword">return</span> PagePerfLevel.LT_300</span><br><span class="line">        <span class="keyword">elif</span> time_cost &lt; <span class="number">1000</span>:</span><br><span class="line">            <span class="keyword">return</span> PagePerfLevel.LT_1000</span><br><span class="line">        <span class="keyword">return</span> PagePerfLevel.GT_1000</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">analyze_v2</span><span class="params">()</span>:</span></span><br><span class="line">    path_groups = defaultdict(PerfLevelDict)</span><br><span class="line">	path_groups[<span class="string">"path"</span>][<span class="number">9</span>] += <span class="number">1</span>  </span><br><span class="line">	path_groups[<span class="string">"path"</span>][<span class="number">9</span>] += <span class="number">1</span>  </span><br><span class="line">	path_groups[<span class="string">"path1"</span>][<span class="number">10</span>] += <span class="number">1</span>  </span><br><span class="line">	path_groups[<span class="string">"path1"</span>][<span class="number">10001</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> path, result <span class="keyword">in</span> path_groups.items():</span><br><span class="line">        print(<span class="string">f'== Path: <span class="subst">&#123;path&#125;</span>'</span>)</span><br><span class="line">        print(<span class="string">f'   Total requests: <span class="subst">&#123;result.total_requests()&#125;</span>'</span>)</span><br><span class="line">        print(<span class="string">f'   Performance:'</span>)</span><br><span class="line">        <span class="keyword">for</span> level_name, count <span class="keyword">in</span> result.items():</span><br><span class="line">            print(<span class="string">f'     - <span class="subst">&#123;level_name&#125;</span>: <span class="subst">&#123;count&#125;</span>'</span>)</span><br><span class="line">　</span><br><span class="line">　</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    analyze_v2()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">== Path: path</span><br><span class="line">   Total requests: 2</span><br><span class="line">   Performance:</span><br><span class="line">     - Less than 100 ms: 2</span><br><span class="line">== Path: path1</span><br><span class="line">   Total requests: 2</span><br><span class="line">   Performance:</span><br><span class="line">     - Less than 100 ms: 1</span><br><span class="line">     - Greater than 1 s: 1</span><br></pre></td></tr></table></figure>
+<p>编写了一个继承了 MutableMapping 的字典类 PerfLevelDict。但光继承还不够，要让这个类变得像字典一样，还需要重写包括 <strong>getitem</strong>、<strong>setitem</strong> 在内的 6 个魔法方法</p>
+<p>为何不直接继承 dict？</p>
+<p>在实现自定义字典时，我让 PerfLevelDict 继承了 collections.abc 下的 MutableMapping 抽象类，而不是内置字典 dict。这看起来有点儿奇怪，因为从直觉上说，假如你想实现某个自定义类型，最方便的选择就是继承原类型。</p>
+<p>但是，如果真的继承 dict 来创建自定义字典类型，你会碰到很多问题。</p>
+<p>拿一个最常见的场景来说，假如你继承了 dict，通过 <strong>setitem</strong> 方法重写了它的键赋值操作。此时，虽然常规的 d[key] = value 行为会被重写；但假如调用方使用 d.update(…) 来更新字典内容，就根本不会触发重写后的键赋值逻辑。这最终会导致自定义类型的行为不一致。</p>
+<p>正因如此，如果你想创建一个自定义字典，继承 collections.abc 下的 MutableMapping 抽象类是个更好的选择，因为它没有上面的问题。而对于列表等其他容器类型来说，这条规则也同样适用。</p>
+<h2 id="3-3-编程建议"><a href="#3-3-编程建议" class="headerlink" title="3.3 编程建议"></a>3.3 编程建议</h2><h3 id="3-3-1-用按需返回替代容器"><a href="#3-3-1-用按需返回替代容器" class="headerlink" title="3.3.1 用按需返回替代容器"></a>3.3.1 用按需返回替代容器</h3><h4 id="用生成器替代列表"><a href="#用生成器替代列表" class="headerlink" title="用生成器替代列表"></a>用生成器替代列表</h4><p>在日常工作中，我们经常需要编写下面这样的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_process</span><span class="params">(items)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    批量处理多个 items 对象</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 初始化空结果列表</span></span><br><span class="line">    results = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="comment"># 处理 item，可能需要耗费大量时间……</span></span><br><span class="line">        <span class="comment"># processed_item = ...</span></span><br><span class="line">        results.append(processed_item)</span><br><span class="line">    <span class="comment"># 将拼装后的结果列表返回</span></span><br><span class="line">    <span class="keyword">return</span> results</span><br></pre></td></tr></table></figure>
+
+
+<p>这样的函数遵循同一种模式：“初始化结果容器→处理→将结果存入容器→返回容器”。这个模式虽然简单，但它有两个问题。</p>
+<p>一个问题是，如果需要处理的对象 items 过大，batch_process() 函数就会像 Python 2 里的 range() 函数一样，每次执行都特别慢，存放结果的对象 results 也会占用大量内存。</p>
+<p>另一个问题是，如果函数调用方想在某个 processed_item 对象满足特定条件时中断，不再继续处理后面的对象，现在的 batch_process() 函数也做不到——它每次都得一次性处理完所有 items 才会返回。</p>
+<p>为了解决这两个问题，我们可以用生成器函数来改写它。简单来说，就是用 yield item 替代 append 语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_process</span><span class="params">(items)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> items:</span><br><span class="line">        <span class="comment"># 处理 item，可能需要耗费大量时间……</span></span><br><span class="line">        <span class="comment"># processed_item = ...</span></span><br><span class="line">        <span class="keyword">yield</span> processed_item</span><br></pre></td></tr></table></figure>
+<p>生成器函数不仅看上去更短，而且很好地解决了前面的两个问题。当输入参数 items 很大时，batch_process() 不再需要一次性拼装返回一个巨大的结果列表，内存占用更小，执行起来也更快。</p>
+<h3 id="3-3-2-了解容器的底层实现"><a href="#3-3-2-了解容器的底层实现" class="headerlink" title="3.3.2 了解容器的底层实现"></a>3.3.2 了解容器的底层实现</h3><h4 id="deque-底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是-O-1"><a href="#deque-底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是-O-1" class="headerlink" title="deque 底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是 O(1)"></a>deque 底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是 O(1)</h4><p>如果你经常需要往列表头部插入数据，请考虑使用 collections.deque 类型来替代列表（代码如下）。因为 deque 底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是 O(1)。</p>
+<h3 id="3-3-3-掌握如何快速合并字典"><a href="#3-3-3-掌握如何快速合并字典" class="headerlink" title="3.3.3 掌握如何快速合并字典"></a>3.3.3 掌握如何快速合并字典</h3><h4 id="字典类型-运算符快速合并"><a href="#字典类型-运算符快速合并" class="headerlink" title="字典类型 | 运算符快速合并"></a>字典类型 | 运算符快速合并</h4><p>字典类型新增了对 | 运算符的支持。只要执行 d1 | d2，就能快速拿到两个字典合并后的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1 = &#123;<span class="string">'name'</span>: <span class="string">'apple'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d2 = &#123;<span class="string">'name'</span>: <span class="string">'orange'</span>, <span class="string">'price'</span>: <span class="number">10</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d1 | d2</span><br><span class="line">&#123;<span class="string">'name'</span>: <span class="string">'orange'</span>, <span class="string">'price'</span>: <span class="number">10</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d2 | d1  ➊</span><br><span class="line">&#123;<span class="string">'name'</span>: <span class="string">'apple'</span>, <span class="string">'price'</span>: <span class="number">10</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>➊ 运算顺序不同，会影响最终的合并结果</p>
+<h3 id="3-3-7-让函数返回-NamedTuple"><a href="#3-3-7-让函数返回-NamedTuple" class="headerlink" title="3.3.7 让函数返回 NamedTuple"></a>3.3.7 让函数返回 NamedTuple</h3><p>对于这种未来可能会变动的多返回值函数来说，如果一开始就使用 NamedTuple 类型对返回结果进行建模，上面的改动会变得简单许多：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> NamedTuple</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Address</span><span class="params">(NamedTuple)</span>:</span></span><br><span class="line">    <span class="string">"""地址信息结果"""</span></span><br><span class="line">    country: str</span><br><span class="line">    province: str</span><br><span class="line">    city: str</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">latlon_to_address</span><span class="params">(lat, lon)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> Address(</span><br><span class="line">        country=country,</span><br><span class="line">        province=province,</span><br><span class="line">        city=city,</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">addr = latlon_to_address(lat, lon)</span><br><span class="line"><span class="comment"># 通过属性名来使用 addr</span></span><br><span class="line"><span class="comment"># addr.country / addr.province / addr.city</span></span><br></pre></td></tr></table></figure>
+
+<p>假如我们在 Address 里增加了新的返回值 district，已有的函数调用代码也不用进行任何适配性修改，因为函数结果只是多了一个新属性，没有任何破坏性影响。</p>
+<h1 id="第-4-章-条件分支控制流"><a href="#第-4-章-条件分支控制流" class="headerlink" title="第 4 章 条件分支控制流"></a>第 4 章 条件分支控制流</h1><h2 id="4-1-基础知识"><a href="#4-1-基础知识" class="headerlink" title="4.1 基础知识"></a>4.1 基础知识</h2><h3 id="4-1-1-分支惯用写法"><a href="#4-1-1-分支惯用写法" class="headerlink" title="4.1.1 分支惯用写法"></a>4.1.1 分支惯用写法</h3><h4 id="不要显式地和布尔值做比较："><a href="#不要显式地和布尔值做比较：" class="headerlink" title="不要显式地和布尔值做比较："></a>不要显式地和布尔值做比较：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不推荐的写法</span></span><br><span class="line"><span class="comment"># if user.is_active_member() == True:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 推荐写法</span></span><br><span class="line"><span class="keyword">if</span> user.is_active_member():</span><br><span class="line">　　绝大多数情况下，在分支判断语句里写 == <span class="literal">True</span> 都没有必要，删掉它代码会更短也更易读。</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="省略零值判断"><a href="#省略零值判断" class="headerlink" title="省略零值判断"></a>省略零值判断</h4><p>当你编写 if 分支时，如果需要判断某个类型的对象是否是零值，可能会把代码写成下面这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> containers_count == <span class="number">0</span>:</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> fruits_list != []:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>这种判断语句其实可以变得更简单，因为当某个对象作为主角出现在 if 分支里时，解释器会主动对它进行“真值测试”，也就是调用 bool() 函数获取它的布尔值。</p>
+<h4 id="内置类型的布尔值规则如下。"><a href="#内置类型的布尔值规则如下。" class="headerlink" title="内置类型的布尔值规则如下。"></a>内置类型的布尔值规则如下。</h4><p>布尔值为假：None、0、False、[]、()、{}、set()、frozenset()，等等。<br>布尔值为真：非 0 的数值、True，非空的序列、元组、字典，用户定义的类和实例，等等。</p>
+<h3 id="4-1-2-修改对象的布尔值"><a href="#4-1-2-修改对象的布尔值" class="headerlink" title="4.1.2 修改对象的布尔值"></a>4.1.2 修改对象的布尔值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 不再需要手动判断对象内部 items 的长度</span></span><br><span class="line"><span class="keyword">if</span> users:</span><br><span class="line">    print(<span class="string">"There's some users in collection!"</span>)</span><br><span class="line">　　为类定义 __len__ 魔法方法，实际上就是为它实现了 Python 世界的长度协议：</span><br></pre></td></tr></table></figure>
+
+<p>Python 在计算这类对象的布尔值时，会受 len(users) 的结果影响——假如长度为 0，布尔值为 False，反之为 True。因此当例子中的 UserCollection 类实现了 <strong>len</strong> 后，整个条件判断语句就得到了简化。</p>
+<h3 id="4-1-3-与-None-比较时使用-is-运算符"><a href="#4-1-3-与-None-比较时使用-is-运算符" class="headerlink" title="4.1.3 与 None 比较时使用 is 运算符"></a>4.1.3 与 None 比较时使用 is 运算符</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">因此，仅当你需要判断某个对象是否是 <span class="literal">None</span>、<span class="literal">True</span>、<span class="literal">False</span> 时，使用 <span class="keyword">is</span>，其他情况下，请使用 ==。</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="第-5-章-异常与错误处理"><a href="#第-5-章-异常与错误处理" class="headerlink" title="第 5 章 异常与错误处理"></a>第 5 章 异常与错误处理</h1><h2 id="5-1-基础知识"><a href="#5-1-基础知识" class="headerlink" title="5.1 基础知识"></a>5.1 基础知识</h2><h3 id="5-1-1-优先使用异常捕获"><a href="#5-1-1-优先使用异常捕获" class="headerlink" title="5.1.1 优先使用异常捕获"></a>5.1.1 优先使用异常捕获</h3><h4 id="获取原谅比许可简单"><a href="#获取原谅比许可简单" class="headerlink" title="获取原谅比许可简单"></a>获取原谅比许可简单</h4><p>和 LBYL 相比，EAFP 编程风格更为简单直接，它总是直奔主流程而去，把意外情况都放在异常处理 try/except 块内消化掉。</p>
+<p>如果你问我：这两种编程风格哪个更好？我只能说，整个 Python 社区明显偏爱基于异常捕获的 EAFP 风格。这里面的原因很多。</p>
+<p>(1) LBYL：每次调用都要先进行额外的 isinstance 和 isdigit 判断。</p>
+<p>(2) EAFP：每次调用直接执行转换，返回结果。</p>
+<p>另外，和许多其他编程语言不同，在 Python 里抛出和捕获异常是很轻量的操作，即使大量抛出、捕获异常，也不会给程序带来过多额外负担。</p>
+<p>所以，每当直觉驱使你写下 if/else 来进行错误分支判断时，请先把这份冲动放一边，考虑用 try 来捕获异常是不是更合适。毕竟，Pythonista1 们喜欢“吃感冒药”胜过“看天气预报”。</p>
+<h3 id="5-1-2-try-语句常用知识"><a href="#5-1-2-try-语句常用知识" class="headerlink" title="5.1.2 try 语句常用知识"></a>5.1.2 try 语句常用知识</h3><h4 id="使用-try-语句块里的-else-分支"><a href="#使用-try-语句块里的-else-分支" class="headerlink" title="使用 try 语句块里的 else 分支"></a>使用 try 语句块里的 else 分支</h4><p>异常捕获语句里的 else 表示：仅当 try 语句块里没抛出任何异常时，才执行 else 分支下的内容，效果就像在 try 最后增加一个标记变量一样。</p>
+<h4 id="使用空-raise-语句"><a href="#使用空-raise-语句" class="headerlink" title="使用空 raise 语句"></a>使用空 raise 语句</h4><p>在处理异常时，有时我们可能仅仅想记录下某个异常，然后把它重新抛出，交由上层处理。这时，不带任何参数的 raise 语句可以派上用场：</p>
+<h3 id="5-1-3-抛出异常，而不是返回错误"><a href="#5-1-3-抛出异常，而不是返回错误" class="headerlink" title="5.1.3 抛出异常，而不是返回错误"></a>5.1.3 抛出异常，而不是返回错误</h3><h4 id="抛出异常，而不是返回错误"><a href="#抛出异常，而不是返回错误" class="headerlink" title="抛出异常，而不是返回错误"></a>抛出异常，而不是返回错误</h4><p>　　我们知道，Python 里的函数可以一次返回多个值（通过返回一个元组实现）。所以，当我们要表明函数执行出错时，可以让它同时返回结果与错误信息。</p>
+<p>Python 有完善的异常机制，并且在某种程度上鼓励我们使用异常（见 5.1.1 节）。所以，用异常来进行错误处理才是更地道的做法。</p>
+<h3 id="5-1-4-使用上下文管理器"><a href="#5-1-4-使用上下文管理器" class="headerlink" title="5.1.4 使用上下文管理器"></a>5.1.4 使用上下文管理器</h3><p>上下文管理器是一种定义了“进入”和“退出”动作的特殊对象。要创建一个上下文管理器，只要实现 <strong>enter</strong> 和 <strong>exit</strong> 两个魔法方法即可。</p>
+<p>上下文管理器功能强大、用处很多，其中最常见的用处之一，就是简化异常处理工作。</p>
+<p>当程序使用 with 进入一段上下文后，不论里面发生了什么，它在退出这段上下文代码块时，必定会调用上下文管理器的 <strong>exit</strong> 方法，就和 finally 语句的行为一样。</p>
+<p>虽然上下文管理器很好用，但定义一个符合协议的管理器对象其实挺麻烦的——得首先创建一个类，然后实现好几个魔法方法。为了简化这部分工作，Python 提供了一个非常好用的工具：@contextmanager 装饰器。</p>
+<h2 id="5-3-编程建议"><a href="#5-3-编程建议" class="headerlink" title="5.3 编程建议"></a>5.3 编程建议</h2><h3 id="5-3-2-不要手动做数据校验"><a href="#5-3-2-不要手动做数据校验" class="headerlink" title="5.3.2 不要手动做数据校验"></a>5.3.2 不要手动做数据校验</h3><p>在数据校验这块，pydantic 模块是一个不错的选择。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel, conint, ValidationError </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumberInput</span><span class="params">(BaseModel)</span>:</span> </span><br><span class="line"><span class="comment"># 使用类型注解 conint 定义 number 属性的取值范围 </span></span><br><span class="line">	number: conint(ge=<span class="number">0</span>, le=<span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-3-抛出可区分的异常"><a href="#5-3-3-抛出可区分的异常" class="headerlink" title="5.3.3 抛出可区分的异常"></a>5.3.3 抛出可区分的异常</h3><p>当开发者编写自定义异常类时，似乎不需要遵循太多原则。常见的几条是：要继承 Exception 而不是 BaseException；异常类名最好以 Error 或 Exception 结尾等</p>
+<h3 id="5-3-4-不要使用-assert-来检查参数合法性"><a href="#5-3-4-不要使用-assert-来检查参数合法性" class="headerlink" title="5.3.4 不要使用 assert 来检查参数合法性"></a>5.3.4 不要使用 assert 来检查参数合法性</h3><p>不要拿 assert 来做参数校验，用 raise 语句来替代</p>
+<h3 id="5-3-5-无须处理是最好的错误处理"><a href="#5-3-5-无须处理是最好的错误处理" class="headerlink" title="5.3.5 无须处理是最好的错误处理"></a>5.3.5 无须处理是最好的错误处理</h3><h4 id="空对象模式"><a href="#空对象模式" class="headerlink" title="空对象模式"></a>空对象模式</h4><p>“空对象模式”也是一种转换设计观念以避免错误处理的技巧。当函数进入边界情况时，“空对象模式”不再抛出错误，而是让其返回一个类似于正常结果的特殊对象，因此使用方自然就不必处理任何错误，人们写起代码来也会更轻松。</p>
+<h1 id="第-6-章-循环与可迭代对象"><a href="#第-6-章-循环与可迭代对象" class="headerlink" title="第 6 章 循环与可迭代对象"></a>第 6 章 循环与可迭代对象</h1><h2 id="6-1-基础知识"><a href="#6-1-基础知识" class="headerlink" title="6.1 基础知识"></a>6.1 基础知识</h2><h3 id="6-1-1-迭代器与可迭代对象"><a href="#6-1-1-迭代器与可迭代对象" class="headerlink" title="6.1.1 迭代器与可迭代对象"></a>6.1.1 迭代器与可迭代对象</h3><p>生成器（generator）利用其简单的语法，大大降低了迭代器的使用门槛，是优化循环代码时最得力的帮手</p>
+<p>生成器关键字yield</p>
+<h3 id="6-1-2-修饰可迭代对象优化循环"><a href="#6-1-2-修饰可迭代对象优化循环" class="headerlink" title="6.1.2 修饰可迭代对象优化循环"></a>6.1.2 修饰可迭代对象优化循环</h3><p>enumerate() 是 Python 的一个内置函数，它接收一个可迭代对象作为参数，返回一个不断生成 ( 当前下标 , 当前元素 ) 的新可迭代对象。</p>
+<h2 id="6-3-编程建议"><a href="#6-3-编程建议" class="headerlink" title="6.3 编程建议"></a>6.3 编程建议</h2><h3 id="6-3-1-中断嵌套循环的正确方式–直接使用-return"><a href="#6-3-1-中断嵌套循环的正确方式–直接使用-return" class="headerlink" title="6.3.1 中断嵌套循环的正确方式–直接使用 return"></a>6.3.1 中断嵌套循环的正确方式–直接使用 return</h3><p>许许多多的 break 会让代码逻辑变得更难理解，也更容易出现 bug。</p>
+<p>如果想快速从嵌套循环里跳出，其实有个更好的做法，那就是把循环代码拆分为一个新函数，然后直接使用 return</p>
+<h1 id="第-7-章-函数"><a href="#第-7-章-函数" class="headerlink" title="第 7 章 函数"></a>第 7 章 函数</h1><h2 id="7-1-基础知识"><a href="#7-1-基础知识" class="headerlink" title="7.1 基础知识"></a>7.1 基础知识</h2><h3 id="7-1-1-函数参数的常用技巧"><a href="#7-1-1-函数参数的常用技巧" class="headerlink" title="7.1.1 函数参数的常用技巧"></a>7.1.1 函数参数的常用技巧</h3><p><strong>别将可变类型作为参数默认值</strong></p>
+<p>在编写函数时，我们经常需要为参数设置默认值。这些默认值可以是任何类型，比如字符串、数值、列表，等等。而当它是可变类型时，怪事儿就会发生。</p>
+<p>以下面这个函数为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">append_value</span><span class="params">(value, items=[])</span>:</span></span><br><span class="line">    <span class="string">"""向 items 列表中追加内容，并返回列表"""</span></span><br><span class="line">    items.append(value)</span><br><span class="line">    <span class="keyword">return</span> items</span><br></pre></td></tr></table></figure>
+
+<p>这样的函数定义看上去没什么问题，但当你多次调用它以后，就会发现函数的行为和预想的不太一样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>append_value(<span class="string">'foo'</span>)</span><br><span class="line">[<span class="string">'foo'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>append_value(<span class="string">'bar'</span>)</span><br><span class="line">[<span class="string">'foo'</span>, <span class="string">'bar'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，在第二次调用时，函数并没有返回正确结果 [‘bar’]，而是返回了 [‘foo’, ‘bar’]，这意味着参数 items 的值不再是函数定义的空列表 []，而是变成了第一次执行后的结果 [‘foo’]。</p>
+<p>之所以出现这个问题，是因为 Python 函数的参数默认值只会在函数定义阶段被创建一次，之后不论再调用多少次，函数内拿到的默认值都是同一个对象。</p>
+<p>熟悉 Python 的程序员通常不会将可变类型作为参数默认值。这是因为一旦函数在执行时修改了这个默认值，就会对之后的所有函数调用产生影响。</p>
+<p>为了规避这个问题，使用 None 来替代可变类型默认值是比较常见的做法：</p>
+<p>但建议归建议，在真实的 Python 项目中，接收超过 3 个参数的函数比比皆是。</p>
+<p>为什么会这样呢？大概是因为 Python 里的函数不光支持通过有序位置参数（positional argument）调用，还能指定参数名，通过关键字参数（keyword argument）的方式调用。</p>
+<p>虽然关键字参数调用模式很有用，但有一个美中不足之处：它只是调用函数时的一种可选方式，无法成为强制要求。不过，我们可以用一种特殊的参数定义语法来弥补这个不足：</p>
+<h4 id="参数列表中插入-符号"><a href="#参数列表中插入-符号" class="headerlink" title="参数列表中插入 * 符号"></a>参数列表中插入 * 符号</h4><p>通过在参数列表中插入 * 符号，该符号后的所有参数都变成了“仅限关键字参数”（keyword-only argument）。<br>如果调用方仍然想用位置参数来提供这些参数值，程序就会抛出错误：</p>
+<h3 id="7-1-2-函数返回的常见模式"><a href="#7-1-2-函数返回的常见模式" class="headerlink" title="7.1.2 函数返回的常见模式"></a>7.1.2 函数返回的常见模式</h3><p>对绝大部分函数而言，返回 None 并不是一个好的做法。</p>
+<p>对这些函数来说，用抛出异常来代替返回 None 会更为合理。这也很好理解：当函数被调用时，如果无法返回正常结果，就代表出现了意料以外的状况，而“意料之外”正是异常所掌管的领域。</p>
+<p>在这段代码里，函数的 return 数量从 1 个变成了 3 个。试着读读上面的代码，是不是会发现函数的逻辑变得更容易理解了？</p>
+<p>产生这种变化的主要原因是，对于读代码的人来说，return 是一种有效的思维减负工具。当我们自上而下阅读代码时，假如遇到了 return，就会清楚知道：“这条执行路线已经结束了”。这部分逻辑在大脑里占用的空间会立刻得到释放，让我们可以专注于下一段逻辑。</p>
+<h3 id="7-1-3-常用函数模块：functools"><a href="#7-1-3-常用函数模块：functools" class="headerlink" title="7.1.3 常用函数模块：functools"></a>7.1.3 常用函数模块：functools</h3><h4 id="functools-partial-偏函数"><a href="#functools-partial-偏函数" class="headerlink" title="functools.partial 偏函数"></a>functools.partial 偏函数</h4><p>假如在你的项目中，有一个负责进行乘法运算的函数 <code>multiply()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiply</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x * y</span><br></pre></td></tr></table></figure>
+
+<p>同时，还有许多调用 <code>multiplay()</code> 函数进行运算的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">result = multiply(<span class="number">2</span>, value)</span><br><span class="line">val = multiply(<span class="number">2</span>, number)</span><br><span class="line"><span class="comment"># ...</span></span><br></pre></td></tr></table></figure>
+<p>这些代码有一个共同的特点，那就是它们调用函数时的第一个参数都是 <code>2</code>——全都是对某个值进行 <code>*2</code> 操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 functools.partial，上面的 double() 函数定义可以变得更简洁：</span></span><br><span class="line"><span class="keyword">import</span> functools</span><br><span class="line">double = functools.partial(multiply, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="装饰器缓存-lru-cache"><a href="#装饰器缓存-lru-cache" class="headerlink" title="装饰器缓存 lru_cache()"></a>装饰器缓存 lru_cache()</h4><p>在缓存方面，functools 模块为我们提供一个开箱即用的工具：lru_cache()。使用它，你可以方便地给函数加上缓存功能，同时不用修改任何函数内部代码。</p>
+<p>在使用 lru_cache() 装饰器时，可以传入一个可选的 maxsize 参数，该参数代表当前函数最多可以保存多少个缓存结果。当缓存的结果数量超过 maxsize 以后，程序就会基于“最近最少使用”（least recently used，LRU）算法丢掉旧缓存，释放内存。默认情况下，maxsize 的值为 128。</p>
+<h2 id="7-2-案例故事"><a href="#7-2-案例故事" class="headerlink" title="7.2 案例故事"></a>7.2 案例故事</h2><h3 id="函数与状态"><a href="#函数与状态" class="headerlink" title="函数与状态"></a>函数与状态</h3><p>相比全局变量，使用闭包最大的特点就是封装性要好得多。在闭包代码里，索引变量 called_cnt 完全处于闭包内部，不会污染全局命名空间，而且不同闭包对象之间也不会相互影响。</p>
+<p>总而言之，闭包是一种非常有用的工具，非常适合用来实现简单的有状态函数。</p>
+<p>不过，除了闭包之外，还有一个天生就适合用来实现“状态”的工具：类。</p>
+<p>在小 R 解答练习题的过程中，一共出现了三种实现有状态函数的方式，这三种方式各有优缺点，总结如下。</p>
+<h4 id="基于全局变量："><a href="#基于全局变量：" class="headerlink" title="基于全局变量："></a>基于全局变量：</h4><p>学习成本最低，最容易理解；<br>会增加模块级的全局状态，封装性和可维护性最差。</p>
+<h4 id="基于函数闭包："><a href="#基于函数闭包：" class="headerlink" title="基于函数闭包："></a>基于函数闭包：</h4><p>学习成本适中，可读性较好；<br>适合用来实现变量较少，较简单的有状态函数。</p>
+<h4 id="创建类来封装状态："><a href="#创建类来封装状态：" class="headerlink" title="创建类来封装状态："></a>创建类来封装状态：</h4><p>学习成本较高；<br>当变量较多、行为较复杂时，类代码比闭包代码更易读，也更容易维护。<br>在日常编码中，如果你需要实现有状态的函数，应该尽量避免使用全局变量，闭包或类才是更好的选择。</p>
+<h2 id="7-3-编程建议"><a href="#7-3-编程建议" class="headerlink" title="7.3 编程建议"></a>7.3 编程建议</h2><h3 id="7-3-4-你没有那么需要-lambda"><a href="#7-3-4-你没有那么需要-lambda" class="headerlink" title="7.3.4 你没有那么需要 lambda"></a>7.3.4 你没有那么需要 lambda</h3><p>总之，Python 中的 lambda 函数只是一颗简单的语法糖。它的许多使用场景，要么本身就不存在，要么更适合用 operator 模块来满足。lambda 并非无可替代。</p>
+<p>当你确实想要编写 lambda 函数时，请尝试问自己一个问题：“这个功能用 def 写一个普通函数是不是更合适？”尤其当需求比较复杂时，千万别试着把大段逻辑糅进一个巨大的匿名函数里。请记住，没什么特殊功能是 lambda 能做而普通函数做不到的。</p>
+<h3 id="7-3-5-了解递归的局限性"><a href="#7-3-5-了解递归的局限性" class="headerlink" title="7.3.5 了解递归的局限性"></a>7.3.5 了解递归的局限性</h3><p>在编程语言领域，为了避免递归导致调用栈过深，占用过多资源，不少编程语言使用一种被称为尾调用优化（tail call optimization）的技术。这种技术能将 fib() 函数里的递归优化成循环，以此避免嵌套层级过深，提升性能。</p>
+<p>但 Python 没有这种技术。因此在使用递归时，你必须对函数的输入数据规模时刻保持警惕，确保它所触发的递归深度，一定远远低于 sys.getrecursionlimit() 的最大限制。</p>
+<h1 id="第-8-章-装饰器"><a href="#第-8-章-装饰器" class="headerlink" title="第 8 章 装饰器"></a>第 8 章 装饰器</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@cache</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">()</span>:</span></span><br><span class="line">    ...</span><br><span class="line">　　完全等同于下面这样：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">function</span><span class="params">()</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">function = cache(function)</span><br></pre></td></tr></table></figure>
+
+<p>装饰器并不提供任何独特的功能，它所做的，只是让我们可以在函数定义语句上方，直接添加用来修改函数行为的装饰器函数。假如没有装饰器，我们也可以在完成函数定义后，手动做一次包装和重新赋值。</p>
+<h2 id="8-1-基础知识"><a href="#8-1-基础知识" class="headerlink" title="8.1 基础知识"></a>8.1 基础知识</h2><h3 id="8-1-1-装饰器基础"><a href="#8-1-1-装饰器基础" class="headerlink" title="8.1.1 装饰器基础"></a>8.1.1 装饰器基础</h3><p>装饰器是一种通过包装目标函数来修改其行为的特殊高阶函数，绝大多数装饰器是利用函数的闭包原理实现的。<br>代码清单 8-2 所示的 <code>timer</code> 是个简单的装饰器，它会记录并打印函数的每次调用耗时。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">"""装饰器：打印函数耗时"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorated</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        st = time.perf_counter()</span><br><span class="line">        ret = func(*args, **kwargs)</span><br><span class="line">        print(<span class="string">'time cost: &#123;&#125; seconds'</span>.format(time.perf_counter() - st))</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorated</span><br></pre></td></tr></table></figure>
+
+<p>在上面的代码中，<code>timer</code> 装饰器接收待装饰函数 <code>func</code> 作为唯一的位置参数，并在函数内定义了一个新函数：<code>decorated</code>。</p>
+<p>在写装饰器时，我一般把 <code>decorated</code> 叫作“包装函数”。这些包装函数通常接收任意数目的可变参数 <code>(*args, **kwargs)</code>，主要通过调用原始函数 <code>func</code> 来完成工作。<br>timer 是一个无参数装饰器，实现起来较为简单。假如你想实现一个接收参数的装饰器，代码会更复杂一些。<br>代码清单 8-3 给 <code>timer</code> 增加了额外的 <code>print_args</code> 参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timer</span><span class="params">(print_args=False)</span>:</span></span><br><span class="line">    <span class="string">"""装饰器：打印函数耗时</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param print_args: 是否打印方法名和参数，默认为 False</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            st = time.perf_counter()</span><br><span class="line">            ret = func(*args, **kwargs)</span><br><span class="line">            <span class="keyword">if</span> print_args:</span><br><span class="line">                print(<span class="string">f'"<span class="subst">&#123;func.__name__&#125;</span>", args: <span class="subst">&#123;args&#125;</span>, kwargs: <span class="subst">&#123;kwargs&#125;</span>'</span>)</span><br><span class="line">            print(<span class="string">'time cost: &#123;&#125; seconds'</span>.format(time.perf_counter() - st))</span><br><span class="line">            <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorator</span><br></pre></td></tr></table></figure>
+<p>可以看到，为了增加对参数的支持，装饰器在原本的两层嵌套函数上又加了一层。这是由于整个装饰过程发生了变化所导致的。</p>
+<p>❶ 先进行一次调用，传入装饰器参数，获得第一层内嵌函数 decorator</p>
+<p>❷ 进行第二次调用，获取第二层内嵌函数 wrapper</p>
+<p>在应用有参数装饰器时，一共要做两次函数调用，所以装饰器总共得包含三层嵌套函数。正因为如此，有参数装饰器的代码一直都难写、难读。</p>
+<h3 id="8-1-2-使用-functools-wraps-修饰包装函数"><a href="#8-1-2-使用-functools-wraps-修饰包装函数" class="headerlink" title="8.1.2 使用 functools.wraps() 修饰包装函数"></a>8.1.2 使用 functools.wraps() 修饰包装函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calls_counter</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="string">"""装饰器：记录函数被调用了多少次</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    使用 func.print_counter() 可以打印统计到的信息</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    counter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorated</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> counter</span><br><span class="line">        counter += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> func(*args, **kwargs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">print_counter</span><span class="params">()</span>:</span></span><br><span class="line">        print(<span class="string">f'Counter: <span class="subst">&#123;counter&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line">    decorated.print_counter = print_counter ➊</span><br><span class="line">    <span class="keyword">return</span> decorated</span><br><span class="line">❶ 为被装饰函数增加额外函数，打印统计到的调用次数</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="8-1-3-实现可选参数装饰器"><a href="#8-1-3-实现可选参数装饰器" class="headerlink" title="8.1.3 实现可选参数装饰器"></a>8.1.3 实现可选参数装饰器</h3><p>假如你用嵌套函数来实现装饰器，接收参数与不接收参数的装饰器代码有很大的区别——前者总是比后者多一层嵌套。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 接收参数的装饰器：2 层嵌套</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delayed_start</span><span class="params">(duration=<span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">            ...</span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 不接收参数的装饰器：1 层嵌套</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">delayed_start</span><span class="params">(func)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">        ...</span><br><span class="line">    <span class="keyword">return</span> wrapper</span><br><span class="line">　　当你实现了一个接收参数的装饰器后，即便所有参数都是有默认值的可选参数，你也必须在使用装饰器时加上括号：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@delayed_start(duration=2) ➊</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@delayed_start() ➋</span></span><br><span class="line">❶ 使用装饰器时提供参数</span><br><span class="line"></span><br><span class="line">❷ 不提供参数，也需要使用括号调用装饰器</span><br></pre></td></tr></table></figure>
+
+<h2 id="8-2-编程建议"><a href="#8-2-编程建议" class="headerlink" title="8.2 编程建议"></a>8.2 编程建议</h2><h3 id="8-2-1-了解装饰器的本质优势"><a href="#8-2-1-了解装饰器的本质优势" class="headerlink" title="8.2.1 了解装饰器的本质优势"></a>8.2.1 了解装饰器的本质优势</h3><p>装饰器的优势并不在于它提供了动态修改函数的能力，而在于它把影响函数的装饰行为移到了函数头部，降低了代码的阅读与理解成本。</p>
+<p>为了充分发挥这个优势，装饰器特别适合用来实现以下功能。</p>
+<p>(1) 运行时校验：在执行阶段进行特定校验，当校验通不过时终止执行。</p>
+<p>适合原因：装饰器可以方便地在函数执行前介入，并且可以读取所有参数辅助校验。<br>代表样例：Django 框架中的用户登录态校验装饰器 @login_required。</p>
+<p>(2) 注入额外参数：在函数被调用时自动注入额外的调用参数。</p>
+<p>适合原因：装饰器的位置在函数头部，非常靠近参数被定义的位置，关联性强。<br>代表样例：unittest.mock 模块的装饰器 @patch。</p>
+<p>(3) 缓存执行结果：通过调用参数等输入信息，直接缓存函数执行结果。</p>
+<p>适合原因：添加缓存不需要侵入函数内部逻辑，并且功能非常独立和通用。<br>代表样例：functools 模块的缓存装饰器 @lru_cache。</p>
+<p>(4) 注册函数：将被装饰函数注册为某个外部流程的一部分。</p>
+<p>适合原因：在定义函数时可以直接完成注册，关联性强。<br>代表样例：Flask 框架的路由注册装饰器 @app.route</p>
+<p>(5) 替换为复杂对象：将原函数（方法）替换为更复杂的对象，比如类实例或特殊的描述符对象（见 12.1.3 节）。</p>
+<p>适合原因：在执行替换操作时，装饰器语法天然比 foo = staticmethod(foo) 的写法要直观得多。<br>代表样例：静态类方法装饰器 @staticmethod。</p>
+<h1 id="第-9-章-面向对象编程"><a href="#第-9-章-面向对象编程" class="headerlink" title="第 9 章 面向对象编程"></a>第 9 章 面向对象编程</h1><h2 id="9-1-基础知识"><a href="#9-1-基础知识" class="headerlink" title="9.1 基础知识"></a>9.1 基础知识</h2><h3 id="9-1-1-类常用知识"><a href="#9-1-1-类常用知识" class="headerlink" title="9.1.1 类常用知识"></a>9.1.1 类常用知识</h3><p><strong>在日常编程中，我们极少使用双下划线来标示一个私有属性。如果你认为某个属性是私有的，直接给它加上单下划线 _ 前缀就够了</strong>。而“标准”的双下划线前缀，反而可能会在子类想要重写父类私有属性时带来不必要的麻烦。</p>
+<p>❶ 实例的 <strong>dict</strong> 里，保存着当前实例的所有数据</p>
+<p>❷ 类的 <strong>dict</strong> 里，保存着类的文档、方法等所有数据</p>
+<h3 id="9-1-2-内置类方法装饰器"><a href="#9-1-2-内置类方法装饰器" class="headerlink" title="9.1.2 内置类方法装饰器"></a>9.1.2 内置类方法装饰器</h3><p>❶ 普通方法接收类实例（self）作为参数，但类方法的第一个参数是类本身，通常使用名字 cls</p>
+<p>❶ 虽然类方法通常是用类来调用，但你也可以通过实例来调用类方法，效果一样</p>
+<p>如果你发现某个方法不需要使用当前实例里的任何内容，那可以使用 @staticmethod 来定义一个静态方法。</p>
+<p>和普通方法相比，静态方法不需要访问实例的任何状态，是一种与状态无关的方法，因此静态方法其实可以改写成脱离于类的外部普通函数。</p>
+<h4 id="选择静态方法还是普通函数，可以从以下几点来考虑："><a href="#选择静态方法还是普通函数，可以从以下几点来考虑：" class="headerlink" title="选择静态方法还是普通函数，可以从以下几点来考虑："></a>选择静态方法还是普通函数，可以从以下几点来考虑：</h4><p>如果静态方法特别通用，与类关系不大，那么把它改成普通函数可能会更好；<br>如果静态方法与类关系密切，那么用静态方法更好；<br>相比函数，静态方法有一些先天优势，比如能被子类继承和重写等。</p>
+<h4 id="property-装饰器"><a href="#property-装饰器" class="headerlink" title="@property 装饰器"></a>@property 装饰器</h4><p>使用 @property 装饰器，你可以把上面的 get_basename() 方法变成一个虚拟属性，然后像使用普通属性一样使用它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FilePath</span>:</span></span><br><span class="line">    ...</span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">basename</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""获取文件名"""</span></span><br><span class="line">        <span class="keyword">return</span> self.path.rsplit(os.sep, <span class="number">1</span>)[<span class="number">-1</span>]</span><br><span class="line">调用效果如下：</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = FilePath(<span class="string">'/tmp/foo.py'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p.basename</span><br><span class="line"><span class="string">'foo.py'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="9-1-3-鸭子类型及其局限性"><a href="#9-1-3-鸭子类型及其局限性" class="headerlink" title="9.1.3 鸭子类型及其局限性"></a>9.1.3 鸭子类型及其局限性</h3><p>在鸭子类型编程风格下，如果想操作某个对象，你不会去判断它是否属于某种类型，而会直接判断它是不是有你需要的方法（或属性）。或者更激进一些，你甚至会直接尝试调用需要的方法，假如失败了，那就让它报错好了（参考 5.1.1 节）。</p>
+<p>当看到一只鸟走起来像鸭子、游泳起来像鸭子、叫起来也像鸭子，那么这只鸟就可以称为鸭子。</p>
+<h3 id="9-1-4-抽象类"><a href="#9-1-4-抽象类" class="headerlink" title="9.1.4 抽象类"></a>9.1.4 抽象类</h3><p>要定义一个抽象类，你需要继承 ABC 类或使用 abc.ABCMeta 元类</p>
+<h3 id="9-1-6-其他知识"><a href="#9-1-6-其他知识" class="headerlink" title="9.1.6 其他知识"></a>9.1.6 其他知识</h3><p>元类是 Python 中的一种特殊对象。元类控制着类的创建行为，就像普通类控制着实例的创建行为一样。</p>
+<p>type 是 Python 中最基本的元类，利用 type，你根本不需要手动编写 class … : 代码来创建一个类——直接调用 type() 就行：</p>
+<p>在调用 type() 创建类时，需要提供三个参数，它们的含义如下。</p>
+<p>(1) name：str，需要创建的类名。</p>
+<p>(2) bases：Tuple[Type]，包含其他类的元组，代表类的所有基类。</p>
+<p>(3) attrs：Dict[str, Any]，包含所有类成员（属性、方法）的字典。</p>
+<h2 id="9-2-案例故事"><a href="#9-2-案例故事" class="headerlink" title="9.2 案例故事"></a>9.2 案例故事</h2><h3 id="继承是把双刃剑"><a href="#继承是把双刃剑" class="headerlink" title="继承是把双刃剑"></a>继承是把双刃剑</h3><p>在多数情况下，基于事物的行为来建模，可以孵化出更好、更灵活的模型设计。</p>
+<h2 id="9-3-编程建议"><a href="#9-3-编程建议" class="headerlink" title="9.3 编程建议"></a>9.3 编程建议</h2><h3 id="9-3-1-使用-init-subclass-替代元类"><a href="#9-3-1-使用-init-subclass-替代元类" class="headerlink" title="9.3.1 使用 init_subclass 替代元类"></a>9.3.1 使用 <strong>init_subclass</strong> 替代元类</h3><p><strong>init_subclass</strong> 是类的一个特殊钩子方法，它的主要功能是在类派生出子类时，触发额外的操作。假如某个类实现了这个钩子方法，那么当其他类继承该类时，钩子方法就会被触发。</p>
+<p>通过上面的例子，你会发现 <strong>init_subclass</strong> 非常适合在这种需要触达所有子类的场景中使用。而且同元类相比，钩子方法只要求使用者了解继承，不用掌握更高深的元类相关知识，门槛低了不少。它和类装饰器一样，都可以有效替代元类。</p>
+<h3 id="9-3-3-有序组织你的类方法"><a href="#9-3-3-有序组织你的类方法" class="headerlink" title="9.3.3 有序组织你的类方法"></a>9.3.3 有序组织你的类方法</h3><p><strong>公有方法应该放在类的前面，因为它们是其他模块调用类的入口，是类的门面，也是所有人最关心的内容。以 _ 开头的私有方法，大部分是类自身的实现细节，应该放在靠后的位置。</strong></p>
+<p>至于类方法、静态方法和属性对象，你不必将它们区分对待，直接参考公有 / 私有的思路即可。比如，大部分类方法是公有的，所有它们通常会比较靠前。而静态方法常常是内部使用的私有方法，所以常放在靠后的位置。</p>
+<p>最后一点，当你从上往下阅读类时，所有方法的抽象级别应该是不断降低的，就好像阅读一篇新闻一样，第一段是新闻的概要，之后才会描述细节。</p>
+<h3 id="9-3-4-函数搭配，干活不累"><a href="#9-3-4-函数搭配，干活不累" class="headerlink" title="9.3.4 函数搭配，干活不累"></a>9.3.4 函数搭配，干活不累</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span>:</span></span><br><span class="line">    <span class="string">"""程序配置类，使用单例模式"""</span></span><br><span class="line"></span><br><span class="line">    _instance = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls._instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            inst = super().__new__(cls)</span><br><span class="line">            <span class="comment"># 省略：从外部配置文件读取配置</span></span><br><span class="line">            ...</span><br><span class="line">            cls._instance = inst</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_database</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""读取数据库配置"""</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reload</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""重新读取配置文件，刷新配置"""</span></span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+<p>在 Python 中，实现单例模式的方式有很多，而上面这种最为常见，它通过重写类的 <strong>new</strong> 方法来接管实例创建行为。当 <strong>new</strong> 方法被重写后，类的每次实例化返回的不再是新实例，而是同一个已经初始化的旧实例 cls._instance：</p>
+<h3 id="预绑定方法模式（prebound-method-pattern）"><a href="#预绑定方法模式（prebound-method-pattern）" class="headerlink" title="预绑定方法模式（prebound method pattern）"></a>预绑定方法模式（prebound method pattern）</h3><p>预绑定方法模式（prebound method pattern）是一种将对象方法绑定为函数的模式。要实现该模式，第一步就是完全删掉 AppConfig 里的单例设计模式。因为在 Python 里，实现单例压根儿不用这么麻烦，我们有一个随手可得的单例对象——模块（module）。</p>
+<p>当你在 Python 中执行 import 语句导入模块时，无论 import 执行了多少次，每个被导入的模块在内存中只会存在一份（保存在 sys.modules 中）。因此，要实现单例模式，只需在模块里创建一个全局对象即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span>:</span></span><br><span class="line">    <span class="string">"""程序配置类，使用单例模式"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span> ➊</span><br><span class="line">        <span class="comment"># 省略：从外部配置文件读取配置</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">_config = AppConfig() ➋</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="第-10-章-面向对象设计原则（上）"><a href="#第-10-章-面向对象设计原则（上）" class="headerlink" title="第 10 章 面向对象设计原则（上）"></a>第 10 章 面向对象设计原则（上）</h1><p>比如，9.3.4 节就有一个与“单例模式”有关的例子。在示例代码里，我先是用 <strong>new</strong> 方法实现了经典的单例设计模式。但随后，一个模块级全局对象用更少的代码满足了同样的需求。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1：单例模式</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span>:</span></span><br><span class="line"></span><br><span class="line">    _instance = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> cls._instance <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            inst = super().__new__(cls)</span><br><span class="line">            cls._instance = inst</span><br><span class="line">        <span class="keyword">return</span> cls._instance</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2：全局对象</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppConfig</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">_config = AppConfig()</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="10-1-类型注解基础"><a href="#10-1-类型注解基础" class="headerlink" title="10.1 类型注解基础"></a>10.1 类型注解基础</h2><p>下面是添加了类型注解后的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Duck</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, color: str)</span>:</span> ➊</span><br><span class="line">        self.color = color</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quack</span><span class="params">(self)</span> -&gt; <span class="keyword">None</span>:</span> ➋</span><br><span class="line">        print(<span class="string">f"Hi, I'm a <span class="subst">&#123;self.color&#125;</span> duck!"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_random_ducks</span><span class="params">(number: int)</span> -&gt; List[Duck]:</span> ➌</span><br><span class="line">    ducks: List[Duck] = [] ➍</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> number:</span><br><span class="line">        color = random.choice([<span class="string">'yellow'</span>, <span class="string">'white'</span>, <span class="string">'gray'</span>]) ➎</span><br><span class="line">        ducks.append(Duck(color=color))</span><br><span class="line">    <span class="keyword">return</span> ducks</span><br></pre></td></tr></table></figure>
+
+<p>❶ 给函数参数加上类型注解</p>
+<p>❷ 通过 -&gt; 给返回值加上类型注解</p>
+<p>❸ 你可以用 typing 模块的特殊对象 List 来标注列表成员的具体类型，注意，这里用的是 [] 符号，而不是 ()</p>
+<p>❹ 声明变量时，也可以为其加上类型注解</p>
+<p>❺ 类型注解是可选的，非常自由，比如这里的 color 变量就没加类型注解</p>
+<p>typing 是类型注解用到的主要模块，除了 List 以外，该模块内还有许多与类型有关的特殊对象，举例如下。</p>
+<p>Dict：字典类型，例如 Dict[str, int] 代表键为字符串，值为整型的字典。<br>Callable：可调用对象，例如 Callable[[str, str], List[str]] 表示接收两个字符串作为参数，返回字符串列表的可调用对象。<br>TextIO：使用文本协议的类文件类型，相应地，还有二进制类型 BinaryIO。<br>Any：代表任何类型。</p>
+<p>默认情况下，你可以把 Python 里的类型注解当成一种用于提升代码可读性的特殊注释，因为它就像注释一样，只提升代码的说明性，不会对程序的执行过程产生任何实际影响。</p>
+<p>但是，如果引入静态类型检查工具，类型注解就不再仅仅是注解了。它在提升可读性之余，还能对程序正确性产生积极的影响。在 13.1.5 节中，我会介绍如何用 mypy 来做到这一点。</p>
+<h1 id="第-12-章-数据模型与描述符"><a href="#第-12-章-数据模型与描述符" class="headerlink" title="第 12 章 数据模型与描述符"></a>第 12 章 数据模型与描述符</h1><h2 id="12-1-基础知识"><a href="#12-1-基础知识" class="headerlink" title="12.1 基础知识"></a>12.1 基础知识</h2><h3 id="12-1-1-字符串魔法方法"><a href="#12-1-1-字符串魔法方法" class="headerlink" title="12.1.1 字符串魔法方法"></a>12.1.1 字符串魔法方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__repr__</span><br></pre></td></tr></table></figure>
+
+<p>当你需要把一个 Python 对象用字符串表现出来时，实际上可分为两种场景。第一种场景是非正式的，比如用 print() 打印到屏幕、用 str() 转换为字符串。这种场景下的字符串注重可读性，格式应当对用户友好，由类型的 <strong>str</strong> 方法所驱动。</p>
+<p>第二种场景则更为正式，它一般发生在调试程序时。在调试程序时，你常常需要快速获知对象的详细内容，最好一下子就看到所有属性的值。该场景下的字符串注重内容的完整性，由类型的 <strong>repr</strong> 方法所驱动。</p>
+<p>要让对象在调试场景提供更多有用的信息，我们需要实现 <strong>repr</strong> 方法。</p>
+<p>当你在 <strong>repr</strong> 方法里组装结果时，一般会尽可能地涵盖当前对象的所有信息，假如其他人能通过复制 repr() 的字符串结果直接创建一个同样的对象，就再好不过了。<br>下面，我试着给 <code>Person</code> 加上 <code>__repr__</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&#123;cls_name&#125;(name=&#123;name!r&#125;, age=&#123;age!r&#125;, favorite_color=&#123;color!r&#125;)'</span>.format( ➊</span><br><span class="line">            cls_name=self.__class__.__name__, ➋</span><br><span class="line">            name=self.name,</span><br><span class="line">            age=self.age,</span><br><span class="line">            color=self.favorite_color,</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>❶ 在字符串模板里，我使用了 <code>{name!r}</code> 这样的语法，变量名后的 <code>!r</code> 表示在渲染字符串模板时，程序会优先使用 <code>repr()</code> 而非 <code>str()</code> 的结果。这么做以后，<code>self.name</code> 这种字符串类型在渲染时会包含左右引号，省去了手动添加的麻烦</p>
+<p>❷ 类名不直接写成 <code>Person</code> 以便更好地兼容子类</p>
+</blockquote>
+<p>再来试试看效果如何：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>p = Person(<span class="string">'piglei'</span>, <span class="number">18</span>, <span class="string">'black'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(p)</span><br><span class="line">piglei</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>p</span><br><span class="line">Person(name=<span class="string">'piglei'</span>, age=<span class="number">18</span>, favorite_color=<span class="string">'black'</span>)</span><br></pre></td></tr></table></figure>
+<p>当对象定义了 <strong>repr</strong> 方法后，它便可以在任何需要的时候，快速提供一种详尽的字符串展现形式，为程度调试提供帮助。</p>
+<p>假如一个类型没定义 <strong>str</strong> 方法，只定义了 <strong>repr</strong>，那么 <strong>repr</strong> 的结果会用于所有需要字符串的场景。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰✰</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/05/27/%E5%BE%AE%E4%BF%A1%E8%AF%BB%E4%B9%A6/%E7%A5%A5%E7%91%9E%EF%BC%9A%E7%8E%8B%E8%8E%BD%E5%92%8C%E4%BB%96%E7%9A%84%E6%97%B6%E4%BB%A3/" rel="prev" title="微信读书/祥瑞：王莽和他的时代">
+      <i class="fa fa-chevron-left"></i> 微信读书/祥瑞：王莽和他的时代
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/12/obsidian%E6%A8%A1%E7%89%88/%E5%9B%BE%E4%B9%A6%E7%AC%94%E8%AE%B0%E6%A8%A1%E7%89%88/" rel="next" title="Kafka权威指南">
+      Kafka权威指南 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第-3-章-容器类型"><span class="nav-number">1.</span> <span class="nav-text">第 3 章 容器类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#列表（list）"><span class="nav-number">1.1.</span> <span class="nav-text">列表（list）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元组（tuple）"><span class="nav-number">1.2.</span> <span class="nav-text">元组（tuple）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字典（dict）"><span class="nav-number">1.3.</span> <span class="nav-text">字典（dict）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集合（set）"><span class="nav-number">1.4.</span> <span class="nav-text">集合（set）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-案例故事"><span class="nav-number">1.5.</span> <span class="nav-text">3.2 案例故事</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-defaultdict-类型"><span class="nav-number">1.5.1.</span> <span class="nav-text">使用 defaultdict 类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-MutableMapping-创建自定义字典类型"><span class="nav-number">1.5.2.</span> <span class="nav-text">使用 MutableMapping 创建自定义字典类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-编程建议"><span class="nav-number">1.6.</span> <span class="nav-text">3.3 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-用按需返回替代容器"><span class="nav-number">1.6.1.</span> <span class="nav-text">3.3.1 用按需返回替代容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#用生成器替代列表"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">用生成器替代列表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-了解容器的底层实现"><span class="nav-number">1.6.2.</span> <span class="nav-text">3.3.2 了解容器的底层实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#deque-底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是-O-1"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">deque 底层使用了双端队列，无论在头部还是尾部追加成员，时间复杂度都是 O(1)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-掌握如何快速合并字典"><span class="nav-number">1.6.3.</span> <span class="nav-text">3.3.3 掌握如何快速合并字典</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字典类型-运算符快速合并"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">字典类型 | 运算符快速合并</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-7-让函数返回-NamedTuple"><span class="nav-number">1.6.4.</span> <span class="nav-text">3.3.7 让函数返回 NamedTuple</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-4-章-条件分支控制流"><span class="nav-number">2.</span> <span class="nav-text">第 4 章 条件分支控制流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-基础知识"><span class="nav-number">2.1.</span> <span class="nav-text">4.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-分支惯用写法"><span class="nav-number">2.1.1.</span> <span class="nav-text">4.1.1 分支惯用写法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#不要显式地和布尔值做比较："><span class="nav-number">2.1.1.1.</span> <span class="nav-text">不要显式地和布尔值做比较：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#省略零值判断"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">省略零值判断</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置类型的布尔值规则如下。"><span class="nav-number">2.1.1.3.</span> <span class="nav-text">内置类型的布尔值规则如下。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-修改对象的布尔值"><span class="nav-number">2.1.2.</span> <span class="nav-text">4.1.2 修改对象的布尔值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3-与-None-比较时使用-is-运算符"><span class="nav-number">2.1.3.</span> <span class="nav-text">4.1.3 与 None 比较时使用 is 运算符</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-5-章-异常与错误处理"><span class="nav-number">3.</span> <span class="nav-text">第 5 章 异常与错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-基础知识"><span class="nav-number">3.1.</span> <span class="nav-text">5.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-1-优先使用异常捕获"><span class="nav-number">3.1.1.</span> <span class="nav-text">5.1.1 优先使用异常捕获</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取原谅比许可简单"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">获取原谅比许可简单</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-2-try-语句常用知识"><span class="nav-number">3.1.2.</span> <span class="nav-text">5.1.2 try 语句常用知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-try-语句块里的-else-分支"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">使用 try 语句块里的 else 分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用空-raise-语句"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">使用空 raise 语句</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-3-抛出异常，而不是返回错误"><span class="nav-number">3.1.3.</span> <span class="nav-text">5.1.3 抛出异常，而不是返回错误</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#抛出异常，而不是返回错误"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">抛出异常，而不是返回错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-4-使用上下文管理器"><span class="nav-number">3.1.4.</span> <span class="nav-text">5.1.4 使用上下文管理器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-编程建议"><span class="nav-number">3.2.</span> <span class="nav-text">5.3 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-2-不要手动做数据校验"><span class="nav-number">3.2.1.</span> <span class="nav-text">5.3.2 不要手动做数据校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-3-抛出可区分的异常"><span class="nav-number">3.2.2.</span> <span class="nav-text">5.3.3 抛出可区分的异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-4-不要使用-assert-来检查参数合法性"><span class="nav-number">3.2.3.</span> <span class="nav-text">5.3.4 不要使用 assert 来检查参数合法性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-5-无须处理是最好的错误处理"><span class="nav-number">3.2.4.</span> <span class="nav-text">5.3.5 无须处理是最好的错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#空对象模式"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">空对象模式</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-6-章-循环与可迭代对象"><span class="nav-number">4.</span> <span class="nav-text">第 6 章 循环与可迭代对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-基础知识"><span class="nav-number">4.1.</span> <span class="nav-text">6.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-1-迭代器与可迭代对象"><span class="nav-number">4.1.1.</span> <span class="nav-text">6.1.1 迭代器与可迭代对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-2-修饰可迭代对象优化循环"><span class="nav-number">4.1.2.</span> <span class="nav-text">6.1.2 修饰可迭代对象优化循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-编程建议"><span class="nav-number">4.2.</span> <span class="nav-text">6.3 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1-中断嵌套循环的正确方式–直接使用-return"><span class="nav-number">4.2.1.</span> <span class="nav-text">6.3.1 中断嵌套循环的正确方式–直接使用 return</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-7-章-函数"><span class="nav-number">5.</span> <span class="nav-text">第 7 章 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-1-基础知识"><span class="nav-number">5.1.</span> <span class="nav-text">7.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-1-函数参数的常用技巧"><span class="nav-number">5.1.1.</span> <span class="nav-text">7.1.1 函数参数的常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数列表中插入-符号"><span class="nav-number">5.1.1.1.</span> <span class="nav-text">参数列表中插入 * 符号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-2-函数返回的常见模式"><span class="nav-number">5.1.2.</span> <span class="nav-text">7.1.2 函数返回的常见模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-3-常用函数模块：functools"><span class="nav-number">5.1.3.</span> <span class="nav-text">7.1.3 常用函数模块：functools</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#functools-partial-偏函数"><span class="nav-number">5.1.3.1.</span> <span class="nav-text">functools.partial 偏函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#装饰器缓存-lru-cache"><span class="nav-number">5.1.3.2.</span> <span class="nav-text">装饰器缓存 lru_cache()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-2-案例故事"><span class="nav-number">5.2.</span> <span class="nav-text">7.2 案例故事</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数与状态"><span class="nav-number">5.2.1.</span> <span class="nav-text">函数与状态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于全局变量："><span class="nav-number">5.2.1.1.</span> <span class="nav-text">基于全局变量：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于函数闭包："><span class="nav-number">5.2.1.2.</span> <span class="nav-text">基于函数闭包：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建类来封装状态："><span class="nav-number">5.2.1.3.</span> <span class="nav-text">创建类来封装状态：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3-编程建议"><span class="nav-number">5.3.</span> <span class="nav-text">7.3 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-4-你没有那么需要-lambda"><span class="nav-number">5.3.1.</span> <span class="nav-text">7.3.4 你没有那么需要 lambda</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-5-了解递归的局限性"><span class="nav-number">5.3.2.</span> <span class="nav-text">7.3.5 了解递归的局限性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-8-章-装饰器"><span class="nav-number">6.</span> <span class="nav-text">第 8 章 装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-基础知识"><span class="nav-number">6.1.</span> <span class="nav-text">8.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-1-装饰器基础"><span class="nav-number">6.1.1.</span> <span class="nav-text">8.1.1 装饰器基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-2-使用-functools-wraps-修饰包装函数"><span class="nav-number">6.1.2.</span> <span class="nav-text">8.1.2 使用 functools.wraps() 修饰包装函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-3-实现可选参数装饰器"><span class="nav-number">6.1.3.</span> <span class="nav-text">8.1.3 实现可选参数装饰器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-编程建议"><span class="nav-number">6.2.</span> <span class="nav-text">8.2 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-1-了解装饰器的本质优势"><span class="nav-number">6.2.1.</span> <span class="nav-text">8.2.1 了解装饰器的本质优势</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-9-章-面向对象编程"><span class="nav-number">7.</span> <span class="nav-text">第 9 章 面向对象编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#9-1-基础知识"><span class="nav-number">7.1.</span> <span class="nav-text">9.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-1-类常用知识"><span class="nav-number">7.1.1.</span> <span class="nav-text">9.1.1 类常用知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-2-内置类方法装饰器"><span class="nav-number">7.1.2.</span> <span class="nav-text">9.1.2 内置类方法装饰器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#选择静态方法还是普通函数，可以从以下几点来考虑："><span class="nav-number">7.1.2.1.</span> <span class="nav-text">选择静态方法还是普通函数，可以从以下几点来考虑：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-装饰器"><span class="nav-number">7.1.2.2.</span> <span class="nav-text">@property 装饰器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-3-鸭子类型及其局限性"><span class="nav-number">7.1.3.</span> <span class="nav-text">9.1.3 鸭子类型及其局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-4-抽象类"><span class="nav-number">7.1.4.</span> <span class="nav-text">9.1.4 抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-6-其他知识"><span class="nav-number">7.1.5.</span> <span class="nav-text">9.1.6 其他知识</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-2-案例故事"><span class="nav-number">7.2.</span> <span class="nav-text">9.2 案例故事</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承是把双刃剑"><span class="nav-number">7.2.1.</span> <span class="nav-text">继承是把双刃剑</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-3-编程建议"><span class="nav-number">7.3.</span> <span class="nav-text">9.3 编程建议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-1-使用-init-subclass-替代元类"><span class="nav-number">7.3.1.</span> <span class="nav-text">9.3.1 使用 init_subclass 替代元类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-3-有序组织你的类方法"><span class="nav-number">7.3.2.</span> <span class="nav-text">9.3.3 有序组织你的类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-4-函数搭配，干活不累"><span class="nav-number">7.3.3.</span> <span class="nav-text">9.3.4 函数搭配，干活不累</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预绑定方法模式（prebound-method-pattern）"><span class="nav-number">7.3.4.</span> <span class="nav-text">预绑定方法模式（prebound method pattern）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-10-章-面向对象设计原则（上）"><span class="nav-number">8.</span> <span class="nav-text">第 10 章 面向对象设计原则（上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#10-1-类型注解基础"><span class="nav-number">8.1.</span> <span class="nav-text">10.1 类型注解基础</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第-12-章-数据模型与描述符"><span class="nav-number">9.</span> <span class="nav-text">第 12 章 数据模型与描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#12-1-基础知识"><span class="nav-number">9.1.</span> <span class="nav-text">12.1 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#12-1-1-字符串魔法方法"><span class="nav-number">9.1.1.</span> <span class="nav-text">12.1.1 字符串魔法方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郭富城"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">郭富城</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">110</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://book4you.org/" title="https:&#x2F;&#x2F;book4you.org&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭富城</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
