@@ -425,6 +425,71 @@ https://terminus2049.github.io/Not-exist-in-douban/
 《洪宪帝制外交》这本书呢，基本就是帮袁世凯和北洋政府翻案了，纠正中学历史书的谬误。
 
 
+《洛杉矶时报》评选出12部最好的中国当代小说，包括余华《活着》，《十城记》，朱文《我爱美元》，莫言《天堂蒜薹之歌》，王朔《玩的就是心跳》，王小波《王二的爱欲枷锁》，阎连科《丁庄梦》王安忆《长恨歌》，陈希我《冒犯书》，徐则臣《跑步穿过中关村》，盛可以《死亡赋格》，阿乙《完美罪行》
+
+《教养的迷失 》
+
+撒旦探戈 余泽民译
+
+观念的水位。刘瑜
+
+送你一颗子弹
+
+民主的细节
+
+中国儒学史 汤一介、李中华主编
+
+唐代长安与西域文明。向达著
+
+隋唐史。岑仲勉著
+
+正统与华裔 中国传统政治文化研究 刘浦江著
+
+宋辽金史论集 刘浦江著
+
+让历史来审判 斯大林主义的起源和后果 
+
+照出你看不见的世界史 镜子 张伟詰译
+
+史丹利的告别 张鲲译
+
+史景迁《追寻现代中国》两册，台湾时报出版。黄兴涛《重塑中华—近代中国“中华民族”观念研究》
+
+读一下亨廷顿和汤因比。
+
+全球通史
+
+李开元的《秦谜》《秦崩》《楚亡》系列。
+
+于尔根·奥斯特哈默 《世界的演变：19世纪史》（如果只读一部19世纪的世界史，就是这部）和唐德刚作品集
+
+高罗佩的《大唐狄公案》，一定不要错过《清明上河图密码》
+
+
+![[attachments/220f092d75a4833fc383679b338fecb0_MD5.jpg]]
+[[attachments/c4d4b8185d1e5fa7dc292c9277e08c95_MD5.jpg|Open: 3G.jpg]]
+![[attachments/c4d4b8185d1e5fa7dc292c9277e08c95_MD5.jpg]]
+
+
+[[attachments/0b89896b1d57a0cef7f0208bdabb2870_MD5.jpg|Open: CHINAS.jpg]]
+![[attachments/0b89896b1d57a0cef7f0208bdabb2870_MD5.jpg]]
+
+[[attachments/de38985ea3b8ab1ae47b4319d04fcfd3_MD5.jpg|Open: CHINA'S Politcs.jpg]]
+![[attachments/de38985ea3b8ab1ae47b4319d04fcfd3_MD5.jpg]]
+
+[[attachments/db8b32ea3476b1915fa25479fd9b7dea_MD5.jpg|Open: THE COLUMBIA.jpg]]
+![[attachments/db8b32ea3476b1915fa25479fd9b7dea_MD5.jpg]]
+[[attachments/cbff5df9712ef050cdc7e4b57df7dc21_MD5.jpeg|Open: THE SOULS.jpeg]]
+![[attachments/cbff5df9712ef050cdc7e4b57df7dc21_MD5.jpeg]]
+
+
+[[attachments/3b73bd212f11636e7ae0c0acc099cc79_MD5.jpeg|Open: PREPARINC H TAE TWENIYARRST CINTURN.jpeg]]
+![[attachments/3b73bd212f11636e7ae0c0acc099cc79_MD5.jpeg]]
+[[attachments/facc453626eab29768316d80e539a22f_MD5.jpeg|Open: CHINA'S.jpeg]]
+![[attachments/facc453626eab29768316d80e539a22f_MD5.jpeg]]
+
+
+
 
 ## 标签说明
   - TODO //待读
