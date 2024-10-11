@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="简介clearview阅读超多图片，图解系统设计，就凭这么多图值得5星 摘要这篇文章主要介绍了系统设计面试中常见的题目和相应的解决方案，作者以实际案例和图表的形式详细讲解了如何设计一个优秀的系统，包括但不限于：限速器、一致性哈希、键值存储、唯一ID生成器、URL缩短器、网络爬虫、通知系统、新闻提要系统、聊天系统、搜索自动完成系统、YouTube、谷歌云盘等。文章还介绍了系统设计面试的通用框架以及一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="System Design Interview An Insider’s Guide">
+<meta property="og:url" content="http://yoursite.com/2024/10/08/System%20Design%20Interview%20An%20Insider%E2%80%99s%20Guide/index.html">
+<meta property="og:site_name" content="郭富城的博客">
+<meta property="og:description" content="简介clearview阅读超多图片，图解系统设计，就凭这么多图值得5星 摘要这篇文章主要介绍了系统设计面试中常见的题目和相应的解决方案，作者以实际案例和图表的形式详细讲解了如何设计一个优秀的系统，包括但不限于：限速器、一致性哈希、键值存储、唯一ID生成器、URL缩短器、网络爬虫、通知系统、新闻提要系统、聊天系统、搜索自动完成系统、YouTube、谷歌云盘等。文章还介绍了系统设计面试的通用框架以及一">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-10-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-10-10T01:38:23.795Z">
+<meta property="article:author" content="郭富城">
+<meta property="article:tag" content="✰✰✰✰✰✰">
+<meta property="article:tag" content="SystemDesign">
+<meta property="article:tag" content="TODO">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2024/10/08/System%20Design%20Interview%20An%20Insider%E2%80%99s%20Guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>System Design Interview An Insider’s Guide | 郭富城的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">郭富城的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">阅读书籍笔记,不定期更新</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home  //首页"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive   //归档"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags   //标签"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th  //分类"></i>分类</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2024/10/08/System%20Design%20Interview%20An%20Insider%E2%80%99s%20Guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="郭富城">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭富城的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          System Design Interview An Insider’s Guide
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-10-08 00:00:00" itemprop="dateCreated datePublished" datetime="2024-10-08T00:00:00+08:00">2024-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-10 09:38:23" itemprop="dateModified" datetime="2024-10-10T09:38:23+08:00">2024-10-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>简介<br>clearview阅读<br>超多图片，图解系统设计，就凭这么多图值得5星</p>
+<p>摘要<br>这篇文章主要介绍了系统设计面试中常见的题目和相应的解决方案，作者以实际案例和图表的形式详细讲解了如何设计一个优秀的系统，包括但不限于：限速器、一致性哈希、键值存储、唯一ID生成器、URL缩短器、网络爬虫、通知系统、新闻提要系统、聊天系统、搜索自动完成系统、YouTube、谷歌云盘等。文章还介绍了系统设计面试的通用框架以及一些重要的技术细节。</p>
+<a id="more"></a>
+<h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>本前言简要介绍了系统设计面试的挑战和重要性，指出其开放式、无标准答案的特点，并强调了本书的目标是帮助读者掌握应对这类面试的技巧。</p>
+<h4 id="第一章：从零到百万用户"><a href="#第一章：从零到百万用户" class="headerlink" title="第一章：从零到百万用户"></a>第一章：从零到百万用户</h4><p>本章从构建单用户系统开始，逐步扩展到支持百万用户，涵盖了许多系统设计面试中的关键技术，包括：</p>
+<ul>
+<li><strong>单服务器设置:</strong> 介绍了最基础的系统架构，所有组件都运行在同一服务器上。</li>
+<li><strong>数据库:</strong> 探讨了数据库选择问题，对比了关系型数据库和非关系型数据库的优缺点，并给出了选择建议。</li>
+<li><strong>纵向扩展与横向扩展:</strong> 解释了两种扩展策略的差异，并分析了各自的适用场景和局限性。</li>
+<li><strong>消息队列:</strong> 引入了消息队列的概念，阐述了其在解耦系统组件和实现异步通信中的作用。</li>
+<li><strong>分片:</strong> 详细介绍了分片技术，包括分片键的选择、重新分片、热点问题和数据去规范化等挑战。</li>
+<li><strong>百万用户及以上:</strong> 总结了支持百万用户系统扩展的迭代过程，并指出需要进一步优化和解耦以支持更大规模的用户群体。</li>
+</ul>
+<h4 id="第二章：粗略估算"><a href="#第二章：粗略估算" class="headerlink" title="第二章：粗略估算"></a>第二章：粗略估算</h4><p>本章介绍了系统设计面试中常用的粗略估算技巧，帮助读者评估系统容量和性能需求，主要内容包括：</p>
+<ul>
+<li><strong>2 的幂次方:</strong> 回顾了数据容量单位的计算基础，强调了理解 2 的幂次方在分布式系统中的重要性。</li>
+<li><strong>程序员应知的延迟数据:</strong> 列举了典型计算机操作的延迟时间，帮助读者理解不同操作的快慢程度，并指导设计决策。</li>
+<li><strong>可用性指标:</strong> 介绍了高可用性的概念和衡量方法，解释了服务级别协议 (SLA) 和 “9” 的含义。</li>
+<li><strong>实例：估算 Twitter 的 QPS 和存储需求:</strong> 通过一个具体的例子，展示了如何运用粗略估算来评估系统的关键指标。</li>
+<li><strong>技巧:</strong> 分享了进行粗略估算的实用技巧，包括舍入、近似、写下假设、标注单位和常见估算问题等。</li>
+</ul>
+<h4 id="第三章：系统设计面试框架"><a href="#第三章：系统设计面试框架" class="headerlink" title="第三章：系统设计面试框架"></a>第三章：系统设计面试框架</h4><p>本章提出了一个有效的系统设计面试四步法，帮助读者在面试中展现结构化的思考过程和解决问题的能力：</p>
+<ul>
+<li><strong>第一步 - 理解问题并确定设计范围:</strong> 强调了在回答问题前深入理解需求的重要性，并鼓励主动提问以澄清模糊点。</li>
+<li><strong>第二步 - 提出高层设计并获得认同:</strong> 建议从高层架构开始设计，并与面试官沟通以确保方案的可行性。</li>
+<li><strong>第三步 - 深入设计细节:</strong> 逐步细化设计方案，包括数据模型、算法选择、技术选型等。</li>
+<li><strong>第四步 - 总结:</strong> 简要回顾设计方案，并回答面试官的最终问题。</li>
+</ul>
+<h4 id="第四章：设计速率限制器"><a href="#第四章：设计速率限制器" class="headerlink" title="第四章：设计速率限制器"></a>第四章：设计速率限制器</h4><p>本章以设计速率限制器为例，展示了如何运用系统设计面试框架来解决实际问题，内容涵盖：</p>
+<ul>
+<li><strong>速率限制器的类型和应用场景:</strong> 介绍了速率限制器的不同类型和应用场景，例如客户端速率限制器和服务器端 API 速率限制器。</li>
+<li><strong>需求分析:</strong> 通过与面试官的互动，明确了设计目标，包括速率限制规则、系统规模、分布式环境、用户通知等。</li>
+<li><strong>高层设计:</strong> 提出了速率限制器的基本架构，包括客户端、服务器、速率限制组件和数据库等。</li>
+<li><strong>速率限制算法:</strong> 介绍了几种常用的速率限制算法，例如令牌桶算法、漏桶算法、固定窗口计数器算法、滑动窗口日志算法和滑动窗口计数器算法。</li>
+<li><strong>深入设计:</strong> 详细探讨了速率限制规则、处理超出速率限制的请求、速率限制器标头、分布式环境下的速率限制等问题。</li>
+<li><strong>性能优化和监控:</strong> 讨论了优化速率限制器性能的策略，以及监控系统运行状况的方法。</li>
+</ul>
+<h4 id="第五章：设计一致性哈希"><a href="#第五章：设计一致性哈希" class="headerlink" title="第五章：设计一致性哈希"></a>第五章：设计一致性哈希</h4><p>本章讲解了一致性哈希的概念和应用，解释了其在分布式系统中如何解决数据分片和负载均衡问题，主要内容包括：</p>
+<ul>
+<li><strong>哈希空间和哈希环:</strong> 介绍了哈希空间和哈希环的概念，阐述了如何将服务器映射到哈希环上。</li>
+<li><strong>哈希服务器和哈希键:</strong> 解释了如何使用相同的哈希函数将服务器和键映射到哈希环上。</li>
+<li><strong>服务器查找:</strong> 描述了如何利用哈希环找到存储特定键的服务器。</li>
+<li><strong>添加服务器:</strong> 演示了添加新服务器时如何重新分配键，并强调了一致性哈希能够最小化数据迁移的优势。</li>
+<li><strong>删除服务器:</strong> 解释了删除服务器时如何重新分配键，并指出了一致性哈希能够保持系统稳定性的特点。</li>
+<li><strong>重新哈希问题:</strong> 讨论了传统哈希算法在服务器数量变化时面临的挑战，引出一致性哈希的解决方案。</li>
+<li><strong>虚拟节点:</strong> 介绍了虚拟节点的概念，解释了其如何解决数据分布不均匀和服务器负载不均衡的问题。</li>
+<li><strong>实际应用:</strong> 列举了一些使用一致性哈希的知名系统，例如 Amazon Dynamo 数据库、Apache Cassandra 数据库、Discord 聊天应用等。</li>
+</ul>
+<h4 id="第六章：设计键值存储"><a href="#第六章：设计键值存储" class="headerlink" title="第六章：设计键值存储"></a>第六章：设计键值存储</h4><p>本章以设计键值存储为例，展示了如何设计一个高可用、高扩展、低延迟的分布式系统，内容涵盖：</p>
+<ul>
+<li><strong>键值存储的定义和特点:</strong> 介绍了键值存储的概念和基本特点，例如键的唯一性、值的类型、访问方式等。</li>
+<li><strong>需求分析:</strong> 明确了设计目标，包括数据规模、可用性、可扩展性、一致性、延迟等。</li>
+<li><strong>分布式键值存储:</strong> 引入了分布式哈希表 (DHT) 的概念，解释了其在分布式键值存储中的作用。</li>
+<li><strong>CAP 定理:</strong> 解释了 CAP 定理，并讨论了在设计分布式系统时如何在一致性、可用性和分区容错性之间进行权衡。</li>
+<li><strong>数据分片:</strong> 介绍了数据分片的概念，并解释了如何使用一致性哈希来实现数据分片。</li>
+<li><strong>复制和一致性:</strong> 讨论了数据复制和一致性的重要性，解释了 N、W、R 的含义以及如何配置它们以满足不同的需求。</li>
+<li><strong>一致性模型:</strong> 介绍了不同的一致性模型，例如强一致性、最终一致性、读写一致性等。</li>
+<li><strong>向量时钟:</strong> 解释了向量时钟的概念，并演示了其如何解决数据冲突问题。</li>
+<li><strong>故障检测:</strong> 讨论了在分布式系统中如何检测服务器故障，介绍了全对全多播和八卦协议等方法。</li>
+<li><strong>处理故障:</strong> 解释了如何处理服务器故障，介绍了松散仲裁和暗示移交等技术。</li>
+<li><strong>数据一致性:</strong> 介绍了如何使用 Merkle 树来保证数据一致性。</li>
+<li><strong>读写路径:</strong> 描述了键值存储的读写路径，并解释了如何使用布隆过滤器来优化读取性能。</li>
+</ul>
+<h4 id="第七章：设计分布式系统中的唯一-ID-生成器"><a href="#第七章：设计分布式系统中的唯一-ID-生成器" class="headerlink" title="第七章：设计分布式系统中的唯一 ID 生成器"></a>第七章：设计分布式系统中的唯一 ID 生成器</h4><p>本章探讨了在分布式系统中设计唯一 ID 生成器的挑战和解决方案，内容包括：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了唯一 ID 的特点，包括唯一性、可排序性、数值类型、长度限制、生成速率等。</li>
+<li><strong>候选方案:</strong> 介绍了几种生成唯一 ID 的方法，例如多主复制、通用唯一标识符 (UUID)、票据服务器、Twitter 雪花算法等，并分析了各自的优缺点。</li>
+<li><strong>Twitter 雪花算法:</strong> 详细解释了 Twitter 雪花算法的原理，包括 64 位 ID 的结构、时间戳、数据中心 ID、机器 ID、序列号等部分。</li>
+<li><strong>时间戳:</strong> 讨论了时间戳的处理方法，包括使用自定义纪元时间、二进制表示和 UTC 转换等。</li>
+<li><strong>数据中心 ID 和机器 ID:</strong> 解释了如何分配数据中心 ID 和机器 ID，以及它们在生成唯一 ID 中的作用。</li>
+<li><strong>序列号:</strong> 描述了序列号的生成规则，并解释了其如何保证在同一毫秒内生成的 ID 的唯一性。</li>
+</ul>
+<h4 id="第八章：设计-URL-缩短器"><a href="#第八章：设计-URL-缩短器" class="headerlink" title="第八章：设计 URL 缩短器"></a>第八章：设计 URL 缩短器</h4><p>本章以设计 URL 缩短器为例，展示了如何设计一个高可用、高扩展、低延迟的系统，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了 URL 缩短器的功能需求，包括 URL 缩短、URL 重定向、高可用性、可扩展性、容错性等。</li>
+<li><strong>粗略估算:</strong> 评估了系统规模，包括写入操作、读取操作、存储需求等。</li>
+<li><strong>高层设计:</strong> 提出了 URL 缩短器的基本架构，包括客户端、服务器、数据库、缓存等。</li>
+<li><strong>哈希函数:</strong> 讨论了如何选择合适的哈希函数，包括哈希值长度、碰撞解决、基数 62 转换等。</li>
+<li><strong>存储:</strong> 解释了如何存储 URL 映射关系，包括使用关系型数据库、NoSQL 数据库等。</li>
+<li><strong>缓存:</strong> 讨论了如何使用缓存来提高读取性能，包括缓存策略、缓存失效等。</li>
+<li><strong>负载均衡:</strong> 解释了如何使用负载均衡来分发流量，包括硬件负载均衡器、软件负载均衡器等。</li>
+</ul>
+<h4 id="第九章：设计网络爬虫"><a href="#第九章：设计网络爬虫" class="headerlink" title="第九章：设计网络爬虫"></a>第九章：设计网络爬虫</h4><p>本章探讨了设计网络爬虫的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了网络爬虫的功能需求，包括下载网页、提取 URL、处理重复内容、robots.txt 协议等。</li>
+<li><strong>粗略估算:</strong> 评估了系统规模，包括下载速度、存储需求等。</li>
+<li><strong>高层设计:</strong> 提出了网络爬虫的基本架构，包括 URL 队列、下载器、解析器、存储器等。</li>
+<li><strong>URL 队列:</strong> 讨论了如何管理 URL 队列，包括优先级队列、分布式队列等。</li>
+<li><strong>下载器:</strong> 解释了如何下载网页，包括使用多线程、异步 IO 等。</li>
+<li><strong>解析器:</strong> 讨论了如何解析网页，包括使用正则表达式、HTML 解析器等。</li>
+<li><strong>存储器:</strong> 解释了如何存储网页内容，包括使用文件系统、数据库等。</li>
+<li><strong>去重:</strong> 讨论了如何处理重复内容，包括使用指纹算法、布隆过滤器等。</li>
+<li><strong>robots.txt 协议:</strong> 解释了 robots.txt 协议的作用，以及如何遵守该协议。</li>
+</ul>
+<h4 id="第十章：设计通知系统"><a href="#第十章：设计通知系统" class="headerlink" title="第十章：设计通知系统"></a>第十章：设计通知系统</h4><p>本章探讨了设计通知系统的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了通知系统的功能需求，包括发送通知、接收通知、通知类型、通知渠道等。</li>
+<li><strong>高层设计:</strong> 提出了通知系统的基本架构，包括通知服务、消息队列、通知发送器等。</li>
+<li><strong>通知服务:</strong> 讨论了通知服务的职责，包括接收通知请求、存储通知内容、发送通知等。</li>
+<li><strong>消息队列:</strong> 解释了消息队列的作用，包括解耦发送和接收、提高系统可靠性等。</li>
+<li><strong>通知发送器:</strong> 讨论了不同通知渠道的发送方式，包括电子邮件、短信、推送通知等。</li>
+<li><strong>可靠性:</strong> 讨论了如何保证通知的可靠性，包括使用持久化消息队列、重试机制等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展通知系统，包括使用消息分区、多实例部署等。</li>
+</ul>
+<h4 id="第十一章：设计新闻-Feed-系统"><a href="#第十一章：设计新闻-Feed-系统" class="headerlink" title="第十一章：设计新闻 Feed 系统"></a>第十一章：设计新闻 Feed 系统</h4><p>本章探讨了设计新闻 Feed 系统的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了新闻 Feed 系统的功能需求，包括发布帖子、订阅用户、获取 Feed、排序算法等。</li>
+<li><strong>高层设计:</strong> 提出了新闻 Feed 系统的基本架构，包括发布服务、存储服务、Feed 服务等。</li>
+<li><strong>发布服务:</strong> 讨论了发布服务的职责，包括接收帖子、存储帖子、生成 Feed 等。</li>
+<li><strong>存储服务:</strong> 解释了如何存储帖子，包括使用关系型数据库、NoSQL 数据库等。</li>
+<li><strong>Feed 服务:</strong> 讨论了如何生成 Feed，包括拉取模式、推送模式等。</li>
+<li><strong>排序算法:</strong> 讨论了不同的排序算法，包括时间排序、热度排序、个性化排序等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展新闻 Feed 系统，包括使用数据分片、缓存等。</li>
+</ul>
+<h4 id="第十二章：设计聊天系统"><a href="#第十二章：设计聊天系统" class="headerlink" title="第十二章：设计聊天系统"></a>第十二章：设计聊天系统</h4><p>本章探讨了设计聊天系统的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了聊天系统的功能需求，包括发送消息、接收消息、群聊、离线消息等。</li>
+<li><strong>粗略估算:</strong> 评估了系统规模，包括并发用户数、消息量等。</li>
+<li><strong>高层设计:</strong> 提出了聊天系统的基本架构，包括客户端、服务器、消息队列、数据库等。</li>
+<li><strong>消息传递:</strong> 讨论了不同的消息传递方式，包括 HTTP 轮询、WebSocket、长轮询等。</li>
+<li><strong>消息存储:</strong> 解释了如何存储消息，包括使用关系型数据库、NoSQL 数据库等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展聊天系统，包括使用数据分片、负载均衡等。</li>
+</ul>
+<h4 id="第十三章：设计搜索自动完成系统"><a href="#第十三章：设计搜索自动完成系统" class="headerlink" title="第十三章：设计搜索自动完成系统"></a>第十三章：设计搜索自动完成系统</h4><p>本章探讨了设计搜索自动完成系统的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了搜索自动完成系统的功能需求，包括实时搜索建议、前缀匹配、结果排序等。</li>
+<li><strong>粗略估算:</strong> 评估了系统规模，包括查询量、数据量等。</li>
+<li><strong>高层设计:</strong> 提出了搜索自动完成系统的基本架构，包括数据收集服务、查询服务、存储服务等。</li>
+<li><strong>数据结构:</strong> 讨论了不同的数据结构，包括字典树、哈希表等。</li>
+<li><strong>算法:</strong> 讨论了不同的算法，包括前缀匹配算法、排序算法等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展搜索自动完成系统，包括使用数据分片、缓存等。</li>
+</ul>
+<h4 id="第十四章：设计-YouTube"><a href="#第十四章：设计-YouTube" class="headerlink" title="第十四章：设计 YouTube"></a>第十四章：设计 YouTube</h4><p>本章探讨了设计 YouTube 的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了 YouTube 的功能需求，包括上传视频、观看视频、搜索视频、推荐视频等。</li>
+<li><strong>高层设计:</strong> 提出了 YouTube 的基本架构，包括视频上传服务、视频存储服务、视频播放服务等。</li>
+<li><strong>视频编码:</strong> 讨论了不同的视频编码格式，包括 H.264、VP9 等。</li>
+<li><strong>视频存储:</strong> 解释了如何存储视频，包括使用分布式文件系统等。</li>
+<li><strong>视频播放:</strong> 讨论了如何播放视频，包括使用流媒体协议等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展 YouTube，包括使用数据分片、内容分发网络 (CDN) 等。</li>
+</ul>
+<h4 id="第十五章：设计-Google-Drive"><a href="#第十五章：设计-Google-Drive" class="headerlink" title="第十五章：设计 Google Drive"></a>第十五章：设计 Google Drive</h4><p>本章探讨了设计 Google Drive 的挑战和解决方案，内容涵盖：</p>
+<ul>
+<li><strong>需求分析:</strong> 明确了 Google Drive 的功能需求，包括上传文件、下载文件、文件同步、文件版本控制等。</li>
+<li><strong>粗略估算:</strong> 评估了系统规模，包括用户数、存储空间等。</li>
+<li><strong>高层设计:</strong> 提出了 Google Drive 的基本架构，包括客户端、服务器、数据库、存储服务等。</li>
+<li><strong>文件同步:</strong> 讨论了不同的文件同步机制，包括增量同步、全量同步等。</li>
+<li><strong>文件存储:</strong> 解释了如何存储文件，包括使用分布式文件系统等。</li>
+<li><strong>可扩展性:</strong> 讨论了如何扩展 Google Drive，包括使用数据分片、负载均衡等。</li>
+</ul>
+<h4 id="第十六章：学习仍在继续"><a href="#第十六章：学习仍在继续" class="headerlink" title="第十六章：学习仍在继续"></a>第十六章：学习仍在继续</h4><p>本章鼓励读者继续学习和实践，并提供了一些学习资源，包括书籍、博客、网站等。</p>
+<h2 id="技术要点和技术点"><a href="#技术要点和技术点" class="headerlink" title="技术要点和技术点"></a>技术要点和技术点</h2><p>根据您提供的资料，以下是对每个章节技术要点和技术点的梳理：</p>
+<p><strong>第一章：从零到百万用户规模</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 构建可扩展的网络系统，从单服务器架构逐步演进到支持百万用户的分布式架构。</li>
+<li><strong>技术点：</strong>单服务器架构：所有组件（Web 应用、数据库、缓存等）都在一台服务器上运行。 [1]</li>
+<li>负载均衡：使用负载均衡器将流量分发到多台 Web 服务器，提高系统吞吐量和可用性。 [2]</li>
+<li>数据库复制：使用主从复制来提高数据库的可用性和读取性能。 [2]</li>
+<li>缓存：使用缓存来存储常用的数据，减少数据库负载并提高响应速度。 [3]</li>
+<li>内容分发网络（CDN）：将静态内容（JavaScript、CSS、图片、视频等）托管到 CDN，降低延迟并提高性能。 [2]</li>
+<li>消息队列：使用消息队列来解耦系统组件，提高可扩展性和容错能力。 [4]</li>
+<li>数据库扩展：使用垂直扩展或水平扩展来扩展数据库。 [5]</li>
+<li>数据分片：将数据分散存储到多个数据库服务器上，提高可扩展性。 [6]</li>
+<li>无状态 Web 层：保持 Web 层无状态，方便扩展和维护。 [7]</li>
+<li>多数据中心支持：将系统部署到多个数据中心，提高可用性和容错能力。 [7]</li>
+<li>监控和自动化：使用监控工具和自动化脚本，提高系统可观察性和可管理性。 [7]</li>
+</ul>
+<p><strong>第二章：粗略估算</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 掌握粗略估算技术，以便在系统设计面试中快速评估系统容量和性能需求。</li>
+<li><strong>技术点：</strong>2 的幂：了解数据量单位（字节、千字节、兆字节、千兆字节等）之间的关系。 [8]</li>
+<li>程序员应该知道的延迟数据：了解不同计算机操作（内存访问、磁盘访问、网络传输等）的典型延迟。 [8]</li>
+<li>可用性数据：了解高可用性的概念以及如何使用“九”来衡量系统可用性。 [9]</li>
+</ul>
+<p><strong>第三章：系统设计面试框架</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 了解系统设计面试的流程和技巧，以便在面试中表现出色。</li>
+<li><strong>技术点：</strong>四步流程：理解问题、提出高层设计、深入设计、总结。 [10]</li>
+<li>提问澄清问题：不要假设你的假设是正确的，一定要向面试官提问以澄清需求。 [10, 11]</li>
+<li>沟通你的想法：让面试官了解你的思考过程，以便他们能够更好地评估你的能力。 [11]</li>
+<li>提出多种方案：如果可能的话，建议多种方案，并解释每种方案的优缺点。 [11]</li>
+<li>从关键组件开始：一旦你与面试官就蓝图达成一致，就从最关键的组件开始进行详细设计。 [11]</li>
+<li>与面试官互动：一个好的面试官会像队友一样与你合作。 [11]</li>
+<li>不要放弃：即使你遇到困难，也不要放弃。 [11]</li>
+</ul>
+<p><strong>第四章：设计限速器</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个限速器来限制过多的请求，保护系统免受恶意攻击或过载。</li>
+<li><strong>技术点：</strong>限速器的位置：可以在客户端或服务器端实现限速器。 [12]</li>
+<li>限速算法：令牌桶算法、漏桶算法、固定窗口算法、滑动窗口算法。 [13-16]</li>
+<li>分布式限速：使用集中式数据存储（如 Redis）来实现分布式限速。 [17]</li>
+</ul>
+<p><strong>第五章：设计一致性哈希</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 了解一致性哈希的概念和工作原理，以便在分布式系统中有效地分配请求/数据。</li>
+<li><strong>技术点：</strong>重新哈希问题：当服务器数量变化时，使用简单的模运算进行哈希会导致大量数据需要重新分配。 [18]</li>
+<li>哈希空间和哈希环：将服务器和键映射到一个虚拟的哈希环上。 [19]</li>
+<li>添加/删除服务器：当服务器添加或删除时，只有一小部分键需要重新分配。 [20]</li>
+<li>虚拟节点：使用虚拟节点来解决数据分布不均匀的问题。 [21]</li>
+</ul>
+<p><strong>第六章：设计键值存储</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个键值存储，支持 put 和 get 操作，并满足可扩展性、高可用性和低延迟的要求。</li>
+<li><strong>技术点：</strong>CAP 定理：了解一致性、可用性和分区容错性之间的权衡。 [22]</li>
+<li>一致性哈希：使用一致性哈希来将数据分区到多个服务器上。 [23]</li>
+<li>数据复制：将数据异步复制到多个服务器上，提高可用性和可靠性。 [24]</li>
+<li>仲裁共识：使用仲裁共识来保证读写操作的一致性。 [25]</li>
+<li>一致性模型：了解不同的一致性模型（强一致性、最终一致性等）。 [26]</li>
+<li>版本控制：使用向量时钟来检测和解决冲突。 [27]</li>
+<li>故障检测：使用八卦协议来检测服务器故障。 [28]</li>
+<li>处理临时故障：使用松散仲裁和暗示移交来提高可用性。 [29]</li>
+<li>处理数据中心故障：将数据复制到多个数据中心，以应对数据中心故障。 [30]</li>
+</ul>
+<p><strong>第七章：设计分布式唯一 ID 生成器</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个分布式唯一 ID 生成器，用于生成全局唯一的 ID。</li>
+<li><strong>技术点：</strong>多主复制：使用数据库的自动递增功能，并根据服务器数量增加 ID。 [31]</li>
+<li>通用唯一标识符（UUID）：使用 UUID 生成器独立生成 ID。 [32]</li>
+<li>票据服务器：使用集中式票据服务器生成 ID。 [33]</li>
+<li>Twitter Snowflake 方法：将 ID 分为多个部分，包括时间戳、数据中心 ID、机器 ID 和序列号。 [33]</li>
+</ul>
+<p><strong>第八章：设计 URL 缩短器</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个 URL 缩短服务，将长 URL 转换为短 URL，并支持重定向功能。</li>
+<li><strong>技术点：</strong>哈希函数：使用哈希函数将长 URL 映射到短 URL。 [34]</li>
+<li>哈希值长度：根据系统规模和字符集确定哈希值的长度。 [34]</li>
+<li>哈希冲突解决：使用递归追加字符串或布隆过滤器来解决哈希冲突。 [35]</li>
+<li>Base 62 转换：将唯一 ID 转换为 Base 62 编码的短 URL。 [36]</li>
+<li>URL 缩短流程：生成唯一 ID，转换为短 URL，存储到数据库中。 [37]</li>
+<li>URL 重定向流程：从缓存或数据库中查找长 URL，重定向到长 URL。 [38]</li>
+<li>分布式唯一 ID 生成器：使用第七章中讨论的方法生成唯一 ID。 [39]</li>
+</ul>
+<p><strong>第九章：设计网络爬虫</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个网络爬虫，用于从互联网上收集数据。</li>
+<li><strong>技术点：</strong>种子 URL：爬虫的起始 URL。 [40]</li>
+<li>URL 边界：存储待下载 URL 的队列。 [41]</li>
+<li>HTML 下载器：从互联网上下载网页。 [41]</li>
+<li>DNS 解析器：将 URL 转换为 IP 地址。 [41]</li>
+<li>内容解析器：从网页中提取数据。 [42]</li>
+<li>URL 过滤器：排除特定类型的内容、文件扩展名、错误链接和黑名单网站中的 URL。 [42]</li>
+<li>URL 已访问记录：记录已访问过的 URL，避免重复下载。 [42]</li>
+<li>爬虫工作流程：下载网页、提取链接、过滤链接、检查是否已访问、添加到 URL 边界。 [43]</li>
+<li>礼貌性：避免在短时间内向同一主机发送过多请求。 [44]</li>
+<li>URL 优先级：根据网页重要性或更新频率设置 URL 优先级。 [45]</li>
+<li>新鲜度：定期重新抓取已下载的网页，保持数据新鲜度。 [45]</li>
+<li>健壮性：处理异常，避免系统崩溃。 [46]</li>
+<li>可扩展性：支持新的内容类型，可通过插件扩展功能。 [46]</li>
+</ul>
+<p><strong>第十章：设计通知系统</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个通知系统，向用户发送各种类型的通知，例如推送通知、短信和电子邮件。</li>
+<li><strong>技术点：</strong>通知类型：推送通知、短信、电子邮件。 [47]</li>
+<li>联系信息收集：收集用户的设备令牌、电话号码和电子邮件地址。 [48]</li>
+<li>通知发送/接收流程：服务触发通知事件、通知服务发送通知、第三方服务发送通知。 [49]</li>
+<li>可靠性：保证通知的可靠传递。 [50]</li>
+<li>通知模板：使用预先格式化的模板来创建通知。 [51]</li>
+<li>通知设置：允许用户自定义通知设置。 [51]</li>
+<li>限速：限制来自单个用户或服务的通知数量。 [52]</li>
+<li>重试机制：如果通知发送失败，则重试发送。 [52]</li>
+<li>推送通知的安全性：确保推送通知的安全性。 [52]</li>
+<li>监控排队的通知：监控通知队列，确保及时发送通知。 [52]</li>
+<li>事件跟踪：跟踪通知的打开率、点击率和参与度。 [52]</li>
+</ul>
+<p><strong>第十一章：设计新闻 Feed 系统</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个新闻 Feed 系统，为用户提供来自其关注的人或群组的最新帖子。</li>
+<li><strong>技术点：</strong>Feed 发布流程：用户发布帖子、存储到数据库、推送到消息队列、添加到关注者的 Feed 缓存、发送通知。 [53]</li>
+<li>Feed 获取流程：用户请求 Feed、从缓存中获取帖子 ID 列表、从数据库中获取帖子数据、返回给客户端。 [54]</li>
+<li>Fanout 服务：将新发布的帖子推送到关注者的 Feed 中。 [55]</li>
+<li>Fanout 模型：推模型、拉模型、混合模型。 [55]</li>
+<li>缓存架构：Feed 缓存、内容缓存、社交图谱缓存、操作缓存、计数器缓存。 [56]</li>
+</ul>
+<p><strong>第十二章：设计聊天系统</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个聊天系统，支持一对一聊天和群组聊天，并提供在线状态指示器。</li>
+<li><strong>技术点：</strong>通信协议：HTTP、长轮询、WebSocket。 [57]</li>
+<li>系统组件：聊天服务器、状态服务器、API 服务器、通知服务器、键值存储。 [58]</li>
+<li>数据存储：关系型数据库、NoSQL 数据库。 [59]</li>
+<li>数据模型：消息表（一对一聊天、群组聊天）。 [60]</li>
+<li>消息同步：跨多个设备同步消息。 [61]</li>
+<li>在线状态：管理用户的在线/离线状态。 [62]</li>
+<li>在线状态传播：使用发布-订阅模型将在线状态更新传播给朋友。 [63]</li>
+</ul>
+<p><strong>第十三章：设计搜索自动完成系统</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个搜索自动完成系统，根据用户输入的前缀提供最相关的搜索建议。</li>
+<li><strong>技术点：</strong>数据收集服务：收集用户输入的查询并实时聚合它们。 [64]</li>
+<li>查询服务：根据搜索查询或前缀返回最常搜索的词条。 [64]</li>
+<li>Trie 数据结构：使用 Trie 来存储搜索查询及其频率。 [65]</li>
+<li>数据处理：使用分析日志、聚合器和键值存储来处理搜索查询数据。 [66]</li>
+<li>缓存：使用缓存来存储 Trie 数据结构。 [67]</li>
+<li>分片：将 Trie 数据结构分片到多个服务器上。 [68]</li>
+</ul>
+<p><strong>第十四章：设计 YouTube</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个类似 YouTube 的视频分享平台，支持视频上传、处理、存储和流媒体播放。</li>
+<li><strong>技术点：</strong>内容分发网络（CDN）：用于存储和分发视频内容。 [69]</li>
+<li>API 服务器：处理除视频流媒体播放之外的所有功能。 [69]</li>
+<li>视频上传流程：客户端上传视频、服务器处理视频、存储到云存储、生成预签名上传 URL。 [70]</li>
+<li>视频处理：视频编码、缩略图生成、水印添加、元数据提取。 [70]</li>
+<li>数据存储：云存储、块存储、元数据数据库、缓存。 [71]</li>
+<li>视频流媒体播放：使用流媒体协议（HLS、DASH）将视频内容传输到客户端。 [69]</li>
+<li>优化：预取、缓存、自适应比特率流媒体播放。 [72]</li>
+</ul>
+<p><strong>第十五章：设计 Google 云端硬盘</strong></p>
+<ul>
+<li><strong>技术要点：</strong> 设计一个类似 Google 云端硬盘的云存储服务，支持文件上传、下载、同步、版本控制和共享。</li>
+<li><strong>技术点：</strong>块服务器：将文件分割成块，压缩、加密并上传到云存储。 [73]</li>
+<li>云存储：用于存储文件块。 [73]</li>
+<li>冷存储：用于存储不常访问的数据。 [73]</li>
+<li>API 服务器：处理用户认证、文件元数据管理等功能。 [74]</li>
+<li>元数据数据库：存储用户、文件、块和版本等元数据。 [74]</li>
+<li>上传流程：客户端上传文件、块服务器处理文件、上传到云存储、更新元数据数据库。 [75]</li>
+<li>下载流程：客户端下载文件、从云存储下载块、组装文件。 [76]</li>
+<li>同步：使用增量同步来减少网络流量。 [77]</li>
+<li>一致性：保证元数据缓存和数据库层面的强一致性。 [78]</li>
+<li>故障处理：处理负载均衡器、块服务器、云存储、API 服务器、元数据缓存和数据库的故障。 [79]</li>
+</ul>
+<p><strong>请注意：</strong> 以上信息主要来自你提供的资料。 你可能需要查阅其他资源以获取更深入的了解。</p>
+<h1 id="分布式系统设计面试常见问题"><a href="#分布式系统设计面试常见问题" class="headerlink" title="分布式系统设计面试常见问题"></a>分布式系统设计面试常见问题</h1><h2 id="1-如何将一个系统从零扩展到百万用户？"><a href="#1-如何将一个系统从零扩展到百万用户？" class="headerlink" title="1. 如何将一个系统从零扩展到百万用户？"></a>1. 如何将一个系统从零扩展到百万用户？</h2><p>扩展一个系统是一个迭代的过程，需要不断地优化和改进。以下是一些扩展系统以支持数百万用户时需要考虑的关键步骤：</p>
+<p><strong>初期:</strong></p>
+<ul>
+<li><strong>单服务器设置：</strong> 开始时，所有的组件（web 应用、数据库、缓存等）都运行在同一个服务器上。</li>
+<li><strong>数据库分离：</strong> 随着用户量的增长，将数据库迁移到独立的服务器上，实现 Web 层和数据层的独立扩展。</li>
+</ul>
+<p><strong>中期:</strong></p>
+<ul>
+<li><strong>缓存：</strong> 使用缓存（如 Memcached 或 Redis）来存储经常访问的数据，减少数据库负载。</li>
+<li><strong>负载均衡：</strong> 使用负载均衡器将流量分发到多台 Web 服务器上，提高系统吞吐量和可用性。</li>
+<li><strong>消息队列：</strong> 引入消息队列来解耦系统组件，实现异步通信和提高可扩展性。</li>
+</ul>
+<p><strong>后期:</strong></p>
+<ul>
+<li><strong>数据库分片：</strong> 将数据库水平拆分到多个服务器上，每个服务器负责一部分数据，以支持更大的数据量和更高的吞吐量。</li>
+<li><strong>NoSQL 数据库：</strong> 针对特定需求，引入 NoSQL 数据库（如 Cassandra 或 MongoDB）来处理非结构化数据或提供特定的功能。</li>
+<li><strong>微服务架构：</strong> 将系统拆分成更小的、独立的服务，每个服务负责特定的功能，以便独立地扩展和更新。</li>
+</ul>
+<p><strong>其他优化：</strong></p>
+<ul>
+<li><strong>垂直扩展：</strong> 通过升级服务器硬件来提高性能。</li>
+<li><strong>代码优化：</strong> 优化代码以提高效率和减少资源消耗。</li>
+<li><strong>监控和日志记录：</strong> 实施监控和日志记录系统，以便跟踪系统性能和识别问题。</li>
+</ul>
+<h2 id="2-什么是一致性哈希，它在分布式系统中有什么作用？"><a href="#2-什么是一致性哈希，它在分布式系统中有什么作用？" class="headerlink" title="2. 什么是一致性哈希，它在分布式系统中有什么作用？"></a>2. 什么是一致性哈希，它在分布式系统中有什么作用？</h2><p>一致性哈希是一种特殊的哈希算法，用于将数据均匀分布到多个服务器上，同时最小化数据迁移的成本。它的主要作用包括：</p>
+<ul>
+<li><strong>减少数据迁移：</strong> 当添加或移除服务器时，只有一小部分数据需要迁移，而不是所有数据。</li>
+<li><strong>平衡负载：</strong> 数据能够更均匀地分布在服务器上，避免热点问题，提高系统整体性能。</li>
+</ul>
+<p><strong>工作原理：</strong></p>
+<ol>
+<li><strong>哈希环：</strong> 将哈希函数的输出范围映射到一个环形结构上。</li>
+<li><strong>服务器映射：</strong> 将服务器的标识（例如 IP 地址）哈希到哈希环上。</li>
+<li><strong>数据映射：</strong> 将数据的键哈希到哈希环上。</li>
+<li><strong>查找服务器：</strong> 顺时针查找数据键在哈希环上的位置，遇到的第一个服务器即为存储该数据的服务器。</li>
+</ol>
+<p><strong>虚拟节点：</strong></p>
+<p>为了更均匀地分布数据，每个服务器可以使用多个虚拟节点，每个虚拟节点代表服务器在哈希环上的一个位置。</p>
+<p><strong>应用场景：</strong></p>
+<ul>
+<li>分布式缓存系统（例如 Memcached）</li>
+<li>分布式数据库系统（例如 Cassandra）</li>
+<li>分布式负载均衡器</li>
+</ul>
+<h2 id="3-如何设计一个限速器？"><a href="#3-如何设计一个限速器？" class="headerlink" title="3. 如何设计一个限速器？"></a>3. 如何设计一个限速器？</h2><p>限速器用于控制客户端或服务发送流量的速率。在设计限速器时，需要考虑以下因素：</p>
+<ul>
+<li><strong>限速规则：</strong> 基于哪些因素进行限速，例如 IP 地址、用户 ID 或 API 密钥。</li>
+<li><strong>算法：</strong> 使用哪种限速算法，例如令牌桶、漏桶、固定窗口计数器或滑动窗口计数器。</li>
+<li><strong>实现方式：</strong> 在客户端实现、服务器端实现或使用第三方网关。</li>
+<li><strong>分布式环境：</strong> 如何在分布式环境中实现限速。</li>
+</ul>
+<p><strong>常见算法：</strong></p>
+<ul>
+<li><strong>令牌桶：</strong> 定期向桶中添加令牌，每个请求消耗一个令牌，如果桶中没有足够的令牌，则拒绝请求。</li>
+<li><strong>漏桶：</strong> 请求以恒定速率进入桶中，如果桶已满，则丢弃请求。</li>
+<li><strong>固定窗口计数器：</strong> 将时间划分为固定大小的窗口，每个窗口有一个计数器，当计数器达到阈值时，拒绝请求。</li>
+<li><strong>滑动窗口计数器：</strong> 结合固定窗口计数器和滑动窗口日志，更精确地控制速率。</li>
+</ul>
+<p><strong>处理超过限速的请求：</strong></p>
+<ul>
+<li>返回 HTTP 状态码 429（请求过多）。</li>
+<li>将请求加入队列，稍后处理。</li>
+<li>返回限速器头部信息，告知客户端限速情况。</li>
+</ul>
+<h2 id="4-如何设计一个唯一-ID-生成器？"><a href="#4-如何设计一个唯一-ID-生成器？" class="headerlink" title="4. 如何设计一个唯一 ID 生成器？"></a>4. 如何设计一个唯一 ID 生成器？</h2><p>在分布式系统中设计唯一 ID 生成器需要满足以下要求：</p>
+<ul>
+<li><strong>唯一性：</strong> 生成的 ID 必须是唯一的。</li>
+<li><strong>有序性：</strong> 生成的 ID 应该是有序的，以便于排序和查询。</li>
+<li><strong>可扩展性：</strong> ID 生成器应该能够处理高并发请求。</li>
+</ul>
+<p><strong>常见方案：</strong></p>
+<ul>
+<li><strong>多主数据库复制：</strong> 使用数据库自增主键，但在分布式环境中需要处理数据同步和一致性问题。</li>
+<li><strong>UUID：</strong> 生成全局唯一的 ID，但 ID 较长且无序。</li>
+<li><strong>Ticket 服务器：</strong> 维护一个中心化的 Ticket 服务器，负责分配 ID 区间给不同的服务器，以生成唯一 ID。</li>
+<li><strong>雪花算法（Twitter Snowflake）：</strong> 将 ID 分成多个部分，例如时间戳、数据中心 ID、机器 ID 和序列号，以生成唯一且有序的 ID。</li>
+</ul>
+<h2 id="5-如何设计一个短链接服务？"><a href="#5-如何设计一个短链接服务？" class="headerlink" title="5. 如何设计一个短链接服务？"></a>5. 如何设计一个短链接服务？</h2><p>短链接服务用于将长 URL 转换为短 URL，并提供重定向功能。设计要点包括：</p>
+<ul>
+<li><strong>哈希函数：</strong> 使用哈希函数将长 URL 转换为短码。</li>
+<li><strong>存储：</strong> 存储短码和长 URL 的映射关系，可以使用关系型数据库或键值存储。</li>
+<li><strong>重定向：</strong> 处理短 URL 的重定向请求，将用户重定向到原始长 URL。</li>
+<li><strong>高可用性：</strong> 确保服务的高可用性，例如使用负载均衡和冗余存储。</li>
+</ul>
+<p><strong>哈希函数选择：</strong></p>
+<ul>
+<li>MD5 或 SHA-1： 生成较长的哈希值，需要截取一部分作为短码。</li>
+<li>自定义哈希函数： 可以根据需求设计自定义的哈希函数，例如使用 base62 编码。</li>
+</ul>
+<p><strong>解决哈希冲突：</strong></p>
+<ul>
+<li>追加随机字符： 在短码后追加随机字符，直到生成唯一的短码。</li>
+<li>存储多个映射关系： 存储短码和多个长 URL 的映射关系，根据请求参数或其他规则选择合适的长 URL 进行重定向。</li>
+</ul>
+<h2 id="6-如何设计一个网络爬虫？"><a href="#6-如何设计一个网络爬虫？" class="headerlink" title="6. 如何设计一个网络爬虫？"></a>6. 如何设计一个网络爬虫？</h2><p>网络爬虫用于自动抓取互联网上的网页内容。设计要点包括：</p>
+<ul>
+<li><strong>URL 管理：</strong> 维护待抓取 URL 列表，并记录已抓取 URL，避免重复抓取。</li>
+<li><strong>页面抓取：</strong> 使用 HTTP 客户端下载网页内容。</li>
+<li><strong>内容解析：</strong> 使用 HTML 解析器提取网页中的链接和其他有用信息。</li>
+<li><strong>数据存储：</strong> 将抓取到的数据存储到数据库或文件系统中。</li>
+<li><strong>分布式架构：</strong> 使用分布式架构提高抓取效率，例如使用多个爬虫节点和消息队列。</li>
+</ul>
+<p><strong>其他考虑因素：</strong></p>
+<ul>
+<li><strong>robots.txt 协议：</strong> 遵守 robots.txt 协议，避免抓取不允许抓取的网站。</li>
+<li><strong>抓取频率：</strong> 控制抓取频率，避免对目标网站造成过大的压力。</li>
+<li><strong>去重：</strong> 避免抓取重复内容，可以使用指纹算法或其他方法。</li>
+<li><strong>内容过滤：</strong> 根据需求过滤抓取到的内容，例如过滤广告或无关信息。</li>
+</ul>
+<h2 id="7-如何设计一个消息推送系统？"><a href="#7-如何设计一个消息推送系统？" class="headerlink" title="7. 如何设计一个消息推送系统？"></a>7. 如何设计一个消息推送系统？</h2><p>消息推送系统用于向用户推送消息通知。设计要点包括：</p>
+<ul>
+<li><strong>消息存储：</strong> 存储待推送的消息，可以使用关系型数据库或消息队列。</li>
+<li><strong>推送服务：</strong> 负责将消息推送到用户设备。</li>
+<li><strong>用户管理：</strong> 管理用户信息，例如设备 ID、订阅主题等。</li>
+<li><strong>消息格式：</strong> 定义消息格式，例如使用 JSON 或 XML。</li>
+<li><strong>推送通道：</strong> 选择合适的推送通道，例如 Apple Push Notification Service (APNS) 或 Firebase Cloud Messaging (FCM)。</li>
+</ul>
+<p><strong>可靠性保障：</strong></p>
+<ul>
+<li><strong>消息持久化：</strong> 将消息持久化到磁盘，避免消息丢失。</li>
+<li><strong>重试机制：</strong> 当推送失败时，进行重试。</li>
+<li><strong>确认机制：</strong> 确保消息成功推送到用户设备。</li>
+</ul>
+<p><strong>安全性：</strong></p>
+<ul>
+<li><strong>身份验证：</strong> 对推送服务进行身份验证，防止未授权访问。</li>
+<li><strong>消息加密：</strong> 对敏感信息进行加密，保护用户隐私。</li>
+</ul>
+<h2 id="8-如何设计一个键值存储？"><a href="#8-如何设计一个键值存储？" class="headerlink" title="8. 如何设计一个键值存储？"></a>8. 如何设计一个键值存储？</h2><p>键值存储是一种非关系型数据库，使用键值对存储数据。设计要点包括：</p>
+<ul>
+<li><strong>数据结构：</strong> 选择合适的数据结构存储键值对，例如哈希表、树或跳表。</li>
+<li><strong>数据分区：</strong> 将数据分区到多个服务器上，提高可扩展性。</li>
+<li><strong>一致性模型：</strong> 选择合适的一致性模型，例如最终一致性或强一致性。</li>
+<li><strong>容错机制：</strong> 处理服务器故障和数据丢失。</li>
+</ul>
+<p><strong>常见技术：</strong></p>
+<ul>
+<li><strong>一致性哈希：</strong> 用于数据分区和负载均衡。</li>
+<li><strong>复制：</strong> 将数据复制到多个服务器上，提高可用性。</li>
+<li><strong>Merkle 树：</strong> 用于数据一致性校验。</li>
+<li><strong>LSM 树：</strong> 用于高效地写入和读取数据。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0%E2%9C%B0/" rel="tag"># ✰✰✰✰✰✰</a>
+              <a href="/tags/SystemDesign/" rel="tag"># SystemDesign</a>
+              <a href="/tags/TODO/" rel="tag"># TODO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/10/08/%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%EF%BC%9A%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90%E4%B8%8E%E6%9E%B6%E6%9E%84%E5%AE%9E%E8%B7%B5/" rel="prev" title="大规模分布式存储系统：原理解析与架构实践">
+      <i class="fa fa-chevron-left"></i> 大规模分布式存储系统：原理解析与架构实践
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/10/08/Reading%20Cards/" rel="next" title="Reading Cards">
+      Reading Cards <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第一章：从零到百万用户"><span class="nav-number">2.</span> <span class="nav-text">第一章：从零到百万用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二章：粗略估算"><span class="nav-number">3.</span> <span class="nav-text">第二章：粗略估算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三章：系统设计面试框架"><span class="nav-number">4.</span> <span class="nav-text">第三章：系统设计面试框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四章：设计速率限制器"><span class="nav-number">5.</span> <span class="nav-text">第四章：设计速率限制器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五章：设计一致性哈希"><span class="nav-number">6.</span> <span class="nav-text">第五章：设计一致性哈希</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第六章：设计键值存储"><span class="nav-number">7.</span> <span class="nav-text">第六章：设计键值存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第七章：设计分布式系统中的唯一-ID-生成器"><span class="nav-number">8.</span> <span class="nav-text">第七章：设计分布式系统中的唯一 ID 生成器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第八章：设计-URL-缩短器"><span class="nav-number">9.</span> <span class="nav-text">第八章：设计 URL 缩短器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第九章：设计网络爬虫"><span class="nav-number">10.</span> <span class="nav-text">第九章：设计网络爬虫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十章：设计通知系统"><span class="nav-number">11.</span> <span class="nav-text">第十章：设计通知系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十一章：设计新闻-Feed-系统"><span class="nav-number">12.</span> <span class="nav-text">第十一章：设计新闻 Feed 系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十二章：设计聊天系统"><span class="nav-number">13.</span> <span class="nav-text">第十二章：设计聊天系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十三章：设计搜索自动完成系统"><span class="nav-number">14.</span> <span class="nav-text">第十三章：设计搜索自动完成系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十四章：设计-YouTube"><span class="nav-number">15.</span> <span class="nav-text">第十四章：设计 YouTube</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十五章：设计-Google-Drive"><span class="nav-number">16.</span> <span class="nav-text">第十五章：设计 Google Drive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十六章：学习仍在继续"><span class="nav-number">17.</span> <span class="nav-text">第十六章：学习仍在继续</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术要点和技术点"><span class="nav-number"></span> <span class="nav-text">技术要点和技术点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#分布式系统设计面试常见问题"><span class="nav-number"></span> <span class="nav-text">分布式系统设计面试常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-如何将一个系统从零扩展到百万用户？"><span class="nav-number"></span> <span class="nav-text">1. 如何将一个系统从零扩展到百万用户？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-什么是一致性哈希，它在分布式系统中有什么作用？"><span class="nav-number"></span> <span class="nav-text">2. 什么是一致性哈希，它在分布式系统中有什么作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-如何设计一个限速器？"><span class="nav-number"></span> <span class="nav-text">3. 如何设计一个限速器？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-如何设计一个唯一-ID-生成器？"><span class="nav-number"></span> <span class="nav-text">4. 如何设计一个唯一 ID 生成器？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-如何设计一个短链接服务？"><span class="nav-number"></span> <span class="nav-text">5. 如何设计一个短链接服务？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-如何设计一个网络爬虫？"><span class="nav-number"></span> <span class="nav-text">6. 如何设计一个网络爬虫？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-如何设计一个消息推送系统？"><span class="nav-number"></span> <span class="nav-text">7. 如何设计一个消息推送系统？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何设计一个键值存储？"><span class="nav-number"></span> <span class="nav-text">8. 如何设计一个键值存储？</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="郭富城"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">郭富城</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/gxianch" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;gxianch" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/%E5%8F%91%E9%82%AE%E4%BB%B6%E8%87%B3:g.xian.ch@gmail.com" title="E-Mail → 发邮件至:g.xian.ch@gmail.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zh.singlelogin.re/" title="https:&#x2F;&#x2F;zh.singlelogin.re&#x2F;" rel="noopener" target="_blank">ZLibrary</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://www.banshujiang.cn/" title="http:&#x2F;&#x2F;www.banshujiang.cn&#x2F;" rel="noopener" target="_blank">banshujiang</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.packtpub.com/tech" title="https:&#x2F;&#x2F;www.packtpub.com&#x2F;tech" rel="noopener" target="_blank">packtpub</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.manning.com/" title="https:&#x2F;&#x2F;www.manning.com&#x2F;" rel="noopener" target="_blank">manning</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://coolshell.cn/" title="https:&#x2F;&#x2F;coolshell.cn&#x2F;" rel="noopener" target="_blank">coolshell</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">郭富城</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
